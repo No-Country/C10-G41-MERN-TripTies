@@ -9,6 +9,7 @@ function App() {
   return (
     <div className="App">
       <h1>TripTies</h1>
+      <h2>XD</h2>
     </div>
   )
 }
