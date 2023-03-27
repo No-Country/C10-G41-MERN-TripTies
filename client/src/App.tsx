@@ -1,15 +1,13 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import LandingPage from './components/LandingPage/LandingPage'
+import Home from './components/Home/Home'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+function App(): JSX.Element {
 
   return (
     <div className="App">
-      <h1>TripTies</h1>
-      <h2>XD</h2>
+      <LandingPage />
     </div>
   )
 }
