@@ -4,23 +4,25 @@ import style from '../../styles/Log/Log.module.css';
 function Log(): JSX.Element {
   return (
     <>
-        <div />
-        <form>
-            <h2>Log In</h2>
-            <input placeholder='Email address'/>
-            <input placeholder='Password'/>
-            <div>
-                <input type={'checkbox'}/>
+        <form className={style.container}>
+            <h2 className={style.title}>Log In</h2>
+            <input className={style.input} placeholder='@ Email address'/>
+            <input className={style.input} placeholder='🔒 Password'/>
+            <div className={style.underinputs}>
+                <div>
+                    <input type={'checkbox'}/>
+                    <label>Remember Me</label>
+                </div>
                 <a>Forgot password?</a>
             </div>
-            <button>Log In</button>
+            <button className={style.btn}>LOG IN</button>
             <section>
                 <p>Or Log In with</p>
-                <div>
-                    <i></i>
-                    <i></i>
+                <div className={style.iconContainer}>
+                    <i>Google Icon</i>
+                    <i>Facebook Icon</i>
                 </div>
-                <p>Don't have an account?<a>Sign Up</a></p>
+                <p>Don't have an account?<a> Sign Up</a></p>
             </section>
         </form>
     </>
