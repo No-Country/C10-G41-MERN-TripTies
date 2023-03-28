@@ -2,6 +2,8 @@
     display: flex;
     justify-content: space-between;
     background-color: #FFFFFF;
+    position: fixed;
+    width: 100%;
 }
 
 .logoNav {
