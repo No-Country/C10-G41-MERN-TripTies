@@ -9,10 +9,10 @@ function Log(): JSX.Element {
     <div className={style.container}>
         <form className={style.content}>
             <h2 className={style.title}>Log In</h2>
-            <input className={style.input} type="email" placeholder='Email address'/>
-            <input className={style.input} type="password" placeholder='Password'/>
+            <input className={style.input} type="email" placeholder='Email address' name='email'/>
+            <input className={style.input} type="password" placeholder='Password' name='password' id='password'/>
             <div className={style.underinputs}>
-                <div>
+                <div className={style.checkbox}>
                     <input type="checkbox"/>
                     <label>Remember Me</label>
                 </div>
@@ -29,7 +29,7 @@ function Log(): JSX.Element {
                         <img src={facebook} alt="Facebook"/>
                     </a>
                 </div>
-                <p>Don't have an account?<a> Sign Up</a></p>
+                <p>Don't have an account?<a href='#'> Sign Up</a></p>
             </section>
         </form>
     </div>
