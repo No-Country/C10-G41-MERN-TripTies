@@ -1,11 +1,24 @@
+.conteiner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    place-items: center; 
+    margin: auto;
+    height: 100vh;
+}
+
 .conteiner form {
     display: flex;
     flex-direction: column;
     border: 2px solid black;
     background-color: #ffffff;
     border-color: #ffffff;
-    padding: 10px 100px;
+    /* padding: 10px 100px; */
     border-radius: 20px;
+    
+    width: 591px;
+    height: 583px;
+    align-items: center;
 }
 
 .conteiner h1 {
