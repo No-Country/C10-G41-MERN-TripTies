@@ -5,19 +5,11 @@
     place-items: center; 
     margin: auto;
     height: 100vh;
-    position: relative;
+    background-image: url('../../img/backgroundPaper.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center; 
 }
-
-.bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-}
-
 
 .conteiner form {
     display: flex;

@@ -5,7 +5,6 @@ import google from '../../img/google.png'
 import facebook from '../../img/facebook.png'
 import { useState } from 'react'
 import MiniFooter from '../MiniFooter/MiniFooter'
-import paperBG from '../../img/paperPlanes.png'
 
 function Register(): JSX.Element {
     const [visibility, setVisibility] = useState(oculto)
@@ -19,7 +18,6 @@ function Register(): JSX.Element {
 
     return (
         <div className={style.conteiner}>
-            <img className={style.bg} src={paperBG} alt="paperPlanes"/>
             <form>
                 <h1>Create Account</h1>
                 <input className={style.input} type="text" placeholder='Full Name' name="name"/>
