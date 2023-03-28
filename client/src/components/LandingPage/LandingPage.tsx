@@ -1,10 +1,12 @@
 import imgFly from "../../img/fly-paper.png"
 import imgGuy from"../../img/guy.png"
 import style from "../../styles/LandingPage/LandingPage.module.css"
+import NavBarL from "./NavBarL"
 
 const LandingPage = ():JSX.Element => {
     return (
         <>
+            <NavBarL />
             <div className={style.containerLanding}> 
                 <div className={style.flyAndTitle}>
                     <h1>TripTies</h1>
