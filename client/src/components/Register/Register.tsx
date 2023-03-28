@@ -4,6 +4,7 @@ import visible from '../../img/visible.png'
 import google from '../../img/google.png'
 import facebook from '../../img/facebook.png'
 import { useState } from 'react'
+import MiniFooter from '../MiniFooter/MiniFooter'
 
 function Register(): JSX.Element {
     const [visibility, setVisibility] = useState(oculto)
@@ -18,7 +19,7 @@ function Register(): JSX.Element {
     return (
         <div className={style.conteiner}>
             <form>
-                <h1>Create Acconut</h1>
+                <h1>Create Account</h1>
                 <input className={style.input} type="text" placeholder='Full Name' name="name"/>
                 <input className={style.input} type="email" placeholder='Email address' name="email" />
                 <div className={style.password}>
@@ -44,9 +45,10 @@ function Register(): JSX.Element {
                             <img src={facebook} alt="facebook" />
                         </a>
                     </div>
-                    <p>Already have an account? <a href='#'>Log In</a></p>
+                    <p>Already have an account? <a href='/login'>Log In</a></p>
                 </section>
             </form>
+            <MiniFooter/>
         </div>
     )
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import google from '../../img/google.png';
 import facebook from '../../img/facebook.png';
 import style from '../../styles/Log/Log.module.css';
+import MiniFooter from '../MiniFooter/MiniFooter';
 
 function Log(): JSX.Element {
   return (
@@ -29,9 +30,10 @@ function Log(): JSX.Element {
                         <img src={facebook} alt="Facebook"/>
                     </a>
                 </div>
-                <p>Don't have an account?<a href='#'> Sign Up</a></p>
+                <p>Don't have an account?<a href='/register'> Sign Up</a></p>
             </section>
         </form>
+            <MiniFooter/>
     </div>
    
   )
