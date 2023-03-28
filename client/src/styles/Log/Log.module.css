@@ -60,12 +60,21 @@
     background-position: 0px center;
 }
 
+
+.input[type=email]:focus::placeholder {
+    background: none;
+}
+
+
 .input[id^="password"]::placeholder {
     background-image: url('../../img/password.png');
     background-repeat: no-repeat;
     background-position: 0px center;
 }
 
+.input[id^="password"]:focus::placeholder {
+    background: none;
+}
 
 
 .underinputs {
