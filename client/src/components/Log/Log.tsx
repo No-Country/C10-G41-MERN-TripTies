@@ -1,4 +1,6 @@
-import React from 'react'
+import React from 'react';
+import google from '../../img/google.png';
+import facebook from '../../img/facebook.png';
 import style from '../../styles/Log/Log.module.css';
 
 function Log(): JSX.Element {
@@ -7,11 +9,11 @@ function Log(): JSX.Element {
     <div className={style.container}>
         <form className={style.content}>
             <h2 className={style.title}>Log In</h2>
-            <input className={style.input} placeholder='@ Email address'/>
-            <input className={style.input} placeholder='🔒 Password'/>
+            <input className={style.input} type="email" placeholder='Email address'/>
+            <input className={style.input} type="password" placeholder='Password'/>
             <div className={style.underinputs}>
                 <div>
-                    <input type={'checkbox'}/>
+                    <input type="checkbox"/>
                     <label>Remember Me</label>
                 </div>
                 <a>Forgot password?</a>
@@ -20,8 +22,12 @@ function Log(): JSX.Element {
             <section>
                 <p>Or Log In with</p>
                 <div className={style.iconContainer}>
-                    <i>Google Icon</i>
-                    <i>Facebook Icon</i>
+                    <a href='#'>
+                        <img src={google} alt="Google"/>
+                    </a>
+                    <a href='#'>
+                        <img src={facebook} alt="Facebook"/>
+                    </a>
                 </div>
                 <p>Don't have an account?<a> Sign Up</a></p>
             </section>
