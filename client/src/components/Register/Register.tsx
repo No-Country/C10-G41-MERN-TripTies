@@ -1,20 +1,54 @@
-import React from 'react'
+import style from '../../styles/Register/Register.module.css'
+import oculto from '../../img/oculto.png'
+import visible from '../../img/visible.png'
+import google from '../../img/google.png'
+import facebook from '../../img/facebook.png'
+import { useState } from 'react'
 
 function Register(): JSX.Element {
-  return (
-    <div>
-        <form>
-            <h2>Create Acconut</h2>
-            <input type="text" placeholder='Full Name' name="fullname"/>
-            <input type="email" placeholder='Email address' name="email"/>
-            <input type="password" placeholder='Password' name="password"/>
-            <div>
-            <input type="checkbox"/>
-            I agree with <a>Terms</a> and <a>Privacy</a>
-            </div>
-        </form>
-    </div>
-  )
+    const [visibility, setVisibility] = useState(oculto)
+    const [passwordType, setPasswordType] = useState("password");
+
+    function handlePassword(e:any){
+        e.preventDefault()
+        setPasswordType(passwordType === "password" ? "text" : "password");
+        setVisibility(visibility === oculto ? visible : oculto)
+    }
+
+    return (
+        <div className={style.conteiner}>
+            <form>
+                <h1>Create Acconut</h1>
+                <input className={style.input} type="text" placeholder='Full Name' name="name"/>
+                <input className={style.input} type="email" placeholder='Email address' name="email" />
+                <div className={style.password}>
+                  <input className={style.input} type={passwordType} placeholder='Password' name="password" id="password"/>
+                  <button onClick={e => handlePassword(e)}>
+                    <img src={visibility} alt="password visibility" />
+                  </button>
+                </div>
+                <div className={style.checkbox}>
+                    <input type="checkbox" />
+                    <span>
+                        I agree with <a href='#'>Terms</a> and <a href='#'>Privacy</a>
+                    </span>
+                </div>
+                <button className={style.btn} type='submit' >SIGN UP</button>
+                <section>
+                    <p>Or Sign Up with</p>
+                    <div className={style.redes}>
+                        <a href="#">
+                            <img src={google} alt="google" />
+                        </a>
+                        <a href="#">
+                            <img src={facebook} alt="facebook" />
+                        </a>
+                    </div>
+                    <p>Already have an account? <a href='#'>Log In</a></p>
+                </section>
+            </form>
+        </div>
+    )
 }
 
 export default Register
