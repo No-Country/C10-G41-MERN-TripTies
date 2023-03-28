@@ -3,11 +3,13 @@ import google from '../../img/google.png';
 import facebook from '../../img/facebook.png';
 import style from '../../styles/Log/Log.module.css';
 import MiniFooter from '../MiniFooter/MiniFooter';
+import paperBG from '../../img/paperPlanes.png';
 
 function Log(): JSX.Element {
   return (
     
     <div className={style.container}>
+        <img className={style.bg} src={paperBG} alt="paperPlanes"/>
         <form className={style.content}>
             <h2 className={style.title}>Log In</h2>
             <input className={style.input} type="email" placeholder='Email address' name='email'/>
