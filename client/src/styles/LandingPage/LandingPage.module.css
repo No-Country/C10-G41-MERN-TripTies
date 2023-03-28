@@ -56,18 +56,21 @@
     width: 150px;
 }
 
+.btnExp:hover {
+    cursor: pointer;
+}
+
 .containerGuy {
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    position: relative;
+    /* position: relative; */
     /* z-index: -1;  */
     top: -100px;   
 }
 
 .guyImg {  
-    width: 179px;
-    height: 373px;
+    width: 138px;
+    height: 272px;
     margin-right: 2rem;
-    
 }
