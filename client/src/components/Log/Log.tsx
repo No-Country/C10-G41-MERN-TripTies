@@ -3,8 +3,9 @@ import style from '../../styles/Log/Log.module.css';
 
 function Log(): JSX.Element {
   return (
-    <>
-        <form className={style.container}>
+    
+    <div className={style.container}>
+        <form className={style.content}>
             <h2 className={style.title}>Log In</h2>
             <input className={style.input} placeholder='@ Email address'/>
             <input className={style.input} placeholder='🔒 Password'/>
@@ -25,7 +26,8 @@ function Log(): JSX.Element {
                 <p>Don't have an account?<a> Sign Up</a></p>
             </section>
         </form>
-    </>
+    </div>
+   
   )
 }
 

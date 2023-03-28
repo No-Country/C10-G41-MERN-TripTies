@@ -1,10 +1,22 @@
 .container {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    place-items: center; 
+    margin: auto;
+    height: 100vh;
+}
+
+.content {
+    display: flex;
     flex-direction: column;
     background-color: #fff;
     border-radius: 20px;
-    padding: 50px 100px;
+    /* padding: 50px 100px; */
     color: var(--brown);
+    width: 591px;
+    height: 583px;
+    align-items: center;
 }
 
 .title {
@@ -29,8 +41,9 @@
 
 .underinputs {
     display:flex;
-    justify-content: space-between;
+    justify-content: space-around;
     margin-block-end: 80px;
+    width: 70%;
 }
 
 .underinputs > a {
