@@ -1,4 +1,3 @@
-import React from 'react';
 import google from '../../img/google.png';
 import facebook from '../../img/facebook.png';
 import style from '../../styles/Log/Log.module.css';

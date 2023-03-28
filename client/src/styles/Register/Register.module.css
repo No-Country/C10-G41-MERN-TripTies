@@ -23,6 +23,7 @@
     width: 591px;
     height: 583px;
     align-items: center;
+    z-index: 1;
 }
 
 .conteiner h1 {
