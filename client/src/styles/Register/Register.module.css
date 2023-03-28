@@ -5,6 +5,10 @@
     place-items: center; 
     margin: auto;
     height: 100vh;
+    background-image: url('../../img/backgroundPaper.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center; 
 }
 
 .conteiner form {
