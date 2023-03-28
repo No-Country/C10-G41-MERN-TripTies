@@ -38,6 +38,13 @@
     padding: 8px;
 }
 
+.input[type=email]::placeholder {
+    background-image: url('../../img/email.png');
+    background-repeat: no-repeat;
+    background-position: 0px center;
+}
+
+
 
 .underinputs {
     display:flex;
