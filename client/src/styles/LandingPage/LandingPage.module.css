@@ -1,9 +1,6 @@
 .containerLanding {
     padding-top: 3rem;
     width: 100%;
-
-    /*SOSPECHOSO*/
-    /* max-height: 1px; */
 }
 
 .flyAndTitle {
@@ -63,6 +60,14 @@
     /* position: relative; */
     /* z-index: -1;  */
     top: -100px;   
+}
+
+.containerGuy > .minFooter {
+    display: flex;
+    align-self: flex-end;
+    position: absolute;
+    left: 0;
+    width: 30%;
 }
 
 .guyImg {  
