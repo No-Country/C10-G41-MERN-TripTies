@@ -6,7 +6,8 @@ const helmet = require('helmet')
 
 //! Files
 require('./src/utils/database')
-const userRouter = require('./src/routes/user.router')
+const routerModels = require('./src/routes/models.router')
+
 
 //? Initial Configs
 const app = express()
@@ -31,7 +32,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(cors())
   /* Set security HTTP headers */
   /* For Error ERR_BLOCKED_BY_RESPONSE.NotSameOrigin 200 
-       https://stackoverflow.com/questions/70752770/helmet-express-err-blocked-by-response-notsameorigin-200
+      https://stackoverflow.com/questions/70752770/helmet-express-err-blocked-by-response-notsameorigin-200
   */
   app.use(helmet({ crossOriginResourcePolicy: false }))
 
@@ -56,7 +57,7 @@ app.get('/', ({ res }) => {
 
 
 //! Routes
-app.use('/user', userRouter)
+routerModels(app)
 /* 
     Tell everyone the state of your api
 */
