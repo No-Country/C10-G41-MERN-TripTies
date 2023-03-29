@@ -10,6 +10,12 @@
 .hashTagTitle {
   font-size: 20px;
   color: var(--purple);
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+.hashTagButton:hover {
+  text-decoration: underline;
 }
 
 .hashTagButton {
@@ -18,4 +24,5 @@
   margin-top: 1rem;
   color: var(--brown);
   cursor: pointer;
+  padding: 0;
 }

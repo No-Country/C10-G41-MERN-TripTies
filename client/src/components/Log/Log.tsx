@@ -2,15 +2,32 @@ import google from '../../img/google.png';
 import facebook from '../../img/facebook.png';
 import style from '../../styles/Log/Log.module.css';
 import MiniFooter from '../MiniFooter/MiniFooter';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Log(): JSX.Element {
-  return (
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const nav = useNavigate();
     
+
+    const userData : any = window.localStorage.getItem("users")
+    const data = JSON.parse(userData)
+    const handleLogin = () => {
+        if(data.email === email && data.password === password){
+            nav("/home");
+        } else {
+            alert("The email or the password are incorrect");
+        }
+    }
+
+  return (
     <div className={style.container}>
-        <form className={style.content}>
+        <form className={style.content} onSubmit={handleLogin}>
             <h2 className={style.title}>Log In</h2>
-            <input className={style.input} type="email" placeholder='Email address' name='email'/>
-            <input className={style.input} type="password" placeholder='Password' name='password' id='password'/>
+            <input className={style.input} onChange={(e) => setEmail(e.target.value)} type="email" placeholder='Email address' name='email'/>
+            <input className={style.input} onChange={(e) => setPassword(e.target.value)} type="password" placeholder='Password' name='password' id='password'/>
             <div className={style.underinputs}>
                 <div className={style.checkbox}>
                     <input type="checkbox"/>
@@ -18,7 +35,7 @@ function Log(): JSX.Element {
                 </div>
                 <a>Forgot password?</a>
             </div>
-            <button className={style.btn}>LOG IN</button>
+            <button type="submit" className={style.btn}>LOG IN</button>
             <section>
                 <p>Or Log In with</p>
                 <div className={style.iconContainer}>
