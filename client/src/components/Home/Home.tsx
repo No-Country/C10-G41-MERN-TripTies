@@ -6,13 +6,16 @@ import gallery from "../../img/gallery.png";
 import location from "../../img/location.png";
 import video from "../../img/video.png";
 import NavBar from "../NavBar/NavBar";
+import Account from "./Accout";
 
 function Home(): JSX.Element {
   return (
     <div className={style.homeContainer}>
       <NavBar />
       <div className={style.feedContainer}>
-        <div className={style.feedLeft}></div>
+        <div className={style.feedLeft}>
+            <Account />
+        </div>
         <div className={style.feedCenter}>
           <div className={style.postGenerator}>
             <img src={profile} alt="Perfil" className={style.imgProfile} />
