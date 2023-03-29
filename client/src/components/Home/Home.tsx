@@ -8,6 +8,7 @@ import video from "../../img/video.png";
 import NavBar from "../NavBar/NavBar";
 import SectionDiscover from "../SectionDiscover/SectionDiscover";
 import Account from "./Accout";
+import Card from "../Card/Card";
 
 interface HashTagTypes {
   id: number;
@@ -114,12 +115,13 @@ function Home(): JSX.Element {
             </div>
           </div>
           <div className={style.feedPublications}>
+            <Card/>
             {tagLugares &&
               tagLugares.map((e, i) => (
                 <div key={i}>
                   <h1>{e.lugar}</h1>
                 </div>
-              ))}
+              ))} 
           </div>
         </div>
         <div className={style.feedRight}>
