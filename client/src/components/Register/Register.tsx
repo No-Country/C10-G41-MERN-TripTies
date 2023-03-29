@@ -5,10 +5,18 @@ import google from '../../img/google.png'
 import facebook from '../../img/facebook.png'
 import { useState } from 'react'
 import MiniFooter from '../MiniFooter/MiniFooter'
+import { useNavigate } from 'react-router-dom'
 
 function Register(): JSX.Element {
     const [visibility, setVisibility] = useState(oculto)
     const [passwordType, setPasswordType] = useState("password");
+
+    const [input, setInput] = useState({
+        name:"",
+        email:"",
+        password:""
+    })
+    const nav = useNavigate()
 
     function handlePassword(e:any){
         e.preventDefault()
@@ -16,14 +24,37 @@ function Register(): JSX.Element {
         setVisibility(visibility === oculto ? visible : oculto)
     }
 
+    const handleSubmit = (e:any) => {
+        e.preventDefault();
+        setInput({
+            name:"",
+            email:"",
+            password:""
+        })
+        
+    //   const data = window.localStorage.setItem("userData", JSON.stringify(input));
+      window.localStorage.setItem("users", JSON.stringify(input));
+      nav("/login");
+
+    }
+
+    const handleChange = (e:any) => {
+        setInput({
+            ...input,
+        [e.target.name]: e.target.value
+        })
+    }
+
+
+
     return (
         <div className={style.conteiner}>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <h1>Create Account</h1>
-                <input className={style.input} type="text" placeholder='Full Name' name="name"/>
-                <input className={style.input} type="email" placeholder='Email address' name="email" />
+                <input onChange={(e) => handleChange(e)} className={style.input} type="text" placeholder='Full Name' name="name" value={input.name}/>
+                <input onChange={(e) => handleChange(e)} className={style.input} type="email" placeholder='Email address' name="email" value={input.email} />
                 <div className={style.password}>
-                  <input className={style.input} type={passwordType} placeholder='Password' name="password" id="password"/>
+                  <input onChange={(e) => handleChange(e)} className={style.input} type={passwordType} placeholder='Password' name="password" id="password" value={input.password}/>
                   <button onClick={e => handlePassword(e)}>
                     <img src={visibility} alt="password visibility" />
                   </button>
