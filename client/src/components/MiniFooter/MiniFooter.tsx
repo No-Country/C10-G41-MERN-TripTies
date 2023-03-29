@@ -4,8 +4,8 @@ import style from '../../styles/MiniFooter/MiniFooter.module.css';
 function MiniFooter() {
   return (
     <div className={style.container}>
-        <a href='#'>About us</a>
-        <a href='#'>Contact</a>
+        <a href='/about'>About us</a>
+        <a href='/contact'>Contact</a>
     </div>
   )
 }
