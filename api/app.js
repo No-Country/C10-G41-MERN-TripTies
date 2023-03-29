@@ -7,6 +7,7 @@ const helmet = require('helmet')
 //! Files
 require('./src/utils/database')
 const userRouter = require('./src/routes/user.router')
+const commentRouter = require('./src/routes/comment.router')
 
 //? Initial Configs
 const app = express()
@@ -57,6 +58,7 @@ app.get('/', ({ res }) => {
 
 //! Routes
 app.use('/user', userRouter)
+app.use('/comments', commentRouter)
 /* 
     Tell everyone the state of your api
 */
