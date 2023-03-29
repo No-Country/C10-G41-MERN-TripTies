@@ -1,7 +1,8 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import LandingPage from './components/LandingPage/LandingPage'
-import Home from './components/Home/Home'
 import './App.css'
+import axios from "axios";
+
+axios.defaults.baseURL = ""
 
 function App(): JSX.Element {
 
