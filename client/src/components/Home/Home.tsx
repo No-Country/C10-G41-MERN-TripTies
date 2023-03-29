@@ -6,6 +6,7 @@ import gallery from "../../img/gallery.png";
 import location from "../../img/location.png";
 import video from "../../img/video.png";
 import NavBar from "../NavBar/NavBar";
+import SectionDiscover from "../SectionDiscover/SectionDiscover";
 
 function Home(): JSX.Element {
   return (
@@ -33,7 +34,9 @@ function Home(): JSX.Element {
           </div>
           <div className={style.feedPublications}></div>
         </div>
-        <div className={style.feedRight}></div>
+        <div className={style.feedRight}>
+          <SectionDiscover />
+        </div>
       </div>
     </div>
   );
