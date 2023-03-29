@@ -6,18 +6,29 @@ type props = {
   handleHash: (value: any) => void;
 };
 function SectionDiscover({ hashTag, handleHash }: props): JSX.Element {
+  let [arrayHashTag, setArrayHashTag] = useState([]);
+
+  useEffect(() => {
+    let arrayTag = hashTag && hashTag.map((e: any) => e.tag);
+    setArrayHashTag(arrayTag);
+  }, []);
+
+  let Tags =
+    arrayHashTag &&
+    arrayHashTag.filter((e, i) => arrayHashTag.indexOf(e) === i);
+
   return (
     <section className={style.hashTagContainer}>
       <h2 className={style.hashTagTitle}>Discover</h2>
-      {hashTag &&
-        hashTag.map((e: any) => (
+      {Tags &&
+        Tags.map((e: any, i) => (
           <button
-            key={e.id}
+            key={i}
             className={style.hashTagButton}
             onClick={handleHash}
-            value={e.tag}
+            value={e}
           >
-            {e.tag}
+            {e}
           </button>
         ))}
     </section>
