@@ -12,6 +12,9 @@
 }
 
 .feedLeft {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
   width: 320px;
   min-height: 75vh;
   background-color: var(--white);
