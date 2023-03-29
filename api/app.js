@@ -58,6 +58,7 @@ app.get('/', ({ res }) => {
 
 //! Routes
 app.use('/user', userRouter)
+//change to /post_id/comments when publications are completly developed
 app.use('/comments', commentRouter)
 /* 
     Tell everyone the state of your api
