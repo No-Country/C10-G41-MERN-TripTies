@@ -3,7 +3,19 @@ import logo from "../../img/Logo.png";
 import profile from "../../img/profileImage.png";
 import bell from "../../img/bell.png";
 import drop from "../../img/drop.png";
+import { useEffect, useState } from "react";
+
 function NavBar(): JSX.Element {
+
+  const [name, setName] = useState("");
+  const userData : any = window.localStorage.getItem("users");
+  const data = JSON.parse(userData);
+
+  useEffect(() => {
+    setName(data.name)
+  }, [])
+
+
   return (
     <nav className={style.navContainer}>
       <div className={style.navTitle}>
@@ -19,7 +31,7 @@ function NavBar(): JSX.Element {
       </div>
       <div className={style.navButtons}>
         <img src={bell} alt="" />
-        <h2 className={style.navButtonsh2}>Emma</h2>
+        <h2 className={style.navButtonsh2}>{ name }</h2>
         <img src={profile} alt="" width="24" height="24" />
         <div className={style.navSelectContainer}>
           <select name="" id="" className={style.navSelectBox}>
