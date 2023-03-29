@@ -1,0 +1,148 @@
+.conteiner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    place-items: center; 
+    margin: auto;
+    height: 100vh;
+    background-image: url('../../img/backgroundPaper.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center; 
+}
+
+.conteiner form {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid black;
+    background-color: #ffffff;
+    border-color: #ffffff;
+    /* padding: 10px 100px; */
+    border-radius: 20px;
+    
+    width: 591px;
+    height: 583px;
+    align-items: center;
+    z-index: 1;
+}
+
+.conteiner h1 {
+    color: var(--purple);
+    font-size: 30px;
+    font-weight: 400;
+}
+
+.conteiner p {
+    color: var(--brown);
+}
+
+.conteiner a {
+    color: var(--purpleLight);
+}
+
+.checkbox span {
+    color: var(--brown);
+}
+
+.input {
+    padding: 10px;
+    width: 329px;
+    box-sizing: border-box;
+    border-radius: 6px;
+    border: 2px solid var(--violetLight);
+    margin-block-end: 18px;
+}
+
+.input:hover {
+    border: 2px solid var(--violet);
+}
+
+.input:focus {
+    border: 2px solid var(--violet);
+    outline: none;
+}
+
+.input:focus::placeholder {
+    color: transparent;
+    background: none;
+}
+
+.input::placeholder {
+    color: var(--brown);
+    padding: 8px;
+    padding-inline-start: 25px;
+}
+
+input[type=text]::placeholder {
+    background-image: url('../../img/user.png');
+    background-repeat: no-repeat;
+    background-position: 0px center;
+}
+
+input[type=email]::placeholder {
+    background-image: url('../../img/email.png');
+    background-repeat: no-repeat;
+    background-position: 0px center;
+}
+
+input[id^="password"]::placeholder {
+    background-image: url('../../img/password.png');
+    background-repeat: no-repeat;
+    background-position: 0px center;
+}
+
+.checkbox {
+    display: flex;
+}
+
+input[type=checkbox] {
+    cursor: pointer;
+    background-color: #fff;
+    background-image: url('../../img/check.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 18px;
+    height: 18px;
+    appearance: none;
+    border: 1.5px solid var(--violetLight);
+    border-radius: 3px;
+    margin-inline-end: 10px;
+}
+
+.checkbox input:checked {
+    background-color: var(--violet);
+}
+
+.password {
+    display: flex;
+    align-items: flex-start;
+}
+
+.password button {
+    margin-inline-start: -55px;
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    outline: none;
+}
+
+.password button:focus {
+    outline: none;
+}
+
+.btn {
+    width: 329px;
+    height: 41px;
+    background-color: var(--yellowPale);
+    box-shadow: 0px 2.9566px 2.9566px rgba(0, 0, 0, 0.25), inset 0px 1.4783px 2.9566px rgba(255, 255, 255, 0.25), inset 0px -1.4783px 2.9566px rgba(0, 0, 0, 0.25);
+    border-radius: 11px;
+    border: none;
+    font-size: 11px;
+    margin: 40px 0 10px;
+}
+
+.redes {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-block-end: 40px;
+}
