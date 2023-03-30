@@ -19,6 +19,10 @@
   flex-direction: column;
 }
 
+.userInfo > div {
+  position: relative;
+}
+
 .userInfo > aside > span {
   text-align: left;
   color: var(--brown);

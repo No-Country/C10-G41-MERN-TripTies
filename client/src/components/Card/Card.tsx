@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "../../styles/Card/Card.module.css";
 import avatar from "../../img/avatar.png";
 import menuVertical from "../../img/menu-vertical.png";
@@ -12,11 +12,22 @@ import share from "../../img/send-2.png";
 import heart from "../../img/heart-circle.png";
 import save from "../../img/archive-tick.png";
 import stars from "../../img/stars.png";
+import Dropdown from "./Dropdown";
 
 type props = {
   places: any;
 };
 function Card({ places }: props) {
+  const [display, setDisplay] = useState("none");
+
+  const handleAppear = () => {
+    if(display === "none"){
+      setDisplay("block")
+    } else {
+      setDisplay("none")
+    }
+  }
+
   return (
     <section className={style.container}>
       <img src={avatar} alt="avatar" />
@@ -26,7 +37,10 @@ function Card({ places }: props) {
             <h4 className={style.name}>{places.name}</h4>
             <span>{places.time}</span>
           </aside>
-          <img className={style.dotMenu} src={menuVertical} alt="dots menu" />
+          <div>
+            <img onClick={handleAppear} className={style.dotMenu} src={menuVertical} alt="dots menu" />
+            <Dropdown name={places.name} display={display}/>
+          </div>
         </div>
         <article>
           <p className={style.description}>
