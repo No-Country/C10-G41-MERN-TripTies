@@ -5,7 +5,7 @@ const helmet = require('helmet')
 // require('dotenv').config()
 
 //! Files
-require('./src/utils/database')
+require('./src/database/database')
 const routerModels = require('./src/routes/models.router')
 
 
