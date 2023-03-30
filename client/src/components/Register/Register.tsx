@@ -4,10 +4,19 @@ import visible from '../../img/visible.png'
 import google from '../../img/google.png'
 import facebook from '../../img/facebook.png'
 import { useState } from 'react'
+import MiniFooter from '../MiniFooter/MiniFooter'
+import { useNavigate } from 'react-router-dom'
 
 function Register(): JSX.Element {
     const [visibility, setVisibility] = useState(oculto)
     const [passwordType, setPasswordType] = useState("password");
+
+    const [input, setInput] = useState({
+        name:"",
+        email:"",
+        password:""
+    })
+    const nav = useNavigate()
 
     function handlePassword(e:any){
         e.preventDefault()
@@ -15,20 +24,43 @@ function Register(): JSX.Element {
         setVisibility(visibility === oculto ? visible : oculto)
     }
 
+    const handleSubmit = (e:any) => {
+        e.preventDefault();
+        setInput({
+            name:"",
+            email:"",
+            password:""
+        })
+        
+    //   const data = window.localStorage.setItem("userData", JSON.stringify(input));
+      window.localStorage.setItem("users", JSON.stringify(input));
+      nav("/login");
+
+    }
+
+    const handleChange = (e:any) => {
+        setInput({
+            ...input,
+        [e.target.name]: e.target.value
+        })
+    }
+
+
+
     return (
         <div className={style.conteiner}>
-            <form>
-                <h1>Create Acconut</h1>
-                <input className={style.input} type="text" placeholder='Full Name' name="name"/>
-                <input className={style.input} type="email" placeholder='Email address' name="email" />
+            <form onSubmit={handleSubmit}>
+                <h1>Create Account</h1>
+                <input onChange={(e) => handleChange(e)} className={style.input} type="text" placeholder='Full Name' name="name" id="name" value={input.name}/>
+                <input onChange={(e) => handleChange(e)} className={style.input} type="email" placeholder='Email address' name="email" id="email" value={input.email} />
                 <div className={style.password}>
-                  <input className={style.input} type={passwordType} placeholder='Password' name="password" id="password"/>
+                  <input onChange={(e) => handleChange(e)} className={style.input} type={passwordType} placeholder='Password' name="password" id="password" value={input.password}/>
                   <button onClick={e => handlePassword(e)}>
                     <img src={visibility} alt="password visibility" />
                   </button>
                 </div>
                 <div className={style.checkbox}>
-                    <input type="checkbox" />
+                    <input type="checkbox" id='checkbox'/>
                     <span>
                         I agree with <a href='#'>Terms</a> and <a href='#'>Privacy</a>
                     </span>
@@ -44,9 +76,10 @@ function Register(): JSX.Element {
                             <img src={facebook} alt="facebook" />
                         </a>
                     </div>
-                    <p>Already have an account? <a href='#'>Log In</a></p>
+                    <p>Already have an account? <a href='/login'>Log In</a></p>
                 </section>
             </form>
+            <MiniFooter/>
         </div>
     )
 }

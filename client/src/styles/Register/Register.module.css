@@ -1,11 +1,29 @@
+.conteiner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    place-items: center; 
+    margin: auto;
+    height: 100vh;
+    background-image: url('../../img/backgroundPaper.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center; 
+}
+
 .conteiner form {
     display: flex;
     flex-direction: column;
     border: 2px solid black;
     background-color: #ffffff;
     border-color: #ffffff;
-    padding: 10px 100px;
+    /* padding: 10px 100px; */
     border-radius: 20px;
+    
+    width: 591px;
+    height: 583px;
+    align-items: center;
+    z-index: 1;
 }
 
 .conteiner h1 {
@@ -55,13 +73,13 @@
     padding-inline-start: 25px;
 }
 
-input[type=text]::placeholder {
+input[id^="name"]::placeholder {
     background-image: url('../../img/user.png');
     background-repeat: no-repeat;
     background-position: 0px center;
 }
 
-input[type=email]::placeholder {
+input[id^="email"]::placeholder {
     background-image: url('../../img/email.png');
     background-repeat: no-repeat;
     background-position: 0px center;
@@ -76,8 +94,7 @@ input[id^="password"]::placeholder {
 .checkbox {
     display: flex;
 }
-
-input[type=checkbox] {
+input[id^="checkbox"] {
     cursor: pointer;
     background-color: #fff;
     background-image: url('../../img/check.png');

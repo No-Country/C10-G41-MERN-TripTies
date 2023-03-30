@@ -1,10 +1,14 @@
 import imgFly from "../../img/fly-paper.png"
 import imgGuy from"../../img/guy.png"
 import style from "../../styles/LandingPage/LandingPage.module.css"
+import NavBarL from "./NavBarL"
+import MiniFooter from "../MiniFooter/MiniFooter"
+import { Link } from "react-router-dom"
 
 const LandingPage = ():JSX.Element => {
     return (
         <>
+            <NavBarL />
             <div className={style.containerLanding}> 
                 <div className={style.flyAndTitle}>
                     <h1>TripTies</h1>
@@ -16,10 +20,14 @@ const LandingPage = ():JSX.Element => {
                         Explore the world like never before. Connect with other wanderers just like you and discover a new way of traveling.
                     </p>
                 </div>
-                <button className={style.btnExp}>Explore</button>
-            <div className={style.containerGuy}>
-             <img className={style.guyImg} src={imgGuy} alt="guy" />
-            </div>
+                <button className={style.btnExp}> <Link to="/home">Explore</Link> </button>
+
+                <div className={style.containerGuy}>
+                    <img className={style.guyImg} src={imgGuy} alt="guy" />
+                    <div className={style.minFooter}>
+                        <MiniFooter />
+                    </div>
+                </div>
             </div>
         </>
     )
