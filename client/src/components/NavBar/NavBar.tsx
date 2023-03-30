@@ -6,15 +6,13 @@ import drop from "../../img/drop.png";
 import { useEffect, useState } from "react";
 
 function NavBar(): JSX.Element {
-
   const [name, setName] = useState("");
-  const userData : any = window.localStorage.getItem("users");
+  const userData: any = window.localStorage.getItem("users");
   const data = JSON.parse(userData);
 
   useEffect(() => {
-    setName(data.name)
-  }, [])
-
+    setName(data.name);
+  }, []);
 
   return (
     <nav className={style.navContainer}>
@@ -31,12 +29,17 @@ function NavBar(): JSX.Element {
       </div>
       <div className={style.navButtons}>
         <img src={bell} alt="" />
-        <h2 className={style.navButtonsh2}>{ name }</h2>
+        <h2 className={style.navButtonsh2}>{name}</h2>
         <img src={profile} alt="" width="24" height="24" />
         <div className={style.navSelectContainer}>
-          <select name="" id="" className={style.navSelectBox}>
-            <option selected>EN</option>
-            <option>ES</option>
+          <select
+            defaultValue={"en"}
+            name=""
+            id=""
+            className={style.navSelectBox}
+          >
+            <option value="en">EN</option>
+            <option value="es">ES</option>
           </select>
           <div className={style.navIcon}>
             <img src={drop} alt="" width="20" height="20" />
