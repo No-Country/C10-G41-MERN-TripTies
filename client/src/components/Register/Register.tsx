@@ -51,8 +51,8 @@ function Register(): JSX.Element {
         <div className={style.conteiner}>
             <form onSubmit={handleSubmit}>
                 <h1>Create Account</h1>
-                <input onChange={(e) => handleChange(e)} className={style.input} type="text" placeholder='Full Name' name="name" value={input.name}/>
-                <input onChange={(e) => handleChange(e)} className={style.input} type="email" placeholder='Email address' name="email" value={input.email} />
+                <input onChange={(e) => handleChange(e)} className={style.input} type="text" placeholder='Full Name' name="name" id="name" value={input.name}/>
+                <input onChange={(e) => handleChange(e)} className={style.input} type="email" placeholder='Email address' name="email" id="email" value={input.email} />
                 <div className={style.password}>
                   <input onChange={(e) => handleChange(e)} className={style.input} type={passwordType} placeholder='Password' name="password" id="password" value={input.password}/>
                   <button onClick={e => handlePassword(e)}>
@@ -60,7 +60,7 @@ function Register(): JSX.Element {
                   </button>
                 </div>
                 <div className={style.checkbox}>
-                    <input type="checkbox" />
+                    <input type="checkbox" id='checkbox'/>
                     <span>
                         I agree with <a href='#'>Terms</a> and <a href='#'>Privacy</a>
                     </span>

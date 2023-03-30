@@ -2,16 +2,14 @@ const express = require('express')
 const router = express.Router()
 
 const {
-  getUser,
-  updateProfile, 
-  deleteUser,
-  getUserByNick
+  putProfile, 
+  deleteUser, 
+  getProfile
 } = require('../controllers/user.controller')
 
 
-router.get('/:userId', getUser)
-router.get('/:username', getUserByNick)
-router.patch('/:userId/profile', updateProfile)
+router.get('/:userId', getProfile)
 router.delete('/:userId', deleteUser)
+router.put('/:userId/profile', putProfile)
 
 module.exports = router

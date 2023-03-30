@@ -3,6 +3,7 @@ const User = require('../models/users.models')
 const Profile = require('../models/profiles.models')
 
 const CustomError = require('../utils/error-handler')
+const { hash } = require('../utils/crypto')
 
 
 const getAllUsers = () => {
@@ -17,51 +18,45 @@ const getAllUsers = () => {
   })
 }
 
-const getUserOr404 = (_id) => {
-  let user = User.findById(_id)
-
-  if (!user) throw new CustomError('Not found User', 404, 'Not Found')
-
-  return user
+const getUserByEmail = (email) => {
+  return new Promise((resolve, reject) => {
+    User.findOne({ email: email })
+      .then(user => {
+        resolve(user)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
 }
-
-const getUserByUsername = async (username) => {
-  const user = await User.findOne({ username: username })
-  return user
-}
-
 
 
 const createUser = async (userData) => {
   const session = await mongoose.startSession()
   session.startTransaction()
-  
+
   try {
     // Crear nuevo usuario con campos obligatorios
     const user = new User({
       username: userData.username,
       email: userData.email,
-      password: userData.password,
+      password: hash(userData.password),
     })
-
     // Guardar usuario en la base de datos
     await user.save({ session })
-
     // Crear nuevo perfil vacío asociado al usuario
     const profile = new Profile({
       user: user._id,
+      photo: '',
       description: '',
       birthday: '',
       portrait: ''
     })
-
     // Guardar perfil en la base de datos
     await profile.save({ session })
-
     // Completar la transacción
     await session.commitTransaction()
     session.endSession()
-
     return user
   } catch (error) {
     // Si hay un error, deshacer la transacción
@@ -71,67 +66,44 @@ const createUser = async (userData) => {
   }
 }
 
+const getProfile = async (userId) => {
+  try {
+    // Buscamos el perfil del usuario por su ID y lo retornamos
+    const profile = await Profile.findOne({ user: userId }, '-_id -user').lean()
 
+    return profile
+  } catch (error) {
+    throw new CustomError('Not found Profile', 404, 'Not Found')
+  }
+}
 
-const editProfile = async (userId, profileData) => {
+const editProfile = async (userId, updatedFields) => {
   const session = await mongoose.startSession()
   try {
-    await session.withTransaction(async () => {
-      const user = await User.findById(userId).session(session)
-      if (!user) {
-        throw new Error(`User with id ${userId} not found`)
-      }
-
-      const profile = await Profile.findById(user.profile).session(session)
-      if (!profile) {
-        throw new Error(`Profile for user with id ${userId} not found`)
-      }
-
-      // Update profile with new data
-      profile.photo = profileData.photo
-      profile.birthday = profileData.birthday
-      profile.description = profileData.description
-      profile.portrait = profileData.portrait
-      await profile.save()
-
-      return profile
-    })
+    session.startTransaction()
+    // Buscamos el perfil del usuario por su ID y lo actualizamos
+    const updatedProfile = await Profile.findOneAndUpdate(
+      { user: userId },
+      updatedFields,
+      { new: true, session }
+    ).session(session)
+    await session.commitTransaction()
+    return updatedProfile
   } catch (error) {
-    throw new Error(`Transaction failed: ${error.message}`)
+    await session.abortTransaction()
+    throw new Error(`Error updating user profile: ${error.message}`)
   } finally {
     session.endSession()
   }
 }
 
 
-
-
-// const createUser = (userData) => {
-//   return new Promise((resolve, reject) => {
-//     mongoose.startSession()
-//       .then(session => {
-//         session.startTransaction()
-//         const newUser = new User(userData)
-//         newUser.save({ session })
-//           .then(() => {
-//             resolve(newUser)
-//           })
-//           .catch(err => {
-//             reject(err)
-//           })
-//       })
-//       .catch(err => {
-//         reject(err)
-//       })
-//   })
-// }
-
-const removeUser = async(userId) => {
+const removeUser = async (userId) => {
   return new Promise((resolve, reject) => {
     User.findById(userId)
       .then(user => {
-        if(!user) {
-          reject(new Error(`No se encotró el usuario con el id ${userId}`))
+        if (!user) {
+          reject(new Error(`User with the id was not found ${userId}`))
         }
         return user.deleteOne()
       })
@@ -141,20 +113,15 @@ const removeUser = async(userId) => {
       .catch((err) => {
         reject(err)
       })
-  })  
+  })
 }
-
-
-
-
-
 
 
 module.exports = {
   getAllUsers,
-  getUserOr404,
-  getUserByUsername,
-  createUser, 
-  removeUser, 
+  getUserByEmail,
+  createUser,
+  getProfile,
+  removeUser,
   editProfile
 }
