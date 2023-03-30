@@ -104,3 +104,12 @@
   align-items: center;
   justify-content: center;
 }
+
+
+.dropDownArrow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-inline-end: 0.5rem;
+  position: relative;
+}
