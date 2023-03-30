@@ -59,14 +59,14 @@
 
 }
 
-.input[type=email]::placeholder {
+.input[id^="email"]::placeholder {
     background-image: url('../../img/email.png');
     background-repeat: no-repeat;
     background-position: 0px center;
 }
 
 
-.input[type=email]:focus::placeholder {
+.input[id^="email"]:focus::placeholder {
     background: none;
 }
 
@@ -100,7 +100,7 @@
     justify-content: center;
 }
 
-input[type=checkbox] {
+input[id^="checkbox"] {
     cursor: pointer;
     background-color: #fff;
     background-image: url('../../img/check.png');

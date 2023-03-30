@@ -1,0 +1,82 @@
+.title {
+    padding-left: 1.5rem;
+    color: var(--purple);
+    font-weight: 400;
+    height: 2.5rem;
+}
+
+.conteiner {
+    display: flex;
+    justify-content: center;
+}
+
+.chats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 266px;
+    border-radius: 20px;
+    background-color: #fff;
+}
+
+ #search {
+    Width: 217px;
+    Height: 41px;
+    margin-top: 15px;
+    border-radius: 6px;
+    border: 2px solid var(--violetLight);
+}
+
+#search:hover {
+    border: 2px solid var(--violet);
+}
+
+#search:focus {
+    border: 2px solid var(--violet);
+    outline: none;
+}
+
+#search:focus::placeholder {
+    color: transparent;
+    background: none;
+}
+
+#search::placeholder {
+    color: var(--brown);
+    padding: 8px;
+    padding-inline-start: 35px;
+    background-image: url('../../img/searchSmall.png');
+    background-repeat: no-repeat;
+    background-position: 10px center ;
+    font-size: 14px;
+}
+
+.avatar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0px;
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    width: 167px;
+}
+
+.avatar h2 {
+    font-weight: 500;
+    font-size: 21px;
+    line-height: 24px;
+    font-style: bold;
+    color: #161616;
+    margin: 0;
+}
+
+.avatar p {
+    color: #6B6B6B;
+    margin: 0;
+}

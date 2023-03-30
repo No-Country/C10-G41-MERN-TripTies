@@ -73,13 +73,13 @@
     padding-inline-start: 25px;
 }
 
-input[type=text]::placeholder {
+input[id^="name"]::placeholder {
     background-image: url('../../img/user.png');
     background-repeat: no-repeat;
     background-position: 0px center;
 }
 
-input[type=email]::placeholder {
+input[id^="email"]::placeholder {
     background-image: url('../../img/email.png');
     background-repeat: no-repeat;
     background-position: 0px center;
@@ -94,8 +94,7 @@ input[id^="password"]::placeholder {
 .checkbox {
     display: flex;
 }
-
-input[type=checkbox] {
+input[id^="checkbox"] {
     cursor: pointer;
     background-color: #fff;
     background-image: url('../../img/check.png');

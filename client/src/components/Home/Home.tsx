@@ -12,6 +12,7 @@ import Card from "../Card/Card";
 import stars1 from "../../img/stars1.png";
 import stars2 from "../../img/stars2.png";
 import stars3 from "../../img/stars3.png";
+import SectionChat from "../SectionDiscover/SectionChat";
 
 const lugares = [
   {
@@ -106,6 +107,7 @@ function Home(): JSX.Element {
       <div className={style.feedContainer}>
         <div className={style.feedLeft}>
           <Account />
+          <SectionChat/>
         </div>
         <div className={style.feedCenter}>
           <div className={style.postGenerator}>

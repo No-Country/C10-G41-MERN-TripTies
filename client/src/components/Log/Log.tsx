@@ -26,11 +26,11 @@ function Log(): JSX.Element {
     <div className={style.container}>
         <form className={style.content} onSubmit={handleLogin}>
             <h2 className={style.title}>Log In</h2>
-            <input className={style.input} onChange={(e) => setEmail(e.target.value)} type="email" placeholder='Email address' name='email'/>
+            <input className={style.input} onChange={(e) => setEmail(e.target.value)} type="email" placeholder='Email address' name='email' id='email'/>
             <input className={style.input} onChange={(e) => setPassword(e.target.value)} type="password" placeholder='Password' name='password' id='password'/>
             <div className={style.underinputs}>
                 <div className={style.checkbox}>
-                    <input type="checkbox"/>
+                    <input type="checkbox" id='checkbox'/>
                     <label>Remember Me</label>
                 </div>
                 <a>Forgot password?</a>
