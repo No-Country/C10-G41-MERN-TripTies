@@ -4,13 +4,15 @@ import avatar from "../../img/avatar.png";
 import menuVertical from "../../img/menu-vertical.png";
 import coffee from "../../img/coffee.png";
 import location from "../../img/smallPin.png";
+import tagPlace from "../../img/tag.png";
 import londonCoffee from "../../img/coffeLondon.png";
 import boldHeart from "../../img/heart-circle-bold.png";
 import message from "../../img/message-text.png";
 import messageBig from "../../img/bigMessageText.png";
 import share from "../../img/send-2.png";
 import heart from "../../img/heart-circle.png";
-import save from "../../img/archive-tick.png";
+import unsaved from "../../img/archive-tick-none.png";
+import saved from "../../img/archive-tick.png";
 import stars from "../../img/stars.png";
 import Dropdown from "./Dropdown";
 
@@ -59,6 +61,10 @@ function Card({ places }: props) {
             <img src={location} alt="location" />
             <span>{places.location}</span>
           </aside>
+          <aside>
+            <img src={tagPlace} alt="Place" />
+            <span>{places.place}</span>
+          </aside>
         </div>
         <img
           src={places.photo}
@@ -82,7 +88,12 @@ function Card({ places }: props) {
             <img src={messageBig} alt="message" />
             <img src={share} alt="share" />
           </aside>
-          <img src={save} alt="save thick" />
+
+          {places.save === "Unsaved" ? (
+            <img src={unsaved} alt="" />
+          ) : (
+            <img src={saved} alt="" />
+          )}
         </div>
       </section>
     </section>
