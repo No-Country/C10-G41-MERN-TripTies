@@ -81,3 +81,9 @@
   display: flex;
   justify-content: space-between;
 }
+
+.buttonSave {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
