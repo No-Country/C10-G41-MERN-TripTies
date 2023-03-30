@@ -11,7 +11,11 @@ const ProfileSchema = new Schema (
     photo: {type: String},
     description: {type: String, trim: true},
     birthday: {type: Date},
-    portrait: {type: String}
+    portrait: {type: String}, 
+    publications: {
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'Publication',
+    }
   }, 
   {
     timestamps: true
