@@ -15,6 +15,7 @@ import stars3 from "../../img/stars3.png";
 import SectionChat from "../SectionChat/SectionChat";
 import Saved from "../Saved/Saved";
 import PlaceIVisited from "../PlaceIVisited/PlaceIVisited";
+import SectionSuggestions from "../SectionSuggestions/SectionSuggestions";
 
 interface lugaresType {
   name: string;
@@ -265,6 +266,7 @@ function Home(): JSX.Element {
             hashTagVisited={tagPlacesVisited}
             handleHash={handleHash}
           />
+          <SectionSuggestions/>
         </div>
       </div>
     </div>
