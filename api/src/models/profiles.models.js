@@ -8,6 +8,8 @@ const ProfileSchema = new Schema (
       ref: 'User', 
       required: true
     },
+    first_name: {type: String},
+    last_name: {type: String},
     photo: {type: String},
     description: {type: String, trim: true},
     birthday: {type: Date},
@@ -15,7 +17,8 @@ const ProfileSchema = new Schema (
     publications: {
       type: mongoose.Schema.Types.ObjectId, 
       ref: 'Publication',
-    }
+    }, 
+    status: {type: String, default: 'active'}
   }, 
   {
     timestamps: true

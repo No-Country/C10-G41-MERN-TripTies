@@ -2,6 +2,8 @@ const express = require('express')
 const routesUsers = require('./user.router')
 const routesFollows = require('./follow.router')
 const routesLogin = require('../auth/auth.router')
+const passport = require('passport')
+require('../middlewares/auth.middleware')(passport)
 
 const {
   postUser, 
@@ -16,7 +18,7 @@ function routerModels(app){
   router.use('/', routesLogin)
   router.post('/sign-up', postUser)
   router.use('/user', routesUsers)
-  router.get('/users', getAllUsers)
+  router.get('/users', passport.authenticate('jwt', {session: false}), getAllUsers)
   router.use('/follow', routesFollows)
 
   router.use

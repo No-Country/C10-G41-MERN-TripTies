@@ -5,8 +5,6 @@
 
 - /sign-up
     - post: Crear un nuevo usuario
-
-      Tarea: Hay que hashear el password
       
 - /login
     - post: Logea al usuario, Devuelve token de inicio de sesion
@@ -20,3 +18,4 @@
     - /:userId/profiles 
         - put: edita información del perfil
         - get: trae informacion del perfil
+
