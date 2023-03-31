@@ -12,6 +12,7 @@ import Card from "../Card/Card";
 import stars1 from "../../img/stars1.png";
 import stars2 from "../../img/stars2.png";
 import stars3 from "../../img/stars3.png";
+
 import SectionChat from "../SectionChat/SectionChat";
 import Saved from "../Saved/Saved";
 import PlaceIVisited from "../PlaceIVisited/PlaceIVisited";
@@ -30,6 +31,7 @@ interface lugaresType {
   tag: string;
   save: string;
 }
+
 
 function Home(): JSX.Element {
   let [hash, setHash] = useState("");
@@ -217,13 +219,22 @@ function Home(): JSX.Element {
     <div className={style.homeContainer}>
       <NavBar handleHome={handleHome} />
       <div className={style.feedContainer}>
-        <div className={style.feedLeft}>
+
+        <div className={style.containerLeft}>
+          <div className={style.feedLeft}>
           <SectionAccount
             handleSaved={handleSaved}
             handleVisited={handleVisited}
           />
           <SectionChat />
+
         </div>
+          <div className={style.footerLeft}>
+            <FooterSocial />
+          </div>
+
+        
+
         <div className={style.feedCenter}>
           <div className={style.postGenerator}>
             <img src={profile} alt="Perfil" className={style.imgProfile} />
@@ -255,7 +266,9 @@ function Home(): JSX.Element {
               ))}
           </div>
         </div>
-        <div className={style.feedRight}>
+
+        <div className={style.rigthcontainer}>
+           <div className={style.feedRight}>
           <SectionDiscover
             publications={publications}
             publicationsSaved={publicationsSaved}
@@ -265,7 +278,13 @@ function Home(): JSX.Element {
             hashTagVisited={tagPlacesVisited}
             handleHash={handleHash}
           />
+
         </div>
+          <div className={style.footerrigth}>
+            <FooterTerm />
+          </div>
+
+      
       </div>
     </div>
   );
