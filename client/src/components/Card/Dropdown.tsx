@@ -9,7 +9,7 @@ function Dropdown({ display, name }: string | any) {
 
   return (
     <div className={style.container} style={{ display: display }}>
-      {user.name === name ? (
+      {user?.name === name ? (
         <ul>
           <li className={style.dropdownElement}>
             <p>Edit</p>

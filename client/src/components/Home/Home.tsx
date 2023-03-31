@@ -51,7 +51,7 @@ function Home(): JSX.Element {
       save: "Unsaved",
     },
     {
-      name: "Edgar Pazos",
+      name: "Edgard Pazos",
       time: "1 hours ago",
       place: "Museo Louvre",
       photo:
