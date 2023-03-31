@@ -41,7 +41,7 @@ function Card({ places }: props) {
           </aside>
           <div>
             <img onClick={handleAppear} className={style.dotMenu} src={menuVertical} alt="dots menu" />
-            <Dropdown name={places.name} display={display}/>
+            <Dropdown name={places?.name} display={display}/>
           </div>
         </div>
         <article>

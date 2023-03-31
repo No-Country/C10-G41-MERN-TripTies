@@ -23,7 +23,7 @@ function NavBar(): JSX.Element {
   const data = JSON.parse(userData);
 
   useEffect(() => {
-    setName(data.name);
+    data && setName(data?.name);
   }, []);
 
   return (
@@ -40,9 +40,9 @@ function NavBar(): JSX.Element {
         />
       </div>
       <div className={style.navButtons}>
-        <img src={bell} alt="" />
+        <img className={style.navBell} src={bell} alt="bell" />
         <section className={style.dropDownArrow}>
-          <h2 className={style.navButtonsh2}>{name}</h2>
+          <h2 className={style.navButtonsh2}>{ name ? name : "Traveler" }</h2>
           <img onClick={handleAppear} src={arrowDown} alt="arrowHead"/>
           <DropdownUser display={display} />
         </section>
