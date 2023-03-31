@@ -17,9 +17,9 @@ import SectionChat from "../SectionChat/SectionChat";
 import Saved from "../Saved/Saved";
 import PlaceIVisited from "../PlaceIVisited/PlaceIVisited";
 import SectionSuggestions from "../SectionSuggestions/SectionSuggestions";
-import FooterTerm from "../Foteers/FooterTerm";
-import FooterSocial from "../Foteers/FoteerSocial";
-
+import FooterTerm from "../Footers/FooterTerm";
+import FooterSocial from "../Footers/FooterSocial";
+import MiniFooter from "../MiniFooter/MiniFooter";
 
 interface lugaresType {
   name: string;
@@ -223,15 +223,17 @@ function Home(): JSX.Element {
       <NavBar handleHome={handleHome} />
       <div className={style.feedContainer}>
         <div className={style.containerLeft}>
-          <div className={style.feedLeft}>
-            <SectionAccount
-              handleSaved={handleSaved}
-              handleVisited={handleVisited}
-            />
-            <SectionChat />
+          <div>
+            <div className={style.feedLeft}>
+              <SectionAccount
+                handleSaved={handleSaved}
+                handleVisited={handleVisited}
+              />
+              <SectionChat />
+            </div>
           </div>
           <div className={style.footerLeft}>
-            <FooterSocial/>
+            <FooterSocial />
           </div>
         </div>
 
@@ -259,7 +261,7 @@ function Home(): JSX.Element {
           <div className={style.feedPublications}>
             {(publications &&
               tagPlaces &&
-              tagPlaces.map((e, i) => <Card places={e} />)) ||
+              tagPlaces.map((e, i) => <Card places={e} key={i} />)) ||
               (publicationsSaved && <Saved place={tagPlacesSaved} />) ||
               (publicationsVisited && (
                 <PlaceIVisited visited={tagPlacesVisited} />
@@ -277,10 +279,10 @@ function Home(): JSX.Element {
               hashTagVisited={tagPlacesVisited}
               handleHash={handleHash}
             />
-            <SectionSuggestions/>
+            <SectionSuggestions />
           </div>
           <div className={style.footerrigth}>
-            <FooterTerm/>
+            <FooterTerm />
           </div>
         </div>
       </div>

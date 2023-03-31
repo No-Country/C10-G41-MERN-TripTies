@@ -23,12 +23,12 @@ function Card({ places }: props) {
   const [display, setDisplay] = useState("none");
 
   const handleAppear = () => {
-    if(display === "none"){
-      setDisplay("block")
+    if (display === "none") {
+      setDisplay("block");
     } else {
-      setDisplay("none")
+      setDisplay("none");
     }
-  }
+  };
 
   return (
     <section className={style.container}>
@@ -40,8 +40,13 @@ function Card({ places }: props) {
             <span>{places.time}</span>
           </aside>
           <div>
-            <img onClick={handleAppear} className={style.dotMenu} src={menuVertical} alt="dots menu" />
-            <Dropdown name={places?.name} display={display}/>
+            <img
+              onClick={handleAppear}
+              className={style.dotMenu}
+              src={menuVertical}
+              alt="dots menu"
+            />
+            <Dropdown name={places?.name} display={display} />
           </div>
         </div>
         <article>
