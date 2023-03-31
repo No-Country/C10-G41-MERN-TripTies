@@ -6,18 +6,19 @@ import drop from "../../img/drop.png";
 import arrowDown from "../../img/dropDownArrow.png";
 import { useEffect, useState } from "react";
 import DropdownUser from "./DropdownUser";
+import { Link } from "react-router-dom";
 
-function NavBar(): JSX.Element {
+function NavBar({ handleHome }: any): JSX.Element {
   const [name, setName] = useState("");
   const [display, setDisplay] = useState("none");
 
   const handleAppear = () => {
-    if(display === "none"){
-      setDisplay("block")
+    if (display === "none") {
+      setDisplay("block");
     } else {
-      setDisplay("none")
+      setDisplay("none");
     }
-  }
+  };
 
   const userData: any = window.localStorage.getItem("users");
   const data = JSON.parse(userData);
@@ -28,10 +29,11 @@ function NavBar(): JSX.Element {
 
   return (
     <nav className={style.navContainer}>
-      <div className={style.navTitle}>
+      <Link to="/home" className={style.navTitle} onClick={handleHome}>
         <img src={logo} alt="" />
         <h1 className={style.navTitleh1}>TripTies</h1>
-      </div>
+      </Link>
+
       <div className={style.navSearch}>
         <input
           type="text"
@@ -42,8 +44,8 @@ function NavBar(): JSX.Element {
       <div className={style.navButtons}>
         <img className={style.navBell} src={bell} alt="bell" />
         <section className={style.dropDownArrow}>
-          <h2 className={style.navButtonsh2}>{ name ? name : "Traveler" }</h2>
-          <img onClick={handleAppear} src={arrowDown} alt="arrowHead"/>
+          <h2 className={style.navButtonsh2}>{name ? name : "Traveler"}</h2>
+          <img onClick={handleAppear} src={arrowDown} alt="arrowHead" />
           <DropdownUser display={display} />
         </section>
         <img src={profile} alt="" width="24" height="24" />
