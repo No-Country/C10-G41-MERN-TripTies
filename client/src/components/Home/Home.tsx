@@ -13,6 +13,8 @@ import stars1 from "../../img/stars1.png";
 import stars2 from "../../img/stars2.png";
 import stars3 from "../../img/stars3.png";
 import SectionChat from "../SectionDiscover/SectionChat";
+import FooterSocial from "../Foteers/FoteerSocial";
+import FooterTerm from "../Foteers/FooterTerm";
 
 const lugares = [
   {
@@ -105,10 +107,16 @@ function Home(): JSX.Element {
     <div className={style.homeContainer}>
       <NavBar />
       <div className={style.feedContainer}>
-        <div className={style.feedLeft}>
-          <Account />
-          <SectionChat/>
+        <div className={style.containerLeft}>
+          <div className={style.feedLeft}>
+            <Account />
+            <SectionChat />
+          </div>
+          <div className={style.footerLeft}>
+            <FooterSocial />
+          </div>
         </div>
+
         <div className={style.feedCenter}>
           <div className={style.postGenerator}>
             <img src={profile} alt="Perfil" className={style.imgProfile} />
@@ -134,8 +142,13 @@ function Home(): JSX.Element {
             {tagLugares && tagLugares.map((e, i) => <Card places={e} />)}
           </div>
         </div>
-        <div className={style.feedRight}>
-          <SectionDiscover hashTag={tagLugares} handleHash={handleHash} />
+        <div className={style.rigthcontainer}>
+          <div className={style.feedRight}>
+            <SectionDiscover hashTag={tagLugares} handleHash={handleHash} />
+          </div>
+          <div className={style.footerrigth}>
+            <FooterTerm />
+          </div>
         </div>
       </div>
     </div>
