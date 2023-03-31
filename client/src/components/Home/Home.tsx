@@ -16,6 +16,8 @@ import stars3 from "../../img/stars3.png";
 import SectionChat from "../SectionChat/SectionChat";
 import Saved from "../Saved/Saved";
 import PlaceIVisited from "../PlaceIVisited/PlaceIVisited";
+import FooterTerm from "../Foteers/FooterTerm";
+import FooterSocial from "../Foteers/FoteerSocial";
 
 interface lugaresType {
   name: string;
@@ -31,7 +33,6 @@ interface lugaresType {
   tag: string;
   save: string;
 }
-
 
 function Home(): JSX.Element {
   let [hash, setHash] = useState("");
@@ -219,21 +220,18 @@ function Home(): JSX.Element {
     <div className={style.homeContainer}>
       <NavBar handleHome={handleHome} />
       <div className={style.feedContainer}>
-
         <div className={style.containerLeft}>
           <div className={style.feedLeft}>
-          <SectionAccount
-            handleSaved={handleSaved}
-            handleVisited={handleVisited}
-          />
-          <SectionChat />
-
-        </div>
-          <div className={style.footerLeft}>
-            <FooterSocial />
+            <SectionAccount
+              handleSaved={handleSaved}
+              handleVisited={handleVisited}
+            />
+            <SectionChat />
           </div>
-
-        
+          <div className={style.footerLeft}>
+            <FooterSocial/>
+          </div>
+        </div>
 
         <div className={style.feedCenter}>
           <div className={style.postGenerator}>
@@ -268,23 +266,21 @@ function Home(): JSX.Element {
         </div>
 
         <div className={style.rigthcontainer}>
-           <div className={style.feedRight}>
-          <SectionDiscover
-            publications={publications}
-            publicationsSaved={publicationsSaved}
-            publicationsVisited={publicationsVisited}
-            hashTag={tagPlaces}
-            hashTagSaved={tagPlacesSaved}
-            hashTagVisited={tagPlacesVisited}
-            handleHash={handleHash}
-          />
-
-        </div>
-          <div className={style.footerrigth}>
-            <FooterTerm />
+          <div className={style.feedRight}>
+            <SectionDiscover
+              publications={publications}
+              publicationsSaved={publicationsSaved}
+              publicationsVisited={publicationsVisited}
+              hashTag={tagPlaces}
+              hashTagSaved={tagPlacesSaved}
+              hashTagVisited={tagPlacesVisited}
+              handleHash={handleHash}
+            />
           </div>
-
-      
+          <div className={style.footerrigth}>
+            <FooterTerm/>
+          </div>
+        </div>
       </div>
     </div>
   );
