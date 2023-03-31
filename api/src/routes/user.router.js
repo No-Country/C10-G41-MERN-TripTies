@@ -1,9 +1,15 @@
-const router = require('express').Router()
+const express = require('express')
+const router = express.Router()
 
-const userController = require('../controllers/user.controller')
+const {
+  putProfile, 
+  deleteUser, 
+  getProfile
+} = require('../controllers/user.controller')
 
-router.route('/signup')
-  .post(userController.postUser)
-  
+
+router.get('/:userId', getProfile)
+router.delete('/:userId', deleteUser)
+router.put('/:userId/profile', putProfile)
 
 module.exports = router
