@@ -1,16 +1,19 @@
+/* Estilos para el contenedor principal */
 .container {
     display: flex;
     align-items: center;
     justify-content: center;
-    place-items: center; 
+    place-items: center;
     margin: auto;
     height: 100vh;
-    background-image: url('../../img/backgroundPaper.png');
+    background-image: url('../../img/paper-Planes-background.png');
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-position: center; 
+    background-position: center;
+    background-size: cover;
 }
 
+/* Este bloque de código establece el contenedor del contenido principal */
 .content {
     display: flex;
     flex-direction: column;
@@ -24,12 +27,14 @@
     z-index: 1;
 }
 
+/* Estilos para el título del formulario */
 .title {
     color: var(--purple);
     font-size: 30px;
     font-weight: 400;
 }
 
+/* Estilos para los campos de entrada */
 .input {
     width: 329px;
     height: 41px;
@@ -47,7 +52,7 @@
 }
 
 
-.input:focus::placeholder{
+.input:focus::placeholder {
     color: transparent;
     background: none;
 }
@@ -81,15 +86,15 @@
     background: none;
 }
 
-
+/* Estilos para el checkbox */
 .underinputs {
-    display:flex;
+    display: flex;
     justify-content: space-around;
     margin-block-end: 80px;
     width: 70%;
 }
 
-.underinputs > a {
+.underinputs>a {
     color: var(--brown);
     text-decoration: underline;
     cursor: pointer;
@@ -118,6 +123,7 @@ input[id^="checkbox"] {
     background-color: var(--violet);
 }
 
+/* Estilos para el botón 'Log in' */
 .btn {
     width: 329px;
     height: 41px;
@@ -128,7 +134,7 @@ input[id^="checkbox"] {
     font-size: 11px;
 }
 
-
+/* Estilos para las redes sociales */
 .iconContainer {
     display: flex;
     justify-content: center;
@@ -137,4 +143,59 @@ input[id^="checkbox"] {
     margin-block-end: 50px;
 }
 
+/* Estilos para pantallas de hasta 600px de ancho */
+@media only screen and (max-width: 600px) {
 
+    /* Reducir el ancho del contedor y fondo transparente */
+    .container {
+        width: 70%;
+        background: transparent;
+    }
+
+    /* Estilos para el logo */
+    .Logo {
+        background-image: url('../../img/Logo.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        padding: 30px;
+        margin-block-end: 0px;
+    }
+
+    .content {
+        width: 90%;
+        height: auto;
+        padding: 10px;
+        background: none;
+        border: none;
+    }
+
+    /* Ajustar el tamaño del boton */
+    .btn {
+        width: 100%;
+    }
+
+    /* Ajustar el tamaño del texto */
+    .titulo {
+        font-size: 24px;
+    }
+
+    /* Ajustar el tamaño del texto */
+    .underinputs {
+        width: 329px;
+        justify-content: space-between;
+    }
+
+    .content p {
+        font-size: 14px;
+    }
+
+    .checkbox label {
+        font-size: 14px;
+    }
+
+    .content a {
+        font-size: 14px;
+    }
+
+}
