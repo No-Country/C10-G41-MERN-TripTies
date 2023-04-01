@@ -18,11 +18,10 @@ const getAllUsers = () => {
   })
 }
 
-const getUserById = async(id) => { 
-  let user = await User.findById(id)
-  const userId = user._id.toString()
-  console.log(typeof userId)
-  return userId
+const findUserById = async (userId) => {
+  let user = await User.findById(userId)
+  console.log(userId)
+  return user
 }
 
 
@@ -30,7 +29,7 @@ const getUserByEmail = (email) => {
   return new Promise((resolve, reject) => {
     User.findOne({ email: email })
       .then(user => {
-        console.log(user)
+        // console.log(user)
         resolve(user)
       })
       .catch(err => {
@@ -56,6 +55,8 @@ const createUser = async (userData) => {
     // Crear nuevo perfil vacío asociado al usuario
     const profile = new Profile({
       user: user._id,
+      first_name: '',
+      last_name: '',
       photo: '',
       description: '',
       birthday: '',
@@ -78,11 +79,11 @@ const createUser = async (userData) => {
 const getProfile = async (userId) => {
   try {
     // Buscamos el perfil del usuario por su ID y lo retornamos
-    const profile = await Profile.findOne({ user: userId }, '-_id -user').lean()
-
+    const profile = await Profile.findOne({ user: userId }, '-_id').lean()
+    // console.log(profile)
     return profile
   } catch (error) {
-    throw new CustomError('Not found Profile', 404, 'Not Found')
+    throw Error('Not found Profile', 404, 'Not Found')
   }
 }
 
@@ -125,11 +126,10 @@ const removeUser = async (userId) => {
   })
 }
 
-
 module.exports = {
   getAllUsers,
   getUserByEmail,
-  getUserById,
+  findUserById,
   createUser,
   getProfile,
   removeUser,

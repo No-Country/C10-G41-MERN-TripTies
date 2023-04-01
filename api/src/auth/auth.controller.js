@@ -10,8 +10,9 @@ const postLogin = (req, res) => {
       .then(data => {
         if (data) {
           const token = jwt.sign({
+            _id: data._id,
             username: data.username,
-            email: data.email 
+            email: data.email, 
           }, process.env.JWT_SECRET)
           res.status(200).json({message: 'Correct credentials', token })
         }
