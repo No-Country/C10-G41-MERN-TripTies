@@ -4,14 +4,11 @@ const { Schema, model } = require('mongoose')
 
 const ConversationSchema = new Schema(
   {
-    title: {type: String},
-    createdBy: {
+    title: {type: String, required: true},
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User', 
       required: true
-    }, 
-    user: {
-      type: mongoose.Schema.Types.ObjectId
     }
   },
   {

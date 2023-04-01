@@ -1,7 +1,10 @@
 const router = require('express').Router()
 const Conversation = require('../chatControllers/conversation.controller')
-const passportJWT = require('../../middlewares/auth.middleware')
+const passport = require('passport')
+require('../../middlewares/auth.middleware')(passport)
 
 
 router.route('/')
-  .post(passportJWT.authenticate('jwt', {session: false}), Conversation.postConversation)
+  .post(passport.authenticate('jwt', {session: false}), Conversation.postConversation)
+
+module.exports = router

@@ -4,6 +4,7 @@ const routesFollows = require('./follow.router')
 const routesLogin = require('../auth/auth.router')
 const passport = require('passport')
 require('../middlewares/auth.middleware')(passport)
+const routesConversation = require('../chat/chatRoutes/conversation.route')
 
 const {
   postUser, 
@@ -20,6 +21,7 @@ function routerModels(app){
   router.use('/user', routesUsers)
   router.get('/users', passport.authenticate('jwt', {session: false}), getAllUsers)
   router.use('/follow', routesFollows)
+  router.use('/conversations', routesConversation)
 
   router.use
 }
