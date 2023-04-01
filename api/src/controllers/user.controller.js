@@ -66,14 +66,11 @@ const deleteUser = (req, res, next) => {
 
 const getProfile = async (req, res, next) => {
   const { userId } = req.params
-
   try {
     const profile = await User.getProfile(userId)
-
     if (!profile) {
       return res.status(404).json({ message: 'Profile not found' })
     }
-
     return res.status(200).json({ profile })
   } catch (error) {
     return res.status(500).json({ message: error.message })
@@ -85,6 +82,6 @@ module.exports = {
   getAllUsers, 
   getUserById,
   getProfile,
-  putProfile,
+  putProfile, 
   deleteUser
 }

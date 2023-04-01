@@ -10,7 +10,8 @@ const options = {
 
 module.exports = (passport) => passport.use(
   new JwtStrategy(options, (tokenDecoded, done) => {
-    User.getUserById(tokenDecoded._id)
+    console.log(tokenDecoded)
+    User.findUserById(tokenDecoded._id)
       .then((user) => {
         if (user) {
           done(null, tokenDecoded)
@@ -23,3 +24,5 @@ module.exports = (passport) => passport.use(
       })
   })
 )
+
+

@@ -17,8 +17,7 @@ const ProfileSchema = new Schema (
     publications: {
       type: mongoose.Schema.Types.ObjectId, 
       ref: 'Publication',
-    }, 
-    status: {type: String, default: 'active'}
+    }
   }, 
   {
     timestamps: true
