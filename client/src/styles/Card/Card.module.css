@@ -1,0 +1,96 @@
+.container {
+  display: flex;
+  align-items: flex-start;
+  padding: 2em;
+  margin-bottom: 2.1rem;
+  background-color: var(--white);
+  border-radius: 20px;
+}
+
+.content {
+  margin-left: 0.7rem;
+}
+
+.userInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.userInfo > aside {
+  display: flex;
+  flex-direction: column;
+}
+
+.userInfo > div {
+  position: relative;
+}
+
+.userInfo > aside > span {
+  text-align: left;
+  color: var(--brown);
+}
+
+.name {
+  margin: 0;
+  color: var(--purple);
+}
+
+.description {
+  text-align: left;
+  color: var(--purple);
+}
+
+.publicationInfo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+  margin-bottom: 0.5em;
+}
+
+.publicationInfo > aside {
+  display: flex;
+  align-items: center;
+}
+
+.publicationInfo > aside > span {
+  color: var(--brown);
+}
+
+.likesAndComments {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2em;
+  border-bottom: 1px solid var(--yellowPale);
+}
+
+.likesAndComments > aside {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.2em;
+}
+
+.likesAndComments > aside > span {
+  color: var(--brown);
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-block-start: 0.5rem;
+}
+
+.actions > aside {
+  width: 20%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttonSave {
+  background: none;
+  border: none;
+  cursor: pointer;
+}

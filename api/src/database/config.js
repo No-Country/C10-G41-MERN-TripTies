@@ -1,59 +1,20 @@
-'use strict'
 require('dotenv').config()
-module.exports = {
+
+const config = {
   development: {
-    use_env_variable: 'DATABASE_URI_DEV',
-    define: {
-      timestamps: true,
-      underscored: true,
-      underscoredAll: true,
-      createdAt: 'created_at',
-      updatedAt: 'updated_at',
-      deletedAt: 'deleted_at',
-    },
-    dialect: 'mongodb',
-    dialectOptions: {
-      ssl: true,
-      retryWrites: true,
-      w: 'majority'
-    },
-    poolSize: 10
+    mongodb_uri: process.env.DATABASE_URI_DEV,
+    jwtSecret: process.env.JWT_SECRET,
   },
   test: {
-    use_env_variable: 'DATABASE_URI_TEST',
-    define: {
-      timestamps: true,
-      underscored: true,
-      underscoredAll: true,
-      createdAt: 'created_at',
-      updatedAt: 'updated_at',
-      deletedAt: 'deleted_at',
-    },
-    dialect: 'mongodb',
-    dialectOptions: {
-      ssl: true,
-      retryWrites: true,
-      w: 'majority'
-    },
-    poolSize: 10
+    mongodb_uri: process.env.DATABASE_URI_TEST,
+    jwtSecret: process.env.JWT_SECRET,
   },
   production: {
-    use_env_variable: 'DATABASE_URI_PROD',
-    dialect: 'mongodb',
-    dialectOptions: {
-      ssl: true,
-      retryWrites: true,
-      w: 'majority'
-    },
-    define: {
-      timestamps: true,
-      underscored: true,
-      underscoredAll: true,
-      createdAt: 'created_at',
-      updatedAt: 'updated_at',
-      deletedAt: 'deleted_at',
-    },
-    poolSize: 10
-  }
+    mongodb_uri: process.env.DATABASE_URI_PROD,
+    jwtSecret: process.env.JWT_SECRET,
+  },
 }
+
+module.exports = config
+
 

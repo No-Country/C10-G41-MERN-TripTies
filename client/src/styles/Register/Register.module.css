@@ -1,44 +1,51 @@
+/* Estilos para el contenedor principal */
 .conteiner {
     display: flex;
     align-items: center;
     justify-content: center;
-    place-items: center; 
+    place-items: center;
     margin: auto;
     height: 100vh;
+    background-image: url('../../img/paper-Planes-background.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
 }
 
+/* Estilos para el formulario */
 .conteiner form {
     display: flex;
     flex-direction: column;
     border: 2px solid black;
     background-color: #ffffff;
     border-color: #ffffff;
-    /* padding: 10px 100px; */
+    padding-top: 20px;
     border-radius: 20px;
-    
     width: 591px;
     height: 583px;
     align-items: center;
+    z-index: 1;
 }
 
+/* Estilos para el título del formulario */
 .conteiner h1 {
     color: var(--purple);
     font-size: 30px;
     font-weight: 400;
 }
 
+/* Estilos para el texto del formulario */
 .conteiner p {
     color: var(--brown);
 }
 
+/* Estilos para los enlaces del formulario */
 .conteiner a {
     color: var(--purpleLight);
 }
 
-.checkbox span {
-    color: var(--brown);
-}
-
+/* Estilos para los campos de entrada */
 .input {
     padding: 10px;
     width: 329px;
@@ -68,13 +75,14 @@
     padding-inline-start: 25px;
 }
 
-input[type=text]::placeholder {
+/* Estilos para los iconos del formulario */
+input[id^="name"]::placeholder {
     background-image: url('../../img/user.png');
     background-repeat: no-repeat;
     background-position: 0px center;
 }
 
-input[type=email]::placeholder {
+input[id^="email"]::placeholder {
     background-image: url('../../img/email.png');
     background-repeat: no-repeat;
     background-position: 0px center;
@@ -86,11 +94,22 @@ input[id^="password"]::placeholder {
     background-position: 0px center;
 }
 
+/* Estilos para el checkbox */
 .checkbox {
     display: flex;
+    width: 333px;
 }
 
-input[type=checkbox] {
+.content {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox span {
+    color: var(--brown);
+}
+
+input[id^="checkbox"] {
     cursor: pointer;
     background-color: #fff;
     background-image: url('../../img/check.png');
@@ -108,6 +127,7 @@ input[type=checkbox] {
     background-color: var(--violet);
 }
 
+/* Estilos para el botón de 'mostrar contraseña' */
 .password {
     display: flex;
     align-items: flex-start;
@@ -124,6 +144,7 @@ input[type=checkbox] {
     outline: none;
 }
 
+/* Estilos para el botón 'registrarse' */
 .btn {
     width: 329px;
     height: 41px;
@@ -135,9 +156,77 @@ input[type=checkbox] {
     margin: 40px 0 10px;
 }
 
+/* Estilos para las redes sociales */
 .redes {
     display: flex;
     justify-content: center;
     gap: 40px;
     margin-block-end: 40px;
+}
+
+/* Estilos para pantallas de hasta 600px de ancho */
+@media only screen and (max-width: 600px) {
+
+    /* Reducir el ancho del contedor y fondo transparente */
+    .conteiner {
+        width: 70%;
+        background: none;
+    }
+
+    /* Estilos para el logo */
+    .Logo {
+        background-image: url('../../img/Logo.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        padding: 25px;
+        margin-block-end: 15px;
+    }
+
+    .conteiner form {
+        width: 90%;
+        height: auto;
+        padding: 10px;
+        background: none;
+        border: none;
+    }
+
+    /* Ajustar el tamaño del boton */
+    .btn {
+        width: 100%;
+    }
+
+    /* Ajustar el tamaño de los inputs */
+    .input {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .password {
+        width: 100%;
+    }
+
+    /* Estilos para el checkbox */
+    .checkbox {
+        display: flex;
+        width: 100%;
+    }
+
+    /* Ajustar el tamaño del texto */
+    .conteiner h1 {
+        font-size: 24px;
+    }
+
+    .conteiner p {
+        font-size: 14px;
+    }
+
+    .checkbox span {
+        font-size: 14px;
+    }
+
+    .conteiner a {
+        font-size: 14px;
+    }
+
 }

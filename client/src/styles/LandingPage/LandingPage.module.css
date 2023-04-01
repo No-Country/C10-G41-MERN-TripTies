@@ -1,9 +1,6 @@
 .containerLanding {
-    padding-top: 3rem;
+    padding-top: 0rem;
     width: 100%;
-
-    /*SOSPECHOSO*/
-    max-height: 1px;
 }
 
 .flyAndTitle {
@@ -12,11 +9,11 @@
 }
 
 .flyAndTitle > h1 {
-    z-index: 1;
     font-size: 70px;
     margin: 0;
     padding-top: 3rem;
     padding-left: 1rem;
+    
 }
 
 .flyAndTitle > img {
@@ -24,6 +21,7 @@
     position: absolute;
     width: 541px;
     height: 289px;
+    top: 72px;
 }
 
 .txtAndBtn {
@@ -56,10 +54,6 @@
     width: 150px;
 }
 
-.btnExp:hover {
-    cursor: pointer;
-}
-
 .containerGuy {
     width: 100%;
     display: flex;
@@ -67,6 +61,14 @@
     /* position: relative; */
     /* z-index: -1;  */
     top: -100px;   
+}
+
+.containerGuy > .minFooter {
+    display: flex;
+    align-self: flex-end;
+    position: absolute;
+    left: 0;
+    width: 30%;
 }
 
 .guyImg {  
