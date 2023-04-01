@@ -7,37 +7,47 @@ import { useState } from "react";
 import MiniFooter from "../MiniFooter/MiniFooter";
 import { useNavigate } from "react-router-dom";
 
-function Register(): JSX.Element {
-  const [visibility, setVisibility] = useState(oculto);
-  const [passwordType, setPasswordType] = useState("password");
+interface InputProps {
+  name: string;
+  email: string;
+  password: string;
+}
 
-  const [input, setInput] = useState({
+function Register(): JSX.Element {
+  const [visibility, setVisibility] = useState<string>(oculto);
+  const [passwordType, setPasswordType] = useState<string>("password");
+
+  const [input, setInput] = useState<InputProps>({
     name: "",
     email: "",
     password: "",
   });
+
   const nav = useNavigate();
 
-  function handlePassword(e: any) {
+  function handlePassword(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) : void {
     e.preventDefault();
     setPasswordType(passwordType === "password" ? "text" : "password");
     setVisibility(visibility === oculto ? visible : oculto);
   }
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) : void => {
     e.preventDefault();
-    setInput({
-      name: "",
-      email: "",
-      password: "",
-    });
-
-    //   const data = window.localStorage.setItem("userData", JSON.stringify(input));
-    window.localStorage.setItem("users", JSON.stringify(input));
-    nav("/login");
+    if(input.name.length === 0 || input.email.length === 0 || input.password.length === 0){
+      alert("Fill in the required fields");
+    } else {
+      setInput({
+        name: "",
+        email: "",
+        password: "",
+      });
+  
+      window.localStorage.setItem("users", JSON.stringify(input));
+      nav("/login");
+    }
   };
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) : void => {
     setInput({
       ...input,
       [e.target.name]: e.target.value,
@@ -47,6 +57,8 @@ function Register(): JSX.Element {
   return (
     <div className={style.conteiner}>
       <form onSubmit={handleSubmit}>
+      <div className={style.Logo}>
+      </div>
         <h1>Create Account</h1>
         <input
           onChange={(e) => handleChange(e)}
@@ -81,10 +93,12 @@ function Register(): JSX.Element {
           </button>
         </div>
         <div className={style.checkbox}>
+          <div className={style.content}>
           <input type="checkbox" id="checkbox" />
           <span>
             I agree with <a href="#">Terms</a> and <a href="#">Privacy</a>
           </span>
+          </div>
         </div>
         <button className={style.btn} type="submit">
           SIGN UP
