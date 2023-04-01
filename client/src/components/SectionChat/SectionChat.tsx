@@ -93,9 +93,11 @@ export default function SectionChat() {
                             users.map((e: User, index: number) => (
                                 <div key={index} className={styles.avatar}>
                                     <img src={e.avatar} alt={e.name} />
+                                    <a href='#'>
                                     <div className={styles.text}>
                                         <h2>{e.name}</h2>
                                     </div>
+                                    </a>
                                     {
                                         e.connected &&
                                         <img src={connected} alt="connected" />
