@@ -1,12 +1,12 @@
 .container {
-    align-self: flex-end;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    padding: 10px;
+  align-self: flex-end;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 10px;
 }
 
 .container > a {
-    color: var(--purple);
-    margin-inline-end: 20px;
+  color: var(--purple);
+  margin-inline-end: 20px;
 }

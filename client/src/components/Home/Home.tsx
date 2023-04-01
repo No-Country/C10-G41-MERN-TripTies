@@ -12,8 +12,14 @@ import Card from "../Card/Card";
 import stars1 from "../../img/stars1.png";
 import stars2 from "../../img/stars2.png";
 import stars3 from "../../img/stars3.png";
+
 import SectionChat from "../SectionChat/SectionChat";
 import Saved from "../Saved/Saved";
+import PlaceIVisited from "../PlaceIVisited/PlaceIVisited";
+import SectionSuggestions from "../SectionSuggestions/SectionSuggestions";
+import FooterTerm from "../Footers/FooterTerm";
+import FooterSocial from "../Footers/FooterSocial";
+import MiniFooter from "../MiniFooter/MiniFooter";
 
 interface lugaresType {
   name: string;
@@ -33,7 +39,7 @@ interface lugaresType {
 function Home(): JSX.Element {
   let [hash, setHash] = useState("");
 
-  const lugares = [
+  const places = [
     {
       name: "Julio Humere",
       time: "3 hours ago",
@@ -173,16 +179,26 @@ function Home(): JSX.Element {
     setHash(e.target.value);
   };
 
-  const tagLugares = lugares && lugares.filter((e) => e.tag.includes(hash));
+  const tagPlaces = places && places.filter((e) => e.tag.includes(hash));
 
-  const tagLugaresSaved = saved && saved.filter((e) => e.tag.includes(hash));
+  const tagPlacesSaved = saved && saved.filter((e) => e.tag.includes(hash));
 
-  const tagLugaresVisited =
+  const tagPlacesVisited =
     Visited && Visited.filter((e) => e.tag.includes(hash));
 
   let [publications, setPublications] = useState(true);
   let [publicationsSaved, setPublicationSaved] = useState(false);
   let [publicationsVisited, setPublicationsVisited] = useState(false);
+
+  const handleHome = (e: any) => {
+    e.preventDefault();
+    if (publications === false) {
+      setPublications(true);
+      setPublicationSaved(false);
+      setPublicationsVisited(false);
+    }
+    setHash("");
+  };
 
   const handleSaved = (e: any) => {
     e.preventDefault();
@@ -204,15 +220,23 @@ function Home(): JSX.Element {
 
   return (
     <div className={style.homeContainer}>
-      <NavBar />
+      <NavBar handleHome={handleHome} />
       <div className={style.feedContainer}>
-        <div className={style.feedLeft}>
-          <SectionAccount
-            handleSaved={handleSaved}
-            handleVisited={handleVisited}
-          />
-          <SectionChat />
+        <div className={style.containerLeft}>
+          <div>
+            <div className={style.feedLeft}>
+              <SectionAccount
+                handleSaved={handleSaved}
+                handleVisited={handleVisited}
+              />
+              <SectionChat />
+            </div>
+          </div>
+          <div className={style.footerLeft}>
+            <FooterSocial />
+          </div>
         </div>
+
         <div className={style.feedCenter}>
           <div className={style.postGenerator}>
             <img src={profile} alt="Perfil" className={style.imgProfile} />
@@ -236,26 +260,30 @@ function Home(): JSX.Element {
           </div>
           <div className={style.feedPublications}>
             {(publications &&
-              tagLugares &&
-              tagLugares.map((e, i) => <Card places={e} />)) ||
-              (publicationsSaved &&
-                tagLugaresSaved &&
-                tagLugaresSaved.map((e, i) => <Card places={e} />)) ||
-              (publicationsVisited &&
-                tagLugaresVisited &&
-                tagLugaresVisited.map((e, i) => <Card places={e} />))}
+              tagPlaces &&
+              tagPlaces.map((e, i) => <Card places={e} key={i} />)) ||
+              (publicationsSaved && <Saved place={tagPlacesSaved} />) ||
+              (publicationsVisited && (
+                <PlaceIVisited visited={tagPlacesVisited} />
+              ))}
           </div>
         </div>
-        <div className={style.feedRight}>
-          <SectionDiscover
-            publications={publications}
-            publicationsSaved={publicationsSaved}
-            publicationsVisited={publicationsVisited}
-            hashTag={tagLugares}
-            hashTagSaved={tagLugaresSaved}
-            hashTagVisited={tagLugaresVisited}
-            handleHash={handleHash}
-          />
+        <div className={style.rigthcontainer}>
+          <div className={style.feedRight}>
+            <SectionDiscover
+              publications={publications}
+              publicationsSaved={publicationsSaved}
+              publicationsVisited={publicationsVisited}
+              hashTag={tagPlaces}
+              hashTagSaved={tagPlacesSaved}
+              hashTagVisited={tagPlacesVisited}
+              handleHash={handleHash}
+            />
+            <SectionSuggestions />
+          </div>
+          <div className={style.footerrigth}>
+            <FooterTerm />
+          </div>
         </div>
       </div>
     </div>
