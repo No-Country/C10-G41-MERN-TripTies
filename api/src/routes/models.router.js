@@ -1,5 +1,6 @@
 const express = require('express')
 const routesUsers = require('./user.router')
+const routesComments = require('./comment.router')
 const routesFollows = require('./follow.router')
 const routesLogin = require('../auth/auth.router')
 
@@ -18,6 +19,9 @@ function routerModels(app){
   router.use('/user', routesUsers)
   router.get('/users', getAllUsers)
   router.use('/follow', routesFollows)
+  // TODO : change after publication's logic is ready
+  // router.use('/:publicationId/comments', routesComments)
+  router.use('/comments', routesComments)
 
   router.use
 }
