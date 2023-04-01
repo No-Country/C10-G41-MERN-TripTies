@@ -18,13 +18,11 @@ const getAllUsers = () => {
   })
 }
 
-const getUserById = async (id) => {
-  const user = await User.findById(id)
-  console.log(user)
-  if (!user) {
-    throw new Error('User not found')
-  }
-  return user
+const getUserById = async(id) => { 
+  let user = await User.findById(id)
+  const userId = user._id.toString()
+  console.log(typeof userId)
+  return userId
 }
 
 
@@ -32,6 +30,7 @@ const getUserByEmail = (email) => {
   return new Promise((resolve, reject) => {
     User.findOne({ email: email })
       .then(user => {
+        console.log(user)
         resolve(user)
       })
       .catch(err => {
