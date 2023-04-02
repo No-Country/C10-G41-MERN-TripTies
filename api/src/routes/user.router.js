@@ -13,7 +13,7 @@ const {
 
 router.get('/:userId', getProfile)
 router.get('/', getUserById)
-router.delete('/:userId', deleteUser)
+router.delete('/:userId', passport.authenticate('jwt', {session: false}), deleteUser)
 router.put('/:userId/profile', passport.authenticate('jwt', {session: false}), putProfile)
 
 module.exports = router
