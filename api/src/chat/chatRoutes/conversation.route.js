@@ -1,20 +1,22 @@
 const router = require('express').Router()
+const participantValidate = require('../../middlewares/participantChatValidate')
 const Conversation = require('../chatControllers/conversation.controller')
 const Message = require('../chatControllers/message.controller')
-const authMiddleware = require('../../middlewares/auth.middleware')
+const passport = require('passport')
+require('../../middlewares/auth.middleware')(passport)
 
 
 router.route('/')
-  .get( authMiddleware, Conversation.getAllConversations)
-  .post( authMiddleware, Conversation.postConversation)
+  .get( passport.authenticate('jwt', {session: false}), Conversation.getAllConversations)
+  .post( passport.authenticate('jwt', {session: false}), Conversation.postConversation)
 
 router.route('/:conversationId')
-  .get( authMiddleware, Conversation.getConversationById)
-  .put( authMiddleware, Conversation.putConversation) //Arreglar
-  .delete( authMiddleware, Conversation.deleteConversation)
+  .get( passport.authenticate('jwt', {session: false}), Conversation.getConversationById)
+  .put( passport.authenticate('jwt', {session: false}), Conversation.putConversation) //Arreglar
+  .delete( passport.authenticate('jwt', {session: false}), Conversation.deleteConversation)
 
 router.route('/:conversationId/messages')
-  .post( authMiddleware, Message.postMessage)
+  .post( passport.authenticate('jwt', {session: false}), participantValidate, Message.postMessage)
 
 
 module.exports = router
