@@ -20,7 +20,6 @@ const getAllUsers = () => {
 
 const findUserById = async (userId) => {
   let user = await User.findById(userId)
-  console.log(userId)
   return user
 }
 
