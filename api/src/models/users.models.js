@@ -10,7 +10,11 @@ const UserSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Profile'
     }, 
-    role: { type: String, enum: ['ADMIN', 'USER'], required: true}, 
+    role: { 
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'Role',
+      default: 'USER'
+    }, 
     isOnline: {type: Boolean, required: true, default: false}
   },
   

@@ -27,11 +27,9 @@ const getUserById = async (req, res, next) => {
 
   try {
     const user = await User.findUserById(userId)
-
     if (!user) {
       throw new CustomError(404, 'User not found')
     }
-
     res.status(200).json({ user })
   } catch (error) {
     next(error)

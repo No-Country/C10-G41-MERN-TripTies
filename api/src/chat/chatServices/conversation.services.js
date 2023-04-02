@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const Conversation = require('../chatModels/conversation.models')
 const Participant = require('../chatModels/participants.models')
 
@@ -52,8 +51,8 @@ const editConversation = async (conversationId, obj) => {
     const updatedConversation = await Conversation.findOneAndUpdate(
       { conversation: conversationId },
       { title: obj.title },
-      console.log(conversationId, obj)
     )
+    console.log(updatedConversation)
     return updatedConversation
   } catch (error) {
     throw new Error(`Error updating user conversation: ${error.message}`)
@@ -81,9 +80,9 @@ const removeConversation = async (conversationId) => {
 
 
 // createConversation({
-//   title: 'Conversacion Samu - Nico',//? Titulo del chat
-//   ownerId: '64278e25a8c514ecb63f9548', //? Nicolas como owner
-//   participantId: '64278e12a8c514ecb63f9544' //? Lucas como invitado
+//   title: 'Conversacion Nico - Samu',//? Titulo del chat
+//   ownerId: '6428d2b0317c9ed3dd6d14f3', //? Nicolas como owner
+//   participantId: '6428d2cb317c9ed3dd6d14f7' //? Samuel como invitado
 // })
 //   .then(data => console.log(data))
 //   .catch(err => console.log(err))
@@ -92,6 +91,6 @@ module.exports = {
   createConversation,
   getAllConversations,
   getConversationById,
-  editConversation, 
+  editConversation,
   removeConversation
 }
