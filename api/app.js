@@ -46,6 +46,9 @@ app.use(express.urlencoded({ extended: false }))
 
 //! Authenticate DB
 
+//TODO: when sessions get developed, delete getUserFromToken
+const getUserFromToken = require('./src/middlewares/auth.aux.middleware')
+app.use(getUserFromToken)
 
 
 app.get('/', ({ res }) => {
