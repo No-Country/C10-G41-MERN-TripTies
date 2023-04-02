@@ -13,7 +13,7 @@ const MessageSchema = new Schema(
       ref: 'User', 
       required: true
     }, 
-    message: {Type: String}
+    message: {type: String}
   }
 )
 

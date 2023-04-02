@@ -23,12 +23,10 @@ const findUserById = async (userId) => {
   return user
 }
 
-
 const getUserByEmail = (email) => {
   return new Promise((resolve, reject) => {
     User.findOne({ email: email })
       .then(user => {
-        // console.log(user)
         resolve(user)
       })
       .catch(err => {
@@ -36,7 +34,6 @@ const getUserByEmail = (email) => {
       })
   })
 }
-
 
 const createUser = async (userData) => {
   const session = await mongoose.startSession()
@@ -48,6 +45,7 @@ const createUser = async (userData) => {
       username: userData.username,
       email: userData.email,
       password: hash(userData.password),
+      role: userData.role
     })
     // Guardar usuario en la base de datos
     await user.save({ session })
@@ -79,7 +77,6 @@ const getProfile = async (userId) => {
   try {
     // Buscamos el perfil del usuario por su ID y lo retornamos
     const profile = await Profile.findOne({ user: userId }, '-_id').lean()
-    // console.log(profile)
     return profile
   } catch (error) {
     throw Error('Not found Profile', 404, 'Not Found')
@@ -106,7 +103,6 @@ const editProfile = async (userId, updatedFields) => {
   }
 }
 
-
 const removeUser = async (userId) => {
   return new Promise((resolve, reject) => {
     User.findById(userId)
@@ -124,6 +120,7 @@ const removeUser = async (userId) => {
       })
   })
 }
+
 
 module.exports = {
   getAllUsers,
