@@ -14,3 +14,17 @@ export const createUser = (newUser: Users) => {
     }
  }
 }
+
+//Action para logear a un usuario
+export const loginUser = (email: string, password: string) => {
+    return async function() {       
+        try {
+            const response = await axios.post('/login', { email, password });
+            console.log(response)
+            return response
+        } catch (error) {
+            console.log(error);
+            throw error;
+    }
+ }
+}
