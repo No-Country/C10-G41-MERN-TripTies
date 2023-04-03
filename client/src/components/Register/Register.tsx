@@ -6,15 +6,11 @@ import google from "../../img/google.png";
 import facebook from "../../img/facebook.png";
 import { useState } from "react";
 import MiniFooter from "../MiniFooter/MiniFooter";
-import { createUser } from "../../redux/actions/";
+import { createUser } from "../../redux/actions/Users";
 import { useNavigate } from "react-router-dom";
-import { Users } from '../../types';
+import { useAppDispatch } from '../../redux/store/hooks';
+import { FormState } from '../../types';
 
-interface FormState {
-  newUser: Users,
-  visibility: string,
-  passwordType: string,
-}
 
 function Register(): JSX.Element {
   const [visibility, setVisibility] = useState<FormState["visibility"]>(oculto);
@@ -26,6 +22,7 @@ function Register(): JSX.Element {
     password: "",
   });
 
+  const dispatch = useAppDispatch();
   const nav = useNavigate();
 
     /* Maneja la visibilidad de la contraseña cuando se hace click en el botón */
@@ -43,7 +40,7 @@ function Register(): JSX.Element {
         if (newUser.username.length === 0 || newUser.email.length === 0 || newUser.password.length === 0) {
           alert("Fill in the required fields");
         } else {
-          createUser(newUser)
+          dispatch(createUser(newUser))
           setInput({
             username: "",
             email: "",
