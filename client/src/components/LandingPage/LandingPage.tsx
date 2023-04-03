@@ -20,11 +20,10 @@ const LandingPage = (): JSX.Element => {
             Explore the world like never before. Connect with other wanderers
             just like you and discover a new way of traveling.
           </p>
-        </div>
         <button className={style.btnExp}>
-          {" "}
           <Link to="/home">Explore</Link>
         </button>
+        </div>
 
         <div className={style.containerGuy}>
           <img className={style.guyImg} src={imgGuy} alt="guy" />
