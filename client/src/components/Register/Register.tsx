@@ -1,3 +1,4 @@
+import React from 'react';
 import style from "../../styles/Register/Register.module.css";
 import oculto from "../../img/oculto.png";
 import visible from "../../img/visible.png";
@@ -5,53 +6,69 @@ import google from "../../img/google.png";
 import facebook from "../../img/facebook.png";
 import { useState } from "react";
 import MiniFooter from "../MiniFooter/MiniFooter";
+import { createUser } from "../../redux/actions/";
 import { useNavigate } from "react-router-dom";
+import { Users } from '../../types';
 
-interface InputProps {
-  name: string;
-  email: string;
-  password: string;
+interface FormState {
+  newUser: Users,
+  visibility: string,
+  passwordType: string,
 }
 
 function Register(): JSX.Element {
-  const [visibility, setVisibility] = useState<string>(oculto);
-  const [passwordType, setPasswordType] = useState<string>("password");
+  const [visibility, setVisibility] = useState<FormState["visibility"]>(oculto);
+  const [passwordType, setPasswordType] = useState<FormState["passwordType"]>("password");
 
-  const [input, setInput] = useState<InputProps>({
-    name: "",
+  const [newUser, setInput] = useState<FormState["newUser"]>({
+    username: "",
     email: "",
     password: "",
   });
 
   const nav = useNavigate();
 
+    /* Maneja la visibilidad de la contraseña cuando se hace click en el botón */
   function handlePassword(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) : void {
     e.preventDefault();
     setPasswordType(passwordType === "password" ? "text" : "password");
     setVisibility(visibility === oculto ? visible : oculto);
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) : void => {
-    e.preventDefault();
-    if(input.name.length === 0 || input.email.length === 0 || input.password.length === 0){
-      alert("Fill in the required fields");
-    } else {
-      setInput({
-        name: "",
-        email: "",
-        password: "",
-      });
-  
-      window.localStorage.setItem("users", JSON.stringify(input));
-      nav("/login");
-    }
-  };
+    /* Maneja el evento de envío del formulario */
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+      e.preventDefault();
+      try {
+        
+        if (newUser.username.length === 0 || newUser.email.length === 0 || newUser.password.length === 0) {
+          alert("Fill in the required fields");
+        } else {
+          createUser(newUser)
+          setInput({
+            username: "",
+            email: "",
+            password: "",
+          });
+    
+          nav("/login");
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    };
 
+    /* Setea el estado local con los datos del fomulario */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) : void => {
+    e.target.name === "name" ?
     setInput({
-      ...input,
+      ...newUser,
+      username: e.target.value,
+    })
+    :
+    setInput({
+      ...newUser,
       [e.target.name]: e.target.value,
-    });
+    })
   };
 
   return (
@@ -67,7 +84,7 @@ function Register(): JSX.Element {
           placeholder="Full Name"
           name="name"
           id="name"
-          value={input.name}
+          value={newUser.username}
         />
         <input
           onChange={(e) => handleChange(e)}
@@ -76,7 +93,7 @@ function Register(): JSX.Element {
           placeholder="Email address"
           name="email"
           id="email"
-          value={input.email}
+          value={newUser.email}
         />
         <div className={style.password}>
           <input
@@ -86,7 +103,7 @@ function Register(): JSX.Element {
             placeholder="Password"
             name="password"
             id="password"
-            value={input.password}
+            value={newUser.password}
           />
           <button onClick={(e) => handlePassword(e)}>
             <img src={visibility} alt="password visibility" />
