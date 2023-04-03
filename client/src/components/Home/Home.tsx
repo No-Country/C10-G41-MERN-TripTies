@@ -12,8 +12,14 @@ import Card from "../Card/Card";
 import stars1 from "../../img/stars1.png";
 import stars2 from "../../img/stars2.png";
 import stars3 from "../../img/stars3.png";
-import SectionChat from "../SectionDiscover/SectionChat";
+
+import SectionChat from "../SectionChat/SectionChat";
 import Saved from "../Saved/Saved";
+import PlaceIVisited from "../PlaceIVisited/PlaceIVisited";
+import SectionSuggestions from "../SectionSuggestions/SectionSuggestions";
+import FooterTerm from "../Footers/FooterTerm";
+import FooterSocial from "../Footers/FooterSocial";
+import MiniFooter from "../MiniFooter/MiniFooter";
 
 interface lugaresType {
   name: string;
@@ -33,7 +39,7 @@ interface lugaresType {
 function Home(): JSX.Element {
   let [hash, setHash] = useState("");
 
-  const lugares = [
+  const places = [
     {
       name: "Julio Humere",
       time: "3 hours ago",
@@ -51,7 +57,7 @@ function Home(): JSX.Element {
       save: "Unsaved",
     },
     {
-      name: "Edgar Pazos",
+      name: "Edgard Pazos",
       time: "1 hours ago",
       place: "Museo Louvre",
       photo:
@@ -149,36 +155,88 @@ function Home(): JSX.Element {
     },
   ];
 
+  const Visited = [
+    {
+      name: "Julio Humere",
+      time: "3 hours ago",
+      place: "Torre Eiffel",
+      photo:
+        "https://img.asmedia.epimg.net/resizer/QbgIKPOqmxvtzkusQK-P-C_yD5Q=/1952x1098/cloudfront-eu-central-1.images.arcpublishing.com/diarioas/7FLYNLT7ZZLDJCQ6DYMZO2KXTQ.jpg",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt vero placeat optio aliquam blanditiis eligendi officia culpa ad iusto magni doloribus, commodi assumenda sit amet, animi nisi, nobis corporis ab libero rerum voluptatibus in inventore repellendus consequuntur! Ducimus doloremque enim dolorum doloribus aut, consequatur nobis molestiae delectus necessitatibus aliquid laboriosam.",
+      stars: stars3,
+      attraction: "heigth & funny",
+      location: "Paris, France",
+      likes: 34,
+      comments: 12,
+      tag: "#Paris",
+      save: "Unsaved",
+    },
+  ];
+
   const handleHash = (e: any) => {
     e.preventDefault();
     setHash(e.target.value);
   };
 
-  const tagLugares = lugares && lugares.filter((e) => e.tag.includes(hash));
+  const tagPlaces = places && places.filter((e) => e.tag.includes(hash));
 
-  const tagLugaresSaved = saved && saved.filter((e) => e.tag.includes(hash));
+  const tagPlacesSaved = saved && saved.filter((e) => e.tag.includes(hash));
 
+  const tagPlacesVisited =
+    Visited && Visited.filter((e) => e.tag.includes(hash));
+
+  let [publications, setPublications] = useState(true);
   let [publicationsSaved, setPublicationSaved] = useState(false);
+  let [publicationsVisited, setPublicationsVisited] = useState(false);
+
+  const handleHome = (e: any) => {
+    e.preventDefault();
+    if (publications === false) {
+      setPublications(true);
+      setPublicationSaved(false);
+      setPublicationsVisited(false);
+    }
+    setHash("");
+  };
 
   const handleSaved = (e: any) => {
     e.preventDefault();
     if (publicationsSaved === false) {
       setPublicationSaved(true);
-    } else {
-      setPublicationSaved(false);
+      setPublicationsVisited(false);
+      setPublications(false);
     }
   };
 
-  console.log(publicationsSaved);
+  const handleVisited = (e: any) => {
+    e.preventDefault();
+    if (publicationsVisited === false) {
+      setPublicationsVisited(true);
+      setPublicationSaved(false);
+      setPublications(false);
+    }
+  };
 
   return (
     <div className={style.homeContainer}>
-      <NavBar />
+      <NavBar handleHome={handleHome} />
       <div className={style.feedContainer}>
-        <div className={style.feedLeft}>
-          <SectionAccount handleSaved={handleSaved} />
-          <SectionChat />
+        <div className={style.containerLeft}>
+          <div>
+            <div className={style.feedLeft}>
+              <SectionAccount
+                handleSaved={handleSaved}
+                handleVisited={handleVisited}
+              />
+              <SectionChat />
+            </div>
+          </div>
+          <div className={style.footerLeft}>
+            <FooterSocial />
+          </div>
         </div>
+
         <div className={style.feedCenter}>
           <div className={style.postGenerator}>
             <img src={profile} alt="Perfil" className={style.imgProfile} />
@@ -201,19 +259,31 @@ function Home(): JSX.Element {
             </div>
           </div>
           <div className={style.feedPublications}>
-            {publicationsSaved === false
-              ? tagLugares && tagLugares.map((e, i) => <Card places={e} />)
-              : tagLugaresSaved &&
-                tagLugaresSaved.map((e, i) => <Card places={e} />)}
+            {(publications &&
+              tagPlaces &&
+              tagPlaces.map((e, i) => <Card places={e} key={i} />)) ||
+              (publicationsSaved && <Saved place={tagPlacesSaved} />) ||
+              (publicationsVisited && (
+                <PlaceIVisited visited={tagPlacesVisited} />
+              ))}
           </div>
         </div>
-        <div className={style.feedRight}>
-          <SectionDiscover
-            hashTag={tagLugares}
-            hashTagSaved={tagLugaresSaved}
-            publicationsSaved={publicationsSaved}
-            handleHash={handleHash}
-          />
+        <div className={style.rigthcontainer}>
+          <div className={style.feedRight}>
+            <SectionDiscover
+              publications={publications}
+              publicationsSaved={publicationsSaved}
+              publicationsVisited={publicationsVisited}
+              hashTag={tagPlaces}
+              hashTagSaved={tagPlacesSaved}
+              hashTagVisited={tagPlacesVisited}
+              handleHash={handleHash}
+            />
+            <SectionSuggestions />
+          </div>
+          <div className={style.footerrigth}>
+            <FooterTerm />
+          </div>
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const User = require('../models/users.models')
 const Profile = require('../models/profiles.models')
 
-const CustomError = require('../utils/error-handler')
+const { CustomError } = require('../utils/error-handler')
 const { hash } = require('../utils/crypto')
 
 
@@ -18,6 +18,11 @@ const getAllUsers = () => {
   })
 }
 
+const findUserById = async (userId) => {
+  let user = await User.findById(userId)
+  return user
+}
+
 const getUserByEmail = (email) => {
   return new Promise((resolve, reject) => {
     User.findOne({ email: email })
@@ -30,7 +35,6 @@ const getUserByEmail = (email) => {
   })
 }
 
-
 const createUser = async (userData) => {
   const session = await mongoose.startSession()
   session.startTransaction()
@@ -41,12 +45,15 @@ const createUser = async (userData) => {
       username: userData.username,
       email: userData.email,
       password: hash(userData.password),
+      role: userData.role
     })
     // Guardar usuario en la base de datos
     await user.save({ session })
     // Crear nuevo perfil vacío asociado al usuario
     const profile = new Profile({
       user: user._id,
+      first_name: '',
+      last_name: '',
       photo: '',
       description: '',
       birthday: '',
@@ -69,11 +76,10 @@ const createUser = async (userData) => {
 const getProfile = async (userId) => {
   try {
     // Buscamos el perfil del usuario por su ID y lo retornamos
-    const profile = await Profile.findOne({ user: userId }, '-_id -user').lean()
-
+    const profile = await Profile.findOne({ user: userId }, '-_id').lean()
     return profile
   } catch (error) {
-    throw new CustomError('Not found Profile', 404, 'Not Found')
+    throw Error('Not found Profile', 404, 'Not Found')
   }
 }
 
@@ -97,7 +103,6 @@ const editProfile = async (userId, updatedFields) => {
   }
 }
 
-
 const removeUser = async (userId) => {
   return new Promise((resolve, reject) => {
     User.findById(userId)
@@ -120,6 +125,7 @@ const removeUser = async (userId) => {
 module.exports = {
   getAllUsers,
   getUserByEmail,
+  findUserById,
   createUser,
   getProfile,
   removeUser,

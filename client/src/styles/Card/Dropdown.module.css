@@ -12,18 +12,18 @@
 .container > ul {
     list-style: none;
     text-align: left;
-    padding-inline-end: 1rem;
-    padding-inline-start: 1rem;
-
+    padding-inline: 0;
 }
 
 .dropdownElement:focus,
 .dropdownElement:hover {
     background-color: var(--yellowPale);
-    width: 110%;
+    width: 100%;
     cursor: pointer;
 }
 
 .dropdownElement > p {
     color: var(--purple);
+    padding-inline: 1rem;
+    padding-block: 0.2rem;
 }

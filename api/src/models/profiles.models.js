@@ -8,6 +8,8 @@ const ProfileSchema = new Schema (
       ref: 'User', 
       required: true
     },
+    first_name: {type: String},
+    last_name: {type: String},
     photo: {type: String},
     description: {type: String, trim: true},
     birthday: {type: Date},

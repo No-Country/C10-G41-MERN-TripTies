@@ -6,15 +6,18 @@ import style from "../../styles/SectionAccount/Account.module.css";
 
 type props = {
   handleSaved: any;
+  handleVisited: any;
 };
 
-const SectionAccount = ({ handleSaved }: props) => {
+const SectionAccount = ({ handleSaved, handleVisited }: props) => {
   return (
     <>
       <h3 className={style.titleAccount}>Account</h3>
       <div className={style.containerAccount}>
         <img src={locationH} alt="location" />
-        <button className={style.buttons}>Places I visited</button>
+        <button onClick={handleVisited} className={style.buttons}>
+          Places I visited
+        </button>
       </div>
 
       <div className={style.containerAccount}>

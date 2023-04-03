@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 8000
 app.use(cors())/*
 Cors Settings
 */
-const whitelist = ['http://localhost:8000']
+const whitelist = ['http://localhost:3000']
 const corsOptions = {
   origin: (origin, callback) => {
     if (whitelist.includes(origin) || !origin) {
@@ -46,6 +46,9 @@ app.use(express.urlencoded({ extended: false }))
 
 //! Authenticate DB
 
+//TODO: when sessions get developed, delete getUserFromToken
+const getUserFromToken = require('./src/middlewares/auth.aux.middleware')
+app.use(getUserFromToken)
 
 
 app.get('/', ({ res }) => {

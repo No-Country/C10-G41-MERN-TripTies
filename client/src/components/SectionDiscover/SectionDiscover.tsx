@@ -4,23 +4,33 @@ import style from "../../styles/SectionDiscover/SectionDiscover.module.css";
 type props = {
   hashTag: any;
   hashTagSaved: any;
-  publicationsSaved: any;
+  hashTagVisited: any;
   handleHash: (value: any) => void;
+  publications: any;
+  publicationsSaved: any;
+  publicationsVisited: any;
 };
 function SectionDiscover({
   hashTag,
   hashTagSaved,
-  publicationsSaved,
+  hashTagVisited,
   handleHash,
+  publications,
+  publicationsSaved,
+  publicationsVisited,
 }: props): JSX.Element {
   let [arrayHashTag, setArrayHashTag] = useState([]);
   let [arrayHashTagSaved, setArrayHashTagSaved] = useState([]);
+  let [arrayHashTagVisited, setArrayHashTagVisited] = useState([]);
 
   useEffect(() => {
     let arrayTag = hashTag && hashTag.map((e: any) => e.tag);
     setArrayHashTag(arrayTag);
     let arrayHashTagSaved = hashTagSaved && hashTagSaved.map((e: any) => e.tag);
     setArrayHashTagSaved(arrayHashTagSaved);
+    let arrayHashTagVisited =
+      hashTagVisited && hashTagVisited.map((e: any) => e.tag);
+    setArrayHashTagVisited(arrayHashTagVisited);
   }, []);
 
   let Tags =
@@ -31,25 +41,27 @@ function SectionDiscover({
     arrayHashTagSaved &&
     arrayHashTagSaved.filter((e, i) => arrayHashTagSaved.indexOf(e) === i);
 
-  console.log(Tags);
-  console.log(TagsSaved);
+  let TagVisited =
+    arrayHashTagVisited &&
+    arrayHashTagVisited.filter((e, i) => arrayHashTagVisited.indexOf(e) === i);
 
   return (
     <section className={style.hashTagContainer}>
       <h2 className={style.hashTagTitle}>Discover</h2>
-      {publicationsSaved === false
-        ? Tags &&
-          Tags.map((e: any, i) => (
-            <button
-              key={i}
-              className={style.hashTagButton}
-              onClick={handleHash}
-              value={e}
-            >
-              {e}
-            </button>
-          ))
-        : TagsSaved &&
+      {(publications &&
+        Tags &&
+        Tags.map((e: any, i) => (
+          <button
+            key={i}
+            className={style.hashTagButton}
+            onClick={handleHash}
+            value={e}
+          >
+            {e}
+          </button>
+        ))) ||
+        (publicationsSaved &&
+          TagsSaved &&
           TagsSaved.map((e: any, i) => (
             <button
               key={i}
@@ -59,7 +71,19 @@ function SectionDiscover({
             >
               {e}
             </button>
-          ))}
+          ))) ||
+        (publicationsVisited &&
+          TagVisited &&
+          TagVisited.map((e: any, i) => (
+            <button
+              key={i}
+              className={style.hashTagButton}
+              onClick={handleHash}
+              value={e}
+            >
+              {e}
+            </button>
+          )))}
     </section>
   );
 }

@@ -1,5 +1,5 @@
 const User = require('../services/user.services')
-
+const CustomError = require('../utils/error-handler')
 
 const postUser = async (req, res, next) => {
   try {
@@ -20,6 +20,20 @@ const getAllUsers = (req, res, next) => {
     .catch(err => {
       next(err)
     })
+}
+
+const getUserById = async (req, res, next) => {
+  const { userId } = req.params
+
+  try {
+    const user = await User.findUserById(userId)
+    if (!user) {
+      throw new CustomError(404, 'User not found')
+    }
+    res.status(200).json({ user })
+  } catch (error) {
+    next(error)
+  }
 }
 
 
@@ -50,14 +64,11 @@ const deleteUser = (req, res, next) => {
 
 const getProfile = async (req, res, next) => {
   const { userId } = req.params
-
   try {
     const profile = await User.getProfile(userId)
-
     if (!profile) {
       return res.status(404).json({ message: 'Profile not found' })
     }
-
     return res.status(200).json({ profile })
   } catch (error) {
     return res.status(500).json({ message: error.message })
@@ -67,7 +78,8 @@ const getProfile = async (req, res, next) => {
 module.exports = {
   postUser,
   getAllUsers, 
+  getUserById,
   getProfile,
-  putProfile,
+  putProfile, 
   deleteUser
 }

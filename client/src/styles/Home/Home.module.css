@@ -24,6 +24,20 @@
   position: sticky;
   left: 23px;
   top: 6rem;
+  z-index: 1;
+}
+.containerLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.footerLeft {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
 }
 
 .feedCenter {
@@ -127,12 +141,13 @@
 .feedPublications {
   min-height: 70vh;
   width: 100%;
-  background-color: var(--white);
+  background-color: var(--violetLight);
   margin-top: 2.1rem;
   border-radius: 20px;
 }
 
 .feedRight {
+  position: relative;
   width: 320px;
   min-height: 75vh;
   background-color: var(--white);
@@ -143,4 +158,13 @@
   position: sticky;
   right: 23px;
   top: 6rem;
+  z-index: 1;
+}
+
+.footerrigth {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
 }

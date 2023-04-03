@@ -1,3 +1,4 @@
+import React from 'react';
 import style from "../../styles/Register/Register.module.css";
 import oculto from "../../img/oculto.png";
 import visible from "../../img/visible.png";
@@ -5,48 +6,76 @@ import google from "../../img/google.png";
 import facebook from "../../img/facebook.png";
 import { useState } from "react";
 import MiniFooter from "../MiniFooter/MiniFooter";
+import { createUser } from "../../redux/actions/";
 import { useNavigate } from "react-router-dom";
+import { Users } from '../../types';
+
+interface FormState {
+  newUser: Users,
+  visibility: string,
+  passwordType: string,
+}
 
 function Register(): JSX.Element {
-  const [visibility, setVisibility] = useState(oculto);
-  const [passwordType, setPasswordType] = useState("password");
+  const [visibility, setVisibility] = useState<FormState["visibility"]>(oculto);
+  const [passwordType, setPasswordType] = useState<FormState["passwordType"]>("password");
 
-  const [input, setInput] = useState({
-    name: "",
+  const [newUser, setInput] = useState<FormState["newUser"]>({
+    username: "",
     email: "",
     password: "",
   });
+
   const nav = useNavigate();
 
-  function handlePassword(e: any) {
+    /* Maneja la visibilidad de la contraseña cuando se hace click en el botón */
+  function handlePassword(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) : void {
     e.preventDefault();
     setPasswordType(passwordType === "password" ? "text" : "password");
     setVisibility(visibility === oculto ? visible : oculto);
   }
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    setInput({
-      name: "",
-      email: "",
-      password: "",
-    });
+    /* Maneja el evento de envío del formulario */
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+      e.preventDefault();
+      try {
+        
+        if (newUser.username.length === 0 || newUser.email.length === 0 || newUser.password.length === 0) {
+          alert("Fill in the required fields");
+        } else {
+          createUser(newUser)
+          setInput({
+            username: "",
+            email: "",
+            password: "",
+          });
+    
+          nav("/login");
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    };
 
-    //   const data = window.localStorage.setItem("userData", JSON.stringify(input));
-    window.localStorage.setItem("users", JSON.stringify(input));
-    nav("/login");
-  };
-
-  const handleChange = (e: any) => {
+    /* Setea el estado local con los datos del fomulario */
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) : void => {
+    e.target.name === "name" ?
     setInput({
-      ...input,
+      ...newUser,
+      username: e.target.value,
+    })
+    :
+    setInput({
+      ...newUser,
       [e.target.name]: e.target.value,
-    });
+    })
   };
 
   return (
     <div className={style.conteiner}>
       <form onSubmit={handleSubmit}>
+      <div className={style.Logo}>
+      </div>
         <h1>Create Account</h1>
         <input
           onChange={(e) => handleChange(e)}
@@ -55,7 +84,7 @@ function Register(): JSX.Element {
           placeholder="Full Name"
           name="name"
           id="name"
-          value={input.name}
+          value={newUser.username}
         />
         <input
           onChange={(e) => handleChange(e)}
@@ -64,7 +93,7 @@ function Register(): JSX.Element {
           placeholder="Email address"
           name="email"
           id="email"
-          value={input.email}
+          value={newUser.email}
         />
         <div className={style.password}>
           <input
@@ -74,17 +103,19 @@ function Register(): JSX.Element {
             placeholder="Password"
             name="password"
             id="password"
-            value={input.password}
+            value={newUser.password}
           />
           <button onClick={(e) => handlePassword(e)}>
             <img src={visibility} alt="password visibility" />
           </button>
         </div>
         <div className={style.checkbox}>
+          <div className={style.content}>
           <input type="checkbox" id="checkbox" />
           <span>
             I agree with <a href="#">Terms</a> and <a href="#">Privacy</a>
           </span>
+          </div>
         </div>
         <button className={style.btn} type="submit">
           SIGN UP
