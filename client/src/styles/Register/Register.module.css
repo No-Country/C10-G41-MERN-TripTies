@@ -1,232 +1,233 @@
 /* Estilos para el contenedor principal */
 .conteiner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    place-items: center;
-    margin: auto;
-    height: 100vh;
-    background-image: url('../../img/paper-Planes-background.png');
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
-    background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  place-items: center;
+  margin: auto;
+  height: 100vh;
+  background-image: url("../../img/paper-Planes-background.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
 }
 
 /* Estilos para el formulario */
 .conteiner form {
-    display: flex;
-    flex-direction: column;
-    border: 2px solid black;
-    background-color: #ffffff;
-    border-color: #ffffff;
-    padding-top: 20px;
-    border-radius: 20px;
-    width: 591px;
-    height: 583px;
-    align-items: center;
-    z-index: 1;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid black;
+  background-color: #ffffff;
+  border-color: #ffffff;
+  padding-top: 20px;
+  border-radius: 20px;
+  width: 591px;
+  height: 583px;
+  align-items: center;
+  z-index: 1;
 }
 
 /* Estilos para el título del formulario */
 .conteiner h1 {
-    color: var(--purple);
-    font-size: 30px;
-    font-weight: 400;
+  color: var(--purple);
+  font-size: 30px;
+  font-weight: 400;
 }
 
 /* Estilos para el texto del formulario */
 .conteiner p {
-    color: var(--brown);
+  color: var(--brown);
 }
 
 /* Estilos para los enlaces del formulario */
 .conteiner a {
-    color: var(--purpleLight);
+  color: var(--purpleLight);
 }
 
 /* Estilos para los campos de entrada */
 .input {
-    padding: 10px;
-    width: 329px;
-    box-sizing: border-box;
-    border-radius: 6px;
-    border: 2px solid var(--violetLight);
-    margin-block-end: 18px;
+  padding: 10px;
+  width: 329px;
+  box-sizing: border-box;
+  border-radius: 6px;
+  border: 2px solid var(--violetLight);
+  margin-block-end: 18px;
 }
 
 .input:hover {
-    border: 2px solid var(--violet);
+  border: 2px solid var(--violet);
 }
 
 .input:focus {
-    border: 2px solid var(--violet);
-    outline: none;
+  border: 2px solid var(--violet);
+  outline: none;
 }
 
 .input:focus::placeholder {
-    color: transparent;
-    background: none;
+  color: transparent;
+  background: none;
 }
 
 .input::placeholder {
-    color: var(--brown);
-    padding: 8px;
-    padding-inline-start: 25px;
+  color: var(--brown);
+  padding: 8px;
+  padding-inline-start: 25px;
 }
 
 /* Estilos para los iconos del formulario */
 input[id^="name"]::placeholder {
-    background-image: url('../../img/user.png');
-    background-repeat: no-repeat;
-    background-position: 0px center;
+  background-image: url("../../img/user.png");
+  background-repeat: no-repeat;
+  background-position: 0px center;
 }
 
 input[id^="email"]::placeholder {
-    background-image: url('../../img/email.png');
-    background-repeat: no-repeat;
-    background-position: 0px center;
+  background-image: url("../../img/email.png");
+  background-repeat: no-repeat;
+  background-position: 0px center;
 }
 
 input[id^="password"]::placeholder {
-    background-image: url('../../img/password.png');
-    background-repeat: no-repeat;
-    background-position: 0px center;
+  background-image: url("../../img/password.png");
+  background-repeat: no-repeat;
+  background-position: 0px center;
 }
 
 /* Estilos para el checkbox */
 .checkbox {
-    display: flex;
-    width: 333px;
+  display: flex;
+  width: 333px;
 }
 
 .content {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .checkbox span {
-    color: var(--brown);
+  color: var(--brown);
 }
 
 input[id^="checkbox"] {
-    cursor: pointer;
-    background-color: #fff;
-    background-image: url('../../img/check.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    width: 18px;
-    height: 18px;
-    appearance: none;
-    border: 1.5px solid var(--violetLight);
-    border-radius: 3px;
-    margin-inline-end: 10px;
+  cursor: pointer;
+  background-color: #fff;
+  background-image: url("../../img/check.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 18px;
+  height: 18px;
+  appearance: none;
+  border: 1.5px solid var(--violetLight);
+  border-radius: 3px;
+  margin-inline-end: 10px;
 }
 
 .checkbox input:checked {
-    background-color: var(--violet);
+  background-color: var(--violet);
 }
 
 /* Estilos para el botón de 'mostrar contraseña' */
 .password {
-    display: flex;
-    align-items: flex-start;
+  display: flex;
+  align-items: flex-start;
 }
 
 .password button {
-    margin-inline-start: -55px;
-    background-color: rgba(255, 255, 255, 0);
-    border: none;
-    outline: none;
+  margin-inline-start: -55px;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  outline: none;
 }
 
 .password button:focus {
-    outline: none;
+  outline: none;
 }
 
 /* Estilos para el botón 'registrarse' */
 .btn {
-    width: 329px;
-    height: 41px;
-    background-color: var(--yellowPale);
-    box-shadow: 0px 2.9566px 2.9566px rgba(0, 0, 0, 0.25), inset 0px 1.4783px 2.9566px rgba(255, 255, 255, 0.25), inset 0px -1.4783px 2.9566px rgba(0, 0, 0, 0.25);
-    border-radius: 11px;
-    border: none;
-    font-size: 11px;
-    margin: 40px 0 10px;
+  width: 329px;
+  height: 41px;
+  background-color: var(--yellowPale);
+  box-shadow: 0px 2.9566px 2.9566px rgba(0, 0, 0, 0.25),
+    inset 0px 1.4783px 2.9566px rgba(255, 255, 255, 0.25),
+    inset 0px -1.4783px 2.9566px rgba(0, 0, 0, 0.25);
+  border-radius: 11px;
+  border: none;
+  font-size: 11px;
+  margin: 40px 0 10px;
 }
 
 /* Estilos para las redes sociales */
 .redes {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    margin-block-end: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  margin-block-end: 40px;
 }
 
 /* Estilos para pantallas de hasta 600px de ancho */
 @media only screen and (max-width: 600px) {
+  /* Reducir el ancho del contedor y fondo transparente */
+  .conteiner {
+    width: 70%;
+    background: none;
+  }
 
-    /* Reducir el ancho del contedor y fondo transparente */
-    .conteiner {
-        width: 70%;
-        background: none;
-    }
+  /* Estilos para el logo */
+  .Logo {
+    background-image: url("../../img/Logo.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding: 25px;
+    margin-block-end: 15px;
+  }
 
-    /* Estilos para el logo */
-    .Logo {
-        background-image: url('../../img/Logo.png');
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-        padding: 25px;
-        margin-block-end: 15px;
-    }
+  .conteiner form {
+    width: 90%;
+    height: auto;
+    padding: 10px;
+    background: none;
+    border: none;
+  }
 
-    .conteiner form {
-        width: 90%;
-        height: auto;
-        padding: 10px;
-        background: none;
-        border: none;
-    }
+  /* Ajustar el tamaño del boton */
+  .btn {
+    width: 100%;
+  }
 
-    /* Ajustar el tamaño del boton */
-    .btn {
-        width: 100%;
-    }
+  /* Ajustar el tamaño de los inputs */
+  .input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 
-    /* Ajustar el tamaño de los inputs */
-    .input {
-        width: 100%;
-        margin-bottom: 10px;
-    }
+  .password {
+    width: 100%;
+  }
 
-    .password {
-        width: 100%;
-    }
+  /* Estilos para el checkbox */
+  .checkbox {
+    display: flex;
+    width: 100%;
+  }
 
-    /* Estilos para el checkbox */
-    .checkbox {
-        display: flex;
-        width: 100%;
-    }
+  /* Ajustar el tamaño del texto */
+  .conteiner h1 {
+    font-size: 24px;
+  }
 
-    /* Ajustar el tamaño del texto */
-    .conteiner h1 {
-        font-size: 24px;
-    }
+  .conteiner p {
+    font-size: 14px;
+  }
 
-    .conteiner p {
-        font-size: 14px;
-    }
+  .checkbox span {
+    font-size: 14px;
+  }
 
-    .checkbox span {
-        font-size: 14px;
-    }
-
-    .conteiner a {
-        font-size: 14px;
-    }
-
+  .conteiner a {
+    font-size: 14px;
+  }
 }
