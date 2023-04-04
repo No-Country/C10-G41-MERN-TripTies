@@ -20,12 +20,14 @@ import SectionSuggestions from "../SectionSuggestions/SectionSuggestions";
 import FooterTerm from "../Footers/FooterTerm";
 import FooterSocial from "../Footers/FooterSocial";
 import MiniFooter from "../MiniFooter/MiniFooter";
+import SlideShow from "../SlideShow/SlideShow";
 
 interface lugaresType {
   name: string;
   time: string;
   place: string;
-  photo: string;
+  photo: string[];
+  video: string[];
   description: string;
   stars: string;
   attraction: string;
@@ -44,8 +46,13 @@ function Home(): JSX.Element {
       name: "Julio Humere",
       time: "3 hours ago",
       place: "Torre Eiffel",
-      photo:
-        "https://img.asmedia.epimg.net/resizer/QbgIKPOqmxvtzkusQK-P-C_yD5Q=/1952x1098/cloudfront-eu-central-1.images.arcpublishing.com/diarioas/7FLYNLT7ZZLDJCQ6DYMZO2KXTQ.jpg",
+      photo: [
+        {
+          url: "https://img.asmedia.epimg.net/resizer/QbgIKPOqmxvtzkusQK-P-C_yD5Q=/1952x1098/cloudfront-eu-central-1.images.arcpublishing.com/diarioas/7FLYNLT7ZZLDJCQ6DYMZO2KXTQ.jpg",
+          type: "image",
+        },
+      ],
+      video: [],
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt vero placeat optio aliquam blanditiis eligendi officia culpa ad iusto magni doloribus, commodi assumenda sit amet, animi nisi, nobis corporis ab libero rerum voluptatibus in inventore repellendus consequuntur! Ducimus doloremque enim dolorum doloribus aut, consequatur nobis molestiae delectus necessitatibus aliquid laboriosam.",
       stars: stars3,
@@ -60,8 +67,13 @@ function Home(): JSX.Element {
       name: "Edgard Pazos",
       time: "1 hours ago",
       place: "Museo Louvre",
-      photo:
-        "https://upload.wikimedia.org/wikipedia/commons/6/66/Louvre_Museum_Wikimedia_Commons.jpg",
+      photo: [
+        {
+          url: "https://upload.wikimedia.org/wikipedia/commons/6/66/Louvre_Museum_Wikimedia_Commons.jpg",
+          type: "image",
+        },
+      ],
+      video: [],
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt vero placeat optio aliquam blanditiis eligendi officia culpa ad iusto magni doloribus, commodi assumenda sit amet, animi nisi, nobis corporis ab libero rerum voluptatibus in inventore repellendus consequuntur! Ducimus doloremque enim dolorum doloribus aut, consequatur nobis molestiae delectus necessitatibus aliquid laboriosam.",
       stars: stars2,
@@ -76,8 +88,13 @@ function Home(): JSX.Element {
       name: "Jose Castro",
       time: "12 hours ago",
       place: "Santiago Bernabeu",
-      photo:
-        "https://www.spain.info/export/sites/segtur/.content/imagenes/cabeceras-grandes/madrid/estadio-bernabeu-vista-aerea-c-turismo-madrid.jpg",
+      photo: [
+        {
+          url: "https://www.spain.info/export/sites/segtur/.content/imagenes/cabeceras-grandes/madrid/estadio-bernabeu-vista-aerea-c-turismo-madrid.jpg",
+          type: "image",
+        },
+      ],
+      video: [],
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt vero placeat optio aliquam blanditiis eligendi officia culpa ad iusto magni doloribus, commodi assumenda sit amet, animi nisi, nobis corporis ab libero rerum voluptatibus in inventore repellendus consequuntur! Ducimus doloremque enim dolorum doloribus aut, consequatur nobis molestiae delectus necessitatibus aliquid laboriosam.",
       stars: stars1,
@@ -92,8 +109,13 @@ function Home(): JSX.Element {
       name: "Nazarena Prieto",
       time: "20 hours ago",
       place: "Tuneles de Cuchi",
-      photo:
-        "https://media-cdn.tripadvisor.com/media/photo-s/0a/78/2b/b2/inside-of-tunnel.jpg",
+      photo: [
+        {
+          url: "https://media-cdn.tripadvisor.com/media/photo-s/0a/78/2b/b2/inside-of-tunnel.jpg",
+          type: "image",
+        },
+      ],
+      video: [],
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt vero placeat optio aliquam blanditiis eligendi officia culpa ad iusto magni doloribus, commodi assumenda sit amet, animi nisi, nobis corporis ab libero rerum voluptatibus in inventore repellendus consequuntur! Ducimus doloremque enim dolorum doloribus aut, consequatur nobis molestiae delectus necessitatibus aliquid laboriosam.",
       stars: stars1,
@@ -108,7 +130,32 @@ function Home(): JSX.Element {
       name: "Nazarena Prieto",
       time: "20 hours ago",
       place: "La Bombonera",
-      photo: "https://statics.eleconomista.com.ar/2023/03/64062d3073bd9.png",
+      photo: [
+        {
+          url: "https://statics.eleconomista.com.ar/2023/03/64062d3073bd9.png",
+          type: "image",
+        },
+        {
+          url: "https://media.tycsports.com/files/2023/02/16/535189/foto-bombonera_862x485_wmk.webp?v=7",
+          type: "image",
+        },
+        {
+          url: "https://fotos.perfil.com/2023/04/02/trim/720/410/bombonera-1539489.jpg",
+          type: "image",
+        },
+      ],
+      video: [
+        {
+          url: "https://res.cloudinary.com/dtpsfvnfo/video/upload/v1680545377/prueba_video_uzwzph.mp4",
+          type: "video",
+        },
+
+        {
+          url: "https://res.cloudinary.com/dtpsfvnfo/video/upload/v1680546131/prueba_video_2_tsjgxk.mp4",
+          type: "video",
+        },
+      ],
+
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt vero placeat optio aliquam blanditiis eligendi officia culpa ad iusto magni doloribus, commodi assumenda sit amet, animi nisi, nobis corporis ab libero rerum voluptatibus in inventore repellendus consequuntur! Ducimus doloremque enim dolorum doloribus aut, consequatur nobis molestiae delectus necessitatibus aliquid laboriosam.",
       stars: stars3,
@@ -126,8 +173,13 @@ function Home(): JSX.Element {
       name: "Edgar Pazos",
       time: "1 hours ago",
       place: "Museo Louvre",
-      photo:
-        "https://upload.wikimedia.org/wikipedia/commons/6/66/Louvre_Museum_Wikimedia_Commons.jpg",
+      photo: [
+        {
+          url: "https://upload.wikimedia.org/wikipedia/commons/6/66/Louvre_Museum_Wikimedia_Commons.jpg",
+          type: "image",
+        },
+      ],
+      video: [],
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt vero placeat optio aliquam blanditiis eligendi officia culpa ad iusto magni doloribus, commodi assumenda sit amet, animi nisi, nobis corporis ab libero rerum voluptatibus in inventore repellendus consequuntur! Ducimus doloremque enim dolorum doloribus aut, consequatur nobis molestiae delectus necessitatibus aliquid laboriosam.",
       stars: stars2,
@@ -142,7 +194,18 @@ function Home(): JSX.Element {
       name: "Nazarena Prieto",
       time: "20 hours ago",
       place: "La Bombonera",
-      photo: "https://statics.eleconomista.com.ar/2023/03/64062d3073bd9.png",
+      photo: [
+        "https://statics.eleconomista.com.ar/2023/03/64062d3073bd9.png",
+
+        "https://media.tycsports.com/files/2023/02/16/535189/foto-bombonera_862x485_wmk.webp?v=7",
+
+        "https://www.ole.com.ar/2020/05/25/G_THA0PzV_860x575__1.jpg",
+      ],
+      video: [
+        "https://res.cloudinary.com/dtpsfvnfo/video/upload/v1680545377/prueba_video_uzwzph.mp4",
+
+        "https://res.cloudinary.com/dtpsfvnfo/video/upload/v1680546131/prueba_video_2_tsjgxk.mp4",
+      ],
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt vero placeat optio aliquam blanditiis eligendi officia culpa ad iusto magni doloribus, commodi assumenda sit amet, animi nisi, nobis corporis ab libero rerum voluptatibus in inventore repellendus consequuntur! Ducimus doloremque enim dolorum doloribus aut, consequatur nobis molestiae delectus necessitatibus aliquid laboriosam.",
       stars: stars3,
@@ -160,8 +223,10 @@ function Home(): JSX.Element {
       name: "Julio Humere",
       time: "3 hours ago",
       place: "Torre Eiffel",
-      photo:
+      photo: [
         "https://img.asmedia.epimg.net/resizer/QbgIKPOqmxvtzkusQK-P-C_yD5Q=/1952x1098/cloudfront-eu-central-1.images.arcpublishing.com/diarioas/7FLYNLT7ZZLDJCQ6DYMZO2KXTQ.jpg",
+      ],
+      video: [],
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt vero placeat optio aliquam blanditiis eligendi officia culpa ad iusto magni doloribus, commodi assumenda sit amet, animi nisi, nobis corporis ab libero rerum voluptatibus in inventore repellendus consequuntur! Ducimus doloremque enim dolorum doloribus aut, consequatur nobis molestiae delectus necessitatibus aliquid laboriosam.",
       stars: stars3,
@@ -220,7 +285,7 @@ function Home(): JSX.Element {
 
   return (
     <div className={style.homeContainer}>
-      <NavBar handleHome={handleHome} />
+      <NavBar handleHome={handleHome} places={places} />
       <div className={style.feedContainer}>
         <div className={style.containerLeft}>
           <div>
