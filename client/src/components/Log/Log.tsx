@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/store/hooks';
 import { loginUser } from '../../redux/actions/Users';
+import swal from 'sweetalert';
 
 function Log(): JSX.Element {
 
@@ -17,8 +18,29 @@ function Log(): JSX.Element {
 
     const handleLogin = (e : React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch(loginUser(email, password))
-        nav("/home") 
+        if(email === "" && password === ""){
+            swal({
+                title: "All the fields are required",
+                className: `${style.alert}`,
+                icon: "warning",
+            })
+        } else if(email === "" ){
+            swal({
+                title: "Email is required",
+                className: `${style.alert}`,
+                icon: "warning",
+            })
+        } else if (password === "") {
+            swal({
+                title: "Password is required",
+                className: `${style.alert}`,
+                icon: "warning",
+            })
+        } else {
+            dispatch(loginUser(email, password))
+            nav("/home") 
+
+        }
     }
 
     return (
