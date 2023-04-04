@@ -7,8 +7,9 @@ import arrowDown from "../../img/dropDownArrow.png";
 import { useEffect, useState } from "react";
 import DropdownUser from "./DropdownUser";
 import { Link } from "react-router-dom";
+import Search from "../Search/Search";
 
-function NavBar({ handleHome }: any): JSX.Element {
+function NavBar({ handleHome, places }: any): JSX.Element {
   const [name, setName] = useState("");
   const [display, setDisplay] = useState("none");
 
@@ -33,14 +34,7 @@ function NavBar({ handleHome }: any): JSX.Element {
         <img src={logo} alt="" />
         <h1 className={style.navTitleh1}>TripTies</h1>
       </Link>
-
-      <div className={style.navSearch}>
-        <input
-          type="text"
-          className={style.navInput}
-          placeholder="Where are you going?"
-        />
-      </div>
+      <Search places={places} />
       <div className={style.navButtons}>
         <img className={style.navBell} src={bell} alt="bell" />
         <section className={style.dropDownArrow}>

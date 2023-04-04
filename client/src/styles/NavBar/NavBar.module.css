@@ -19,55 +19,12 @@
   margin-left: 1rem;
 }
 
-.navSearch {
-  width: 100%;
-  margin-right: 8rem;
-}
-
-.navInput {
-  width: 663px;
-  height: 41px;
-  border-radius: 10px;
-  border: 1.5px solid var(--violetLight);
-  box-sizing: border-box;
-}
-
-.navInput:hover {
-  border: 2px solid var(--violet);
-}
-
-.navInput:focus {
-  border: 2px solid var(--violet);
-  outline: none;
-  padding-left: 1rem;
-}
-
-.navInput:focus::placeholder {
-  color: transparent;
-}
-.navInput[type="text"]:focus::placeholder {
-  background: none;
-}
-
-.navInput::placeholder {
-  color: var(--brown);
-  padding: 8px;
-  padding-inline-start: 50px;
-  font-size: 16px;
-}
-.navInput[type="text"]::placeholder {
-  background-image: url("../../img/search.png");
-  background-repeat: no-repeat;
-  background-position: 0px center;
-  background-position-x: 20px;
-}
-
 .navButtons {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   width: 60%;
-  margin-right: 0.5rem;
+  /* margin-right: 0.5rem; */
 }
 
 .navButtonsh2 {

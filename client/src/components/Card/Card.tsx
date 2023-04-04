@@ -15,6 +15,7 @@ import unsaved from "../../img/archive-tick-none.png";
 import saved from "../../img/archive-tick.png";
 import stars from "../../img/stars.png";
 import Dropdown from "./Dropdown";
+import SlideShow from "../SlideShow/SlideShow";
 
 type props = {
   places: any;
@@ -71,12 +72,7 @@ function Card({ places }: props) {
             <span>{places.place}</span>
           </aside>
         </div>
-        <img
-          src={places.photo}
-          alt="london coffee"
-          width="560px"
-          height="216px"
-        />
+        <SlideShow media={[places.photo, places.video]} />
         <div className={style.likesAndComments}>
           <aside>
             <img src={boldHeart} alt="bold heart" />
