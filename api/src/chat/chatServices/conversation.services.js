@@ -80,9 +80,9 @@ const removeConversation = async (conversationId) => {
 
 
 // createConversation({
-//   title: 'Conversacion Nico - Samu',//? Titulo del chat
-//   ownerId: '6428d2b0317c9ed3dd6d14f3', //? Nicolas como owner
-//   participantId: '6428d2cb317c9ed3dd6d14f7' //? Samuel como invitado
+//   title: 'Conversacion de prueba',//? Titulo del chat
+//   ownerId: '6428d2cb317c9ed3dd6d14f7', //? Nicolas como owner
+//   participantId: '6428f0b55f595dbcf72ea7df' //? Samuel como invitado
 // })
 //   .then(data => console.log(data))
 //   .catch(err => console.log(err))
