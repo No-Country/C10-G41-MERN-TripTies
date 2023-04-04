@@ -1,0 +1,38 @@
+.containerSlider {
+  width: 500px;
+  overflow: hidden;
+  position: relative;
+}
+
+.slider {
+  display: flex;
+  transition: 0.2s ease-out;
+  position: relative;
+}
+
+.containerSlider h2 {
+  font-size: 12px;
+  background-color: white;
+  color: #000;
+  font-weight: lighter;
+  position: absolute;
+  bottom: 5%;
+  right: 10%;
+  padding: 0.5em;
+  border-radius: 4px;
+}
+
+.containerButtons {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.containerButtons button {
+  background: none;
+  border: none;
+}
