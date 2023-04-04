@@ -69,19 +69,32 @@ const createUser = async (userData) => {
     // Si hay un error, deshacer la transacción
     await session.abortTransaction()
     session.endSession()
-    throw new Error(error.message)
+    throw new CustomError(error.message)
   }
 }
 
-const getProfile = async (userId) => {
+const getProfile = async (id) => {
   try {
     // Buscamos el perfil del usuario por su ID y lo retornamos
-    const profile = await Profile.findOne({ user: userId }, '-_id').lean()
+    const profile = await Profile.findById(id, '_id', 'user').lean()
     return profile
   } catch (error) {
     throw Error('Not found Profile', 404, 'Not Found')
   }
 }
+
+const findAllProfiles = () => {
+  return new Promise((resolve, reject) => {
+    Profile.find()
+      .then(profiles => {
+        resolve(profiles)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+}
+
 
 const editProfile = async (userId, updatedFields) => {
   const session = await mongoose.startSession()
@@ -128,6 +141,7 @@ module.exports = {
   findUserById,
   createUser,
   getProfile,
+  findAllProfiles,
   removeUser,
   editProfile
 }

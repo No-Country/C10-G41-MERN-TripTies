@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import style from "../../styles/Card/Card.module.css";
 import avatar from "../../img/avatar.png";
 import menuVertical from "../../img/menu-vertical.png";
@@ -22,6 +22,24 @@ type props = {
 };
 function Card({ places }: props) {
   const [display, setDisplay] = useState("none");
+  const ref = useRef<HTMLImageElement>(null);
+
+  
+
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+          setDisplay("none");
+      }
+  };
+
+  document.addEventListener('mousedown', handleOutsideClick);
+
+  return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+  };
+  }, [ref])
+   
 
   const handleAppear = () => {
     if (display === "none") {
@@ -42,6 +60,7 @@ function Card({ places }: props) {
           </aside>
           <div>
             <img
+              ref={ref}
               onClick={handleAppear}
               className={style.dotMenu}
               src={menuVertical}

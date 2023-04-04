@@ -17,8 +17,7 @@
         - get: Trae información del perfil del usuario
         - delete: elimina usuario //Fix que el usuario unicamente pueda eliminar cuenta
     - /:userId/profiles 
-        - put: edita información del perfil // Fix que unicamente el user pueda editar sus datos
-        - get: trae informacion del 
+        - put: edita información del perfil // Fix que unicamente el user pueda editar sus datos //Añadir firts and last name
 
 - /conversation
     - get: Obtener todas las conversations // Fix todos solo user ve sus conversations

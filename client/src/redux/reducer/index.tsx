@@ -2,7 +2,12 @@ const initialState = {
     users: []
 }
 
-const rootReducer = (state = initialState, action:any) => {
+interface Action {
+    type: string;
+    payload?: any;
+}
+
+const rootReducer = (state = initialState, action:Action) => {
     switch(action.type) {
         case "GET_USER":
             return {

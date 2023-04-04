@@ -8,7 +8,7 @@ import AboutUs from "./components/AboutUs/AboutUs";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import { Provider } from "react-redux";
-import store from "./redux/store";
+import { store } from "./redux/store";
 import "./index.css";
 import Saved from "./components/Saved/Saved";
 import PlaceIVisited from "./components/PlaceIVisited/PlaceIVisited";

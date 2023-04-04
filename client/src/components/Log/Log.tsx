@@ -4,23 +4,21 @@ import style from '../../styles/Log/Log.module.css';
 import MiniFooter from '../MiniFooter/MiniFooter';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../redux/store/hooks';
+import { loginUser } from '../../redux/actions/Users';
 
 function Log(): JSX.Element {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    
     const nav = useNavigate();
+    const dispatch = useAppDispatch();
 
-
-    const userData: any = window.localStorage.getItem("users")
-    const data = JSON.parse(userData)
-    const handleLogin = (e : any) => {
-        e.preventDefault()
-        if (data === null || data.email !== email && data.password !== password ) {
-            alert("The email or the password are incorrect");
-        } else if (data.email === email && data.password === password) {
-            nav("/home")
-        }
+    const handleLogin = (e : React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        dispatch(loginUser(email, password))
+        nav("/home") 
     }
 
     return (

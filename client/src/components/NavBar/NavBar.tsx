@@ -4,7 +4,7 @@ import profile from "../../img/profileImage.png";
 import bell from "../../img/bell.png";
 import drop from "../../img/drop.png";
 import arrowDown from "../../img/dropDownArrow.png";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DropdownUser from "./DropdownUser";
 import { Link } from "react-router-dom";
 import Search from "../Search/Search";
@@ -12,6 +12,21 @@ import Search from "../Search/Search";
 function NavBar({ handleHome, places }: any): JSX.Element {
   const [name, setName] = useState("");
   const [display, setDisplay] = useState("none");
+  const ref = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+          setDisplay("none");
+      }
+  };
+
+  document.addEventListener('mousedown', handleOutsideClick);
+
+  return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+  };
+  }, [ref])
 
   const handleAppear = () => {
     if (display === "none") {
@@ -39,7 +54,12 @@ function NavBar({ handleHome, places }: any): JSX.Element {
         <img className={style.navBell} src={bell} alt="bell" />
         <section className={style.dropDownArrow}>
           <h2 className={style.navButtonsh2}>{name ? name : "Traveler"}</h2>
-          <img onClick={handleAppear} src={arrowDown} alt="arrowHead" />
+          <img 
+            ref={ref}
+            onClick={handleAppear} 
+            src={arrowDown} 
+            alt="arrowHead" 
+          />
           <DropdownUser display={display} />
         </section>
         <img src={profile} alt="" width="24" height="24" />
