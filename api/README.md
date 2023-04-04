@@ -15,11 +15,14 @@
 - /user
     - /:userId
         - get: Trae información del perfil del usuario
-        - delete: elimina usuario //Fix que el usuario unicamente pueda eliminar cuenta
-    - /:userId/profiles 
-        - put: edita información del perfil // Fix que unicamente el user pueda editar sus datos //Añadir firts and last name
-
-- /conversation
+        - delete: elimina usuario //Fix ruta
+- /profiles 
+    - get: Muestra todos los perfiles
+    - /:profileId 
+        - get: Trae un usuario por id de perfil
+        - /editProfile
+            - put: Edita informacion del perfil. //Fix: No guarda cambios. 
+- FIX THIS ROUTES /conversation
     - get: Obtener todas las conversations // Fix todos solo user ve sus conversations
     - post: Crear una nueva conversation // Para probar, unicamente funciona desde conversation.service
         - /:conversationId
