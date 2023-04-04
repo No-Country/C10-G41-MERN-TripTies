@@ -75,11 +75,22 @@ const getProfile = async (req, res, next) => {
   }
 }
 
+const getAllProfiles = (req, res, next) => {
+  User.findAllProfiles()
+    .then(profiles => {
+      res.status(200).json(profiles)
+    })
+    .catch(err => {
+      next(err)
+    })
+}
+
 module.exports = {
   postUser,
   getAllUsers, 
   getUserById,
   getProfile,
+  getAllProfiles,
   putProfile, 
   deleteUser
 }
