@@ -1,5 +1,5 @@
 .containerSlider {
-  width: 500px;
+  width: 550px;
   overflow: hidden;
   position: relative;
 }
@@ -8,6 +8,7 @@
   display: flex;
   transition: 0.2s ease-out;
   position: relative;
+  z-index: 3;
 }
 
 .containerSlider h2 {
@@ -20,19 +21,30 @@
   right: 10%;
   padding: 0.5em;
   border-radius: 4px;
+  z-index: 3;
 }
 
 .containerButtons {
-  height: 100%;
-  width: 100%;
   position: absolute;
   top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  z-index: 4;
 }
 
 .containerButtons button {
+  height: 100vh;
+  width: 60px;
   background: none;
+  pointer-events: all;
   border: none;
+  transition: 200ms ease-in-out;
+}
+.containerButtons button:hover {
+  background-color: rgb(245 245 245 / 20%);
 }

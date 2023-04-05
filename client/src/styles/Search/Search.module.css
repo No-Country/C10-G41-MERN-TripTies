@@ -1,10 +1,10 @@
 .navSearch {
   width: 100%;
-  margin-right: 8rem;
+  margin-right: 7.5rem;
 }
 
 .navInput {
-  width: 663px;
+  width: 670px;
   height: 41px;
   border-radius: 10px;
   border: 1.5px solid var(--violetLight);

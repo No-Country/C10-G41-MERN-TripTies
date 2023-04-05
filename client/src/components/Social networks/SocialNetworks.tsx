@@ -1,8 +1,12 @@
-import { IResolveParams, LoginSocialGoogle } from "reactjs-social-login";
+import {
+  IResolveParams,
+  LoginSocialGoogle,
+  LoginSocialFacebook,
+} from "reactjs-social-login";
 import { useCallback, useState } from "react";
 import google from "../../img/google.png";
 import facebook from "../../img/facebook.png";
-import FacebookLogin from "react-facebook-login";
+// import FacebookLogin from "react-facebook-login";
 
 function SocialNetworks(): JSX.Element {
   const clientID =
@@ -40,22 +44,14 @@ function SocialNetworks(): JSX.Element {
       >
         <img src={google} alt="Google" style={{ cursor: "pointer" }} />
       </LoginSocialGoogle>
-      <FacebookLogin
+      <LoginSocialFacebook
         appId={appID}
-        onClick={onLoginStart}
-        callback={onResolve}
-        fields="name,email,picture,birthday"
-        scope="public_profile, email, user_birthday"
-        textButton=""
-        icon={
-          <img src={facebook} alt="Facebook" style={{ cursor: "pointer" }} />
-        }
-        buttonStyle={{
-          border: "none",
-          background: "none",
-          marginBottom: "5px",
-        }}
-      />
+        onLoginStart={onLoginStart}
+        onResolve={onResolve}
+        onReject={onReject}
+      >
+        <img src={facebook} alt="Facebook" style={{ cursor: "pointer" }} />
+      </LoginSocialFacebook>
     </>
   );
 }
