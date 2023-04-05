@@ -1,6 +1,9 @@
 const Comment = require('../models/comment.models')
 
 const createComment = async (commentData) => {
+  if (commentData.parent_id && await Comment.findOne({_id: commentData.parent_id})=== null) {
+    throw new Error('Invalid parent_id')
+  }
   const newComment = new Comment(commentData)
   await newComment.save()
   return newComment
@@ -9,7 +12,22 @@ const createComment = async (commentData) => {
 //TODO: return in a tree form, with replies as a list in a field "replies :"
 const findComments = async () => {
   const comments = await Comment.find({})
-  return comments
+  console.log('COMMENTS:', comments)
+  const commentMap = new Map()
+  for(let comment of comments){
+    if(!comment.parent_id) {
+      const aux = comment.toObject()
+      aux.replies = []
+      commentMap.set(comment.id, aux)
+    }
+  }
+  for(const comment of comments){
+    if(comment.parent_id) {
+      const parentAux = commentMap.get(comment.parent_id.toString())
+      parentAux.replies.push(comment)
+    }
+  }
+  return([...commentMap.values()])
 }
 
 

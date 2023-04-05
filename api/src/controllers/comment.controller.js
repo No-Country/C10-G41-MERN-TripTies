@@ -18,15 +18,13 @@ const postComment = (req, res) => {
     })
 }
 
-const getComments = (req, res) => {
+const getComments = (req, res, next) => {
   findComments()
     .then((response) => {
       res.status(200).json(response)
     })
     .catch((err) => {
-      res.status(400).json({
-        message: err.message
-      })
+      next(err)
     })
 }
 
@@ -48,11 +46,14 @@ const updateComment = (req, res) => {
     })
 }
 
-const deleteComment = (req, res) => {
+const deleteComment = (req, res, next) => {
   const { id } = req.body
   removeComment(id)
     .then(() => {
-      res.status(204)
+      res.status(204).json({ message: 'Comment deleted succesfully ', id})
+    })
+    .catch((err) => {
+      next(err)
     })
 }
 
