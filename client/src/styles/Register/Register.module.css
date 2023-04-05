@@ -231,3 +231,11 @@ input[id^="checkbox"] {
     font-size: 14px;
   }
 }
+
+
+/* Estilos para sweetalert */
+.alert {
+  background: #f5f5f5;
+  border: 3px solid var(--yellowPale);
+  box-shadow: 0 0 20px var(--purple);
+}
