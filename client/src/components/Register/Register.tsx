@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../redux/store/hooks";
 import { FormState } from "../../types";
 import SocialNetworks from "../Social networks/SocialNetworks";
+import swal from "sweetalert";
 
 function Register(): JSX.Element {
   const [visibility, setVisibility] = useState<FormState["visibility"]>(oculto);
@@ -44,7 +45,11 @@ function Register(): JSX.Element {
         newUser.email.length === 0 ||
         newUser.password.length === 0
       ) {
-        alert("Fill in the required fields");
+        swal({
+          title: "All the fields are required",
+          className: `${style.alert}`,
+          icon: "warning",
+        });
       } else {
         dispatch(createUser(newUser));
         setInput({
