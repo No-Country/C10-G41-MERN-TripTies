@@ -21,6 +21,7 @@ import FooterTerm from "../Footers/FooterTerm";
 import FooterSocial from "../Footers/FooterSocial";
 import MiniFooter from "../MiniFooter/MiniFooter";
 import SlideShow from "../SlideShow/SlideShow";
+import ModalPost from "../ModalPost/ModalPost";
 
 interface lugaresType {
   name: string;
@@ -239,6 +240,8 @@ function Home(): JSX.Element {
     },
   ];
 
+  const [visible, setVisible] = useState(false);
+
   const handleHash = (e: any) => {
     e.preventDefault();
     setHash(e.target.value);
@@ -287,7 +290,7 @@ function Home(): JSX.Element {
     <div className={style.homeContainer}>
       <NavBar handleHome={handleHome} places={places} />
       <div className={style.feedContainer}>
-        <div className={style.containerLeft}>
+        <div className={style.leftContainer}>
           <div>
             <div className={style.feedLeft}>
               <SectionAccount
@@ -303,6 +306,7 @@ function Home(): JSX.Element {
         </div>
 
         <div className={style.feedCenter}>
+          <ModalPost visible={visible} setVisible={setVisible} />
           <div className={style.postGenerator}>
             <img src={profile} alt="Perfil" className={style.imgProfile} />
             <div className={style.buttonsPost}>
@@ -310,16 +314,17 @@ function Home(): JSX.Element {
                 type="text"
                 className={style.inputPost}
                 placeholder="Create a new post"
+                onClick={() => setVisible(true)}
               />
               <section className={style.icons}>
-                <div className={style.iconsTitle}>
+                <button className={style.iconsTitle}>
                   <img src={gallery} alt="Open gallery" />
                   <h4>Add Photo</h4>
-                </div>
-                <div className={style.iconsTitle}>
+                </button>
+                <button className={style.iconsTitle}>
                   <img src={video} alt="Add video" />
                   <h4>Add Video</h4>
-                </div>
+                </button>
               </section>
             </div>
           </div>
