@@ -3,6 +3,8 @@ const Participant = require('../chatModels/participants.models')
 
 const createConversation = async (obj) => {
 
+  // console.log(obj)
+
   const newConversation = await Conversation.create({
     title: obj.title,
     user: obj.ownerId //? Creador de la conversación (owner)
@@ -81,8 +83,8 @@ const removeConversation = async (conversationId) => {
 
 // createConversation({
 //   title: 'Conversacion de prueba',//? Titulo del chat
-//   ownerId: '6428d2cb317c9ed3dd6d14f7', //? Nicolas como owner
-//   participantId: '6428f0b55f595dbcf72ea7df' //? Samuel como invitado
+//   ownerId: '642c580d423b098575590474', //? Nicolas como owner
+//   participantId: '6428d2b0317c9ed3dd6d14f3' //? Samuel como invitado
 // })
 //   .then(data => console.log(data))
 //   .catch(err => console.log(err))
