@@ -1,0 +1,205 @@
+/* Estilos para el contenedor principal */
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  place-items: center;
+  margin: auto;
+  height: 100vh;
+  background-image: url("../../img/paper-Planes-background.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+}
+
+/* Este bloque de código establece el contenedor del contenido principal */
+.content {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 20px;
+  /* padding: 50px 100px; */
+  color: var(--brown);
+  width: 591px;
+  height: 583px;
+  align-items: center;
+  z-index: 1;
+}
+
+/* Estilos para el título del formulario */
+.title {
+  color: var(--purple);
+  font-size: 30px;
+  font-weight: 400;
+}
+
+/* Estilos para los campos de entrada */
+.input {
+  width: 329px;
+  height: 41px;
+  border: 2px solid #e3ddff;
+  border-radius: 5px;
+  margin-block-end: 20px;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.input:focus,
+.input:hover {
+  border: 2px solid var(--violet);
+  outline: none;
+}
+
+.input:focus::placeholder {
+  color: transparent;
+  background: none;
+}
+
+.input::placeholder {
+  color: var(--brown);
+  padding: 8px;
+  padding-inline-start: 25px;
+}
+
+.input[id^="email"]::placeholder {
+  background-image: url("../../img/email.png");
+  background-repeat: no-repeat;
+  background-position: 0px center;
+}
+
+.input[id^="email"]:focus::placeholder {
+  background: none;
+}
+
+.input[id^="password"]::placeholder {
+  background-image: url("../../img/password.png");
+  background-repeat: no-repeat;
+  background-position: 0px center;
+}
+
+.input[id^="password"]:focus::placeholder {
+  background: none;
+}
+
+/* Estilos para el checkbox */
+.underinputs {
+  display: flex;
+  justify-content: space-around;
+  margin-block-end: 80px;
+  width: 70%;
+}
+
+.underinputs > a {
+  color: var(--brown);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.checkbox {
+  display: flex;
+  justify-content: center;
+}
+
+input[id^="checkbox"] {
+  cursor: pointer;
+  background-color: #fff;
+  background-image: url("../../img/check.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 18px;
+  height: 18px;
+  appearance: none;
+  border: 1.5px solid var(--violetLight);
+  border-radius: 3px;
+  margin-inline-end: 10px;
+}
+
+.checkbox input:checked {
+  background-color: var(--violet);
+}
+
+/* Estilos para el botón 'Log in' */
+.btn {
+  width: 329px;
+  height: 41px;
+  background-color: var(--yellowPale);
+  box-shadow: 0px 2.9566px 2.9566px rgba(0, 0, 0, 0.25),
+    inset 0px 1.4783px 2.9566px rgba(255, 255, 255, 0.25),
+    inset 0px -1.4783px 2.9566px rgba(0, 0, 0, 0.25);
+  border-radius: 11px;
+  border: none;
+  font-size: 11px;
+}
+
+/* Estilos para las redes sociales */
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  margin-block-start: 20px;
+  margin-block-end: 50px;
+}
+
+/* Estilos para pantallas de hasta 600px de ancho */
+@media only screen and (max-width: 600px) {
+  /* Reducir el ancho del contedor y fondo transparente */
+  .container {
+    width: 70%;
+    background: transparent;
+  }
+
+  /* Estilos para el logo */
+  .Logo {
+    background-image: url("../../img/Logo.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding: 30px;
+    margin-block-end: 0px;
+  }
+
+  .content {
+    width: 90%;
+    height: auto;
+    padding: 10px;
+    background: none;
+    border: none;
+  }
+
+  /* Ajustar el tamaño del boton */
+  .btn {
+    width: 100%;
+  }
+
+  /* Ajustar el tamaño del texto */
+  .titulo {
+    font-size: 24px;
+  }
+
+  /* Ajustar el tamaño del texto */
+  .underinputs {
+    width: 329px;
+    justify-content: space-between;
+  }
+
+  .content p {
+    font-size: 14px;
+  }
+
+  .checkbox label {
+    font-size: 14px;
+  }
+
+  .content a {
+    font-size: 14px;
+  }
+}
+
+/* Estilos para sweetalert */
+.alert {
+  background: #f5f5f5;
+  border: 3px solid var(--yellowPale);
+  box-shadow: 0 0 20px var(--purple);
+}

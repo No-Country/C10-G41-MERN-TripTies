@@ -1,15 +1,14 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import LandingPage from './components/LandingPage/LandingPage'
 import './App.css'
+import axios from "axios";
 
-function App() {
-  const [count, setCount] = useState(0)
+axios.defaults.baseURL = "http://localhost:3000/api/v1"
+
+function App(): JSX.Element {
 
   return (
     <div className="App">
-      <h1>TripTies</h1>
-      <h2>XD</h2>
+      <LandingPage />
     </div>
   )
 }
