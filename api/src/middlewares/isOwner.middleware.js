@@ -1,16 +1,18 @@
-const Profile = require('../services/profile.services')
+const User = require('../services/user.services')
 
 async function isOwner(req, res, next) {
   const authenticatedUserId = req.user._id
-  const profileId = req.params.profileId
+  const userId = req.params.userId
+
+  console.log(userId)
 
   try {
-    const profile = await Profile.findProfile(profileId)
-    if (!profile) {
+    const user = await User.findUserById(userId)
+    if (!user) {
       return res.status(404).json({ message: 'Profile not found' })
     }
 
-    const profileOwnerId = profile.user._id
+    const profileOwnerId = user._id
 
     if (authenticatedUserId == profileOwnerId) {
       // The authenticated user is the owner of the profile, so we allow the request to continue

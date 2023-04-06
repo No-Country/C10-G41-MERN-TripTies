@@ -20,6 +20,7 @@ const getAllUsers = () => {
 
 const findUserById = async (userId) => {
   let user = await User.findById(userId)
+  // console.log(user)
   return user
 }
 
@@ -43,8 +44,11 @@ const createUser = async (userData) => {
     // Crear nuevo usuario con campos obligatorios
     const user = new User({
       username: userData.username,
+      first_name: userData.first_name,
+      last_name: userData.last_name,
       email: userData.email,
       password: hash(userData.password),
+      photo: userData.photo,
       role: userData.role
     })
     // Guardar usuario en la base de datos
@@ -52,9 +56,6 @@ const createUser = async (userData) => {
     // Crear nuevo perfil vacío asociado al usuario
     const profile = new Profile({
       user: user._id,
-      first_name: '',
-      last_name: '',
-      photo: '',
       description: '',
       birthday: '',
       portrait: ''
@@ -91,6 +92,8 @@ const removeUser = async (userId) => {
       })
   })
 }
+
+
 
 
 module.exports = {

@@ -1,7 +1,7 @@
 ## Rutas
 
 ### Ruta principal
- http:/localhost:8000/api/v1
+ http:/localhost:3000/api/v1
 
 - /sign-up
     - post: Crear un nuevo usuario

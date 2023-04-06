@@ -13,11 +13,11 @@ const findAllProfiles = () => {
   })
 }
 
-const findProfile = async (profileId) => {  
+const findProfile = async (userId) => {
   try {
     // Buscamos el perfil del usuario por su ID y lo retornamos
-    // const profile = await Profile.findById(id, '_id', 'user').lean()
-    const profile = await Profile.findById(profileId)
+    const profile = await Profile.findById(userId)
+    console.log(profile)
     return profile
   } catch (error) {
     throw Error('Not found Profile', 404, 'Not Found')
@@ -25,28 +25,26 @@ const findProfile = async (profileId) => {
 }
 
 
-const editProfile = async (userId, updatedFields) => {
-  const session = await mongoose.startSession()
+const editUserProfile = async(userId, updatedProfile) => {
   try {
-    session.startTransaction()
-    // Buscamos el perfil del usuario por su ID y lo actualizamos
-    const updatedProfile = await Profile.findOneAndUpdate(
-      { user: userId },
-      updatedFields,
-      { new: true, session }
-    ).session(session)
-    await session.commitTransaction()
+    const profile = await Profile.findOne({ user: userId })
+    if (!profile) {
+      return null
+    }
+    profile.description = updatedProfile.description || profile.description
+    profile.birthday = updatedProfile.birthday || profile.birthday
+    profile.portrait = updatedProfile.portrait || profile.portrait
+
+    const updatedProfile = await profile.save()
     return updatedProfile
   } catch (error) {
-    await session.abortTransaction()
-    throw new Error(`Error updating user profile: ${error.message}`)
-  } finally {
-    session.endSession()
+    throw new Error(error.message)
   }
 }
+
 
 module.exports = {
   findProfile,
   findAllProfiles,
-  editProfile
+  editUserProfile
 }
