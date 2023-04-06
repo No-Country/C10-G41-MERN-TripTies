@@ -3,8 +3,6 @@ const Profile = require('../services/profile.services')
 const User = require('../services/user.services')
 
 
-
-
 // const putProfile = async(req, res) => {
 //   const { userId } = req.params
 //   const {first_name, last_name, photo, description, birthday, portrait } = req.body

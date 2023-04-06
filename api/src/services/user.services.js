@@ -74,7 +74,6 @@ const createUser = async (userData) => {
   }
 }
 
-
 const removeUser = async (userId) => {
   return new Promise((resolve, reject) => {
     User.findById(userId)
@@ -92,8 +91,6 @@ const removeUser = async (userId) => {
       })
   })
 }
-
-
 
 
 module.exports = {
