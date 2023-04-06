@@ -1,0 +1,32 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.col {
+  text-align: center;
+  margin: auto;
+}
+
+.reserved {
+  font-family: "Roboto";
+  color: #31135e;
+  font-size: 9px;/* el tamaño original es 12px */
+}
+
+.legal {
+  font-family: "Roboto";
+  color: #31135e;
+  font-size: 10.4px; /* el tamaño original es 14px*/
+  margin: 10px;
+}
+.elipse {
+  margin-bottom: 2px;
+}
