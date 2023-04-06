@@ -3,18 +3,21 @@ const router = express.Router()
 const passport = require('passport')
 require('../middlewares/auth.middleware')(passport)
 const isOwner = require('../middlewares/isOwner.middleware')
+const routesConversation = require('../chat/chatRoutes/conversation.route')
 
 const {
-  putProfile, 
-  deleteUser, 
+  deleteUser,
   getUserById,
-  getAllProfiles
 } = require('../controllers/user.controller')
+const { followUser } = require('../controllers/follow.controller')
+
+router.route('/:userId')
+  .get(getUserById)
+  .delete(passport.authenticate('jwt', { session: false }), isOwner, deleteUser)
+
+router.route('/:userId/follow/:followingId')
+  .post(passport.authenticate('jwt', { session: false }), isOwner, followUser)
 
 
-router.get('/:userId', getUserById)
-router.delete('/:userId', passport.authenticate('jwt', {session: false}), deleteUser)
-router.get('/profiles', getAllProfiles)
-router.put('/:profileId/profile', passport.authenticate('jwt', {session: false}), isOwner, putProfile)
 
 module.exports = router
