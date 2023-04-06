@@ -1,44 +1,43 @@
-const mongoose = require('mongoose')
-const User = require('../models/users.models')
-const Profile = require('../models/profiles.models')
+const mongoose = require("mongoose");
+const User = require("../models/users.models");
+const Profile = require("../models/profiles.models");
 
-const { CustomError } = require('../utils/error-handler')
-const { hash } = require('../utils/crypto')
-
+const { CustomError } = require("../utils/error-handler");
+const { hash } = require("../utils/crypto");
 
 const getAllUsers = () => {
   return new Promise((resolve, reject) => {
     User.find()
-      .then(users => {
-        resolve(users)
+      .then((users) => {
+        resolve(users);
       })
-      .catch(err => {
-        reject(err)
-      })
-  })
-}
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
 
 const findUserById = async (userId) => {
-  let user = await User.findById(userId)
+  let user = await User.findById(userId);
   // console.log(user)
-  return user
-}
+  return user;
+};
 
 const getUserByEmail = (email) => {
   return new Promise((resolve, reject) => {
     User.findOne({ email: email })
-      .then(user => {
-        resolve(user)
+      .then((user) => {
+        resolve(user);
       })
-      .catch(err => {
-        reject(err)
-      })
-  })
-}
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
 
 const createUser = async (userData) => {
-  const session = await mongoose.startSession()
-  session.startTransaction()
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
   try {
     // Crear nuevo usuario con campos obligatorios
@@ -49,57 +48,53 @@ const createUser = async (userData) => {
       email: userData.email,
       password: hash(userData.password),
       photo: userData.photo,
-      role: userData.role
-    })
+      role: userData.role,
+    });
     // Guardar usuario en la base de datos
-    await user.save({ session })
+    await user.save({ session });
     // Crear nuevo perfil vacío asociado al usuario
     const profile = new Profile({
       user: user._id,
-      description: '',
-      birthday: '',
-      portrait: ''
-    })
+      description: "",
+      birthday: "",
+      portrait: "",
+    });
     // Guardar perfil en la base de datos
-    await profile.save({ session })
+    await profile.save({ session });
     // Completar la transacción
-    await session.commitTransaction()
-    session.endSession()
-    return user
+    await session.commitTransaction();
+    session.endSession();
+    return user;
   } catch (error) {
     // Si hay un error, deshacer la transacción
-    await session.abortTransaction()
-    session.endSession()
-    throw new Error(error.message)
+    await session.abortTransaction();
+    session.endSession();
+    throw new Error(error.message);
   }
-}
-
+};
 
 const removeUser = async (userId) => {
   return new Promise((resolve, reject) => {
     User.findById(userId)
-      .then(user => {
+      .then((user) => {
         if (!user) {
-          reject(new Error(`User with the id was not found ${userId}`))
+          reject(new Error(`User with the id was not found ${userId}`));
         }
-        return user.deleteOne()
+        return user.deleteOne();
       })
-      .then(deletedUser => {
-        resolve(deletedUser)
+      .then((deletedUser) => {
+        resolve(deletedUser);
       })
       .catch((err) => {
-        reject(err)
-      })
-  })
-}
-
-
-
+        reject(err);
+      });
+  });
+};
 
 module.exports = {
   getAllUsers,
   getUserByEmail,
   findUserById,
   createUser,
-  removeUser
-}
+  removeUser,
+};

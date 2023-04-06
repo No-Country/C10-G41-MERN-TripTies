@@ -35,16 +35,16 @@ function Log(): JSX.Element {
         icon: "warning",
       });
     } else {
-        try {
-            dispatch(loginUser(email, password));
-            nav("/home");
-        } catch (error) {
-            swal({
-                title: `Error: ${error}`,
-                className: `${style.alert}`,
-                icon: "error",
-              }); 
-        }
+      try {
+        dispatch(loginUser(email, password));
+        // nav("/home");
+      } catch (error) {
+        swal({
+          title: `Error: ${error}`,
+          className: `${style.alert}`,
+          icon: "error",
+        });
+      }
     }
   };
 
@@ -82,7 +82,7 @@ function Log(): JSX.Element {
         <section>
           <p>Or Log In with</p>
           <div className={style.iconContainer}>
-            <SocialNetworks />
+            <SocialNetworks setInput={undefined} newUser={{ undefined }} />
           </div>
           <p>
             Don't have an account?<a href="/register"> Sign Up</a>

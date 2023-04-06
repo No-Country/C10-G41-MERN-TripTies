@@ -2,6 +2,9 @@ export interface Users {
   username: string;
   email: string;
   password: string;
+  firstName: string;
+  lastName: string;
+  photo: string;
 }
 
 // useState Interface of Register Component

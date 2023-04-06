@@ -22,6 +22,9 @@ function Register(): JSX.Element {
     username: "",
     email: "",
     password: "",
+    firstName: "",
+    lastName: "",
+    photo: "",
   });
 
   const dispatch = useAppDispatch();
@@ -56,9 +59,12 @@ function Register(): JSX.Element {
           username: "",
           email: "",
           password: "",
+          firstName: "",
+          lastName: "",
+          photo: "",
         });
 
-        nav("/login");
+        // nav("/login");
       }
     } catch (error) {
       console.log(error);
@@ -129,7 +135,7 @@ function Register(): JSX.Element {
         <section>
           <p>Or Sign Up with</p>
           <div className={style.redes}>
-            <SocialNetworks />
+            <SocialNetworks newUser={newUser} setInput={setInput} />
           </div>
           <p>
             Already have an account? <a href="/login">Log In</a>
