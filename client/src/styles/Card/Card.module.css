@@ -11,6 +11,10 @@
   margin-left: 0.7rem;
 }
 
+.dotMenu {
+  cursor: pointer;
+}
+
 .userInfo {
   display: flex;
   justify-content: space-between;
@@ -64,12 +68,15 @@
   justify-content: flex-start;
   gap: 2em;
   border-bottom: 1px solid var(--yellowPale);
+  margin-top: 0.5rem;
+  height: 30px;
 }
 
 .likesAndComments > aside {
   display: flex;
   align-items: center;
   margin-bottom: 0.2em;
+  gap: 3px;
 }
 
 .likesAndComments > aside > span {

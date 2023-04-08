@@ -20,6 +20,7 @@ const getAllUsers = () => {
 
 const findUserById = async (userId) => {
   let user = await User.findById(userId)
+  // console.log(user)
   return user
 }
 
@@ -43,8 +44,11 @@ const createUser = async (userData) => {
     // Crear nuevo usuario con campos obligatorios
     const user = new User({
       username: userData.username,
+      first_name: userData.first_name,
+      last_name: userData.last_name,
       email: userData.email,
       password: hash(userData.password),
+      photo: userData.photo,
       role: userData.role
     })
     // Guardar usuario en la base de datos
@@ -52,9 +56,6 @@ const createUser = async (userData) => {
     // Crear nuevo perfil vacío asociado al usuario
     const profile = new Profile({
       user: user._id,
-      first_name: '',
-      last_name: '',
-      photo: '',
       description: '',
       birthday: '',
       portrait: ''
@@ -69,50 +70,7 @@ const createUser = async (userData) => {
     // Si hay un error, deshacer la transacción
     await session.abortTransaction()
     session.endSession()
-    throw new CustomError(error.message)
-  }
-}
-
-const getProfile = async (id) => {
-  try {
-    // Buscamos el perfil del usuario por su ID y lo retornamos
-    const profile = await Profile.findById(id, '_id', 'user').lean()
-    return profile
-  } catch (error) {
-    throw Error('Not found Profile', 404, 'Not Found')
-  }
-}
-
-const findAllProfiles = () => {
-  return new Promise((resolve, reject) => {
-    Profile.find()
-      .then(profiles => {
-        resolve(profiles)
-      })
-      .catch(err => {
-        reject(err)
-      })
-  })
-}
-
-
-const editProfile = async (userId, updatedFields) => {
-  const session = await mongoose.startSession()
-  try {
-    session.startTransaction()
-    // Buscamos el perfil del usuario por su ID y lo actualizamos
-    const updatedProfile = await Profile.findOneAndUpdate(
-      { user: userId },
-      updatedFields,
-      { new: true, session }
-    ).session(session)
-    await session.commitTransaction()
-    return updatedProfile
-  } catch (error) {
-    await session.abortTransaction()
-    throw new Error(`Error updating user profile: ${error.message}`)
-  } finally {
-    session.endSession()
+    throw new Error(error.message)
   }
 }
 
@@ -140,8 +98,5 @@ module.exports = {
   getUserByEmail,
   findUserById,
   createUser,
-  getProfile,
-  findAllProfiles,
-  removeUser,
-  editProfile
+  removeUser
 }

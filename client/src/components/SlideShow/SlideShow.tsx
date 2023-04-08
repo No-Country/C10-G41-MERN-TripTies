@@ -34,15 +34,21 @@ function SlideShow({ media }: props): JSX.Element {
     <div className={style.containerSlider}>
       <div
         className={style.slider}
-        style={{ transform: `translateX(-${current * 500}px)` }}
+        style={{ transform: `translateX(-${current * 550}px)` }}
       >
         {media &&
           media[0].map((e, i) => (
-            <img key={i} src={e.url} alt={e.type} width={500} height={300} />
+            <img key={i} src={e.url} alt={e.type} width={550} height={350} />
           ))}
         {media &&
           media[1].map((e, i) => (
-            <video key={i} src={e.url} width={500} height={300}></video>
+            <video
+              key={i}
+              src={e.url}
+              width={550}
+              height={350}
+              controls
+            ></video>
           ))}
       </div>
       <h2>

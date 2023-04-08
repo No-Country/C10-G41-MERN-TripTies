@@ -3,9 +3,15 @@ const Conversation = require('../chatServices/conversation.services')
 const postConversation = (req, res) =>{
   const { title, participantId } = req.body
   const ownerId = req.user._id
+
+  console.log("owner: ", ownerId)
+  console.log("Participant :", participantId)
+  console.log("Title: ", title)
+
   Conversation.createConversation({title, participantId, ownerId})
     .then(data => {
       res.status(201).json(data)
+      // console.log(data)
     })
     .catch((err) => {
       res.status(400).json({message: err.message, fields: {

@@ -6,7 +6,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 999;
+  z-index: 800;
 }
 
 .navTitle {
@@ -25,7 +25,7 @@
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  width: 60%;
+  width: 70%;
   /* margin-right: 0.5rem; */
 }
 
@@ -70,6 +70,10 @@
   gap: 0.5rem;
   margin-inline-end: 0.5rem;
   position: relative;
+}
+
+.dotMenu {
+  cursor: pointer;
 }
 
 .navBell {

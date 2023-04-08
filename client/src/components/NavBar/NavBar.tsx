@@ -17,16 +17,16 @@ function NavBar({ handleHome, places }: any): JSX.Element {
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
-          setDisplay("none");
+        setDisplay("none");
       }
-  };
+    };
 
-  document.addEventListener('mousedown', handleOutsideClick);
+    document.addEventListener("mousedown", handleOutsideClick);
 
-  return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
-  };
-  }, [ref])
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [ref]);
 
   const handleAppear = () => {
     if (display === "none") {
@@ -54,11 +54,12 @@ function NavBar({ handleHome, places }: any): JSX.Element {
         <img className={style.navBell} src={bell} alt="bell" />
         <section className={style.dropDownArrow}>
           <h2 className={style.navButtonsh2}>{name ? name : "Traveler"}</h2>
-          <img 
+          <img
             ref={ref}
-            onClick={handleAppear} 
-            src={arrowDown} 
-            alt="arrowHead" 
+            onClick={handleAppear}
+            src={arrowDown}
+            alt="arrowHead"
+            className={style.dotMenu}
           />
           <DropdownUser display={display} />
         </section>

@@ -4,17 +4,24 @@ const passport = require('passport')
 require('../middlewares/auth.middleware')(passport)
 const isOwner = require('../middlewares/isOwner.middleware')
 
+
 const {
-  putProfile, 
-  deleteUser, 
+  deleteUser,
   getUserById,
-  getAllProfiles
 } = require('../controllers/user.controller')
+const { followUser } = require('../controllers/follow.controller')
+const { multerProfilePhotos } = require('../middlewares/multer.middleware')
+const { putProfile } = require('../controllers/profile.controller')
+
+router.route('/:userId')
+  .get(getUserById)
+  .delete(passport.authenticate('jwt', { session: false }), isOwner, deleteUser)
+  
+router.put('/:userId/editProfile', passport.authenticate('jwt', {session: false}), isOwner, multerProfilePhotos, putProfile) //Fix put service. Dont save the information
+
+router.route('/:userId/follow/:followingId')
+  .post(passport.authenticate('jwt', { session: false }), isOwner, followUser)
 
 
-router.get('/:userId', getUserById)
-router.delete('/:userId', passport.authenticate('jwt', {session: false}), deleteUser)
-router.get('/profiles', getAllProfiles)
-router.put('/:profileId/profile', passport.authenticate('jwt', {session: false}), isOwner, putProfile)
 
 module.exports = router

@@ -1,13 +1,23 @@
-const { getConversationParticipants } = require('../chat/chatServices/participants.services')
+const findParticipantConversation  = require('../chat/chatServices/participants.services')
 
-const participantValidate = async (req, res) => {
-  try {
+const participantValidate = (req, res, next) => {
     const { conversationId } = req.params
-    const participants = await getConversationParticipants(conversationId)
-    res.status(200).json(participants)
-  } catch (err) {
-    res.status(400).json({ message: err.message })
-  }
+    const userId = req.user._id   
+    
+    findParticipantConversation(userId, conversationId)
+    // console.log("conversationId:" , conversationId)
+    // console.log("user:" , userId)
+        .then(data => {
+            if(data){
+                next()
+            } else {
+                res.status(400).json({message: "You're not participant from this conversation"})
+            }
+        })
+        .catch(err => {
+            res.status(400).json({message: err.message})
+        })
 }
+
 
 module.exports = participantValidate

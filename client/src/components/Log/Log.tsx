@@ -35,8 +35,16 @@ function Log(): JSX.Element {
         icon: "warning",
       });
     } else {
-      dispatch(loginUser(email, password));
-      nav("/home");
+        try {
+            dispatch(loginUser(email, password));
+            nav("/home");
+        } catch (error) {
+            swal({
+                title: `Error: ${error}`,
+                className: `${style.alert}`,
+                icon: "error",
+              }); 
+        }
     }
   };
 

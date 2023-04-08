@@ -10,11 +10,15 @@
 
 // export default store;
 
-
-import { legacy_createStore as createStore, applyMiddleware, AnyAction} from "redux";
+import {
+  legacy_createStore as createStore,
+  applyMiddleware,
+  AnyAction,
+} from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import thunk, {ThunkDispatch, ThunkMiddleware} from "redux-thunk";
+import thunk, { ThunkDispatch, ThunkMiddleware } from "redux-thunk";
 import rootReducer from "../reducer";
+import { Dispatch } from "redux";
 
 type State = { a: string };
 const mw: ThunkMiddleware<State, AnyAction> = thunk;
