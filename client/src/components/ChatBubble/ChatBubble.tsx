@@ -14,10 +14,8 @@ export default function ChatBubble({ chat, setChat }: ChatProps) {
     },{
         msg: 'BUEN DIA',
         id: 1
-    },{
-        msg: 'PA LAS TURRAS AHI EVILLA!',
-        id: 2
-    }])
+    }
+])
     const ref = useRef<HTMLDivElement>(document.createElement('div'))
 
     function handleOpen() {
