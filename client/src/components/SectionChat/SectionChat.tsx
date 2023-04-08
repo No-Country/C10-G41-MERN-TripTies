@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import styles from '../../styles/SectionDiscover/SectionChat.module.css'
 import avatar1 from '../../img/avatar.png'
 import avatar2 from '../../img/avatar2.png'
@@ -10,6 +10,7 @@ import add from '../../img/message-add.png'
 import setting from '../../img/setting.png'
 import connected from '../../img/connected.png'
 import { useNavigate } from 'react-router-dom'
+import { ChatProps, Chat } from '../../types'
 
 interface User {
     name: string;
@@ -17,7 +18,7 @@ interface User {
     connected: boolean;
 }
 
-export default function SectionChat() {
+export default function SectionChat({ setChat }: ChatProps): JSX.Element {
     // Array de usuarios para mostrar en la lista de chats
     const users: User[] = [
         {
@@ -77,6 +78,11 @@ export default function SectionChat() {
         nav("/login");
     }
 
+    function handleNewChat(name: string,avatar: string){
+        localStorage.setItem("UserChat", JSON.stringify({ name: name, avatar: avatar }))
+        setChat({name,avatar})
+    }
+
     return (
         <>
             {/* Título */}
@@ -90,20 +96,22 @@ export default function SectionChat() {
                     {/* Lista de usuarios */}
                     <div className={styles.scroll}>
                         {
-                            users.map((e: User, index: number) => (
-                                <div key={index} className={styles.avatar}>
-                                    <img src={e.avatar} alt={e.name} />
-                                    <a href='#'>
-                                    <div className={styles.text}>
-                                        <h2>{e.name}</h2>
+                            users.map((e: User, index: number) => {
+                                return (
+                                    <div key={index} className={styles.avatar}>
+                                        <img src={e.avatar} alt={e.name} />
+                                        <a style={{ cursor: 'pointer' }} onClick={() => handleNewChat(e.name,e.avatar)}>
+                                            <div className={styles.text}>
+                                                <h2>{e.name}</h2>
+                                            </div>
+                                        </a>
+                                        {
+                                            e.connected &&
+                                            <img src={connected} alt="connected" />
+                                        }
                                     </div>
-                                    </a>
-                                    {
-                                        e.connected &&
-                                        <img src={connected} alt="connected" />
-                                    }
-                                </div>
-                            ))
+                                )
+                            })
                         }
                     </div>
                     {/* Seccion de botones del chat */}
