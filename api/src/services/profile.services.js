@@ -13,11 +13,20 @@ const findAllProfiles = () => {
   })
 }
 
-const findProfile = async (userId) => {
+const findProfileById = async (id) => {
   try {
     // Buscamos el perfil del usuario por su ID y lo retornamos
-    const profile = await Profile.findById(userId)
-    console.log(profile)
+    const profile = await Profile.findById(id)
+    return profile
+  } catch (error) {
+    throw Error('Not found Profile', 404, 'Not Found')
+  }
+}
+
+const findProfileByUser = async (userId) => {
+  try {
+    // Buscamos el perfil del usuario por su ID y lo retornamos
+    const profile = await Profile.findOne({ user: userId})
     return profile
   } catch (error) {
     throw Error('Not found Profile', 404, 'Not Found')
@@ -25,18 +34,19 @@ const findProfile = async (userId) => {
 }
 
 
-const editUserProfile = async(userId, updatedProfile) => {
+const editUserProfile = async(userId, profileData) => {
   try {
     const profile = await Profile.findOne({ user: userId })
     if (!profile) {
       return null
     }
-    profile.description = updatedProfile.description || profile.description
-    profile.birthday = updatedProfile.birthday || profile.birthday
-    profile.portrait = updatedProfile.portrait || profile.portrait
-
-    const updatedProfile = await profile.save()
-    return updatedProfile
+    console.log('still running?:')
+    profile.description = profileData.description || profile.description
+    profile.birthday = profileData.birthday || profile.birthday
+    profile.portrait = profileData.portrait || profile.portrait
+    
+    const profileUpdated = await profile.save()
+    return profileUpdated
   } catch (error) {
     throw new Error(error.message)
   }
@@ -44,7 +54,8 @@ const editUserProfile = async(userId, updatedProfile) => {
 
 
 module.exports = {
-  findProfile,
+  findProfileById,
+  findProfileByUser,
   findAllProfiles,
   editUserProfile
 }
