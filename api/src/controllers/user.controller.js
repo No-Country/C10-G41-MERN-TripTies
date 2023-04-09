@@ -1,10 +1,9 @@
 const User = require('../services/user.services')
-// const CustomError = require('../utils/error-handler')
+const Profile = require('../services/profile.services')
 
 const postUser = async (req, res, next) => {
   try {
     const { username, email, password, first_name, last_name, photo, role } = req.body
-    console.log(req.body)
 
     const user = await User.createUser({ username, first_name, last_name, email, password, photo, role })
     res.status(201).json(user)
@@ -27,7 +26,8 @@ const getUserById = async (req, res, next) => {
   const { userId } = req.params
 
   try {
-    const user = await User.findUserById(userId)
+    const user = await User.findUserById(userId, 'profile')
+
     if (!user) {
       throw new Error(404, 'User not found')
     }

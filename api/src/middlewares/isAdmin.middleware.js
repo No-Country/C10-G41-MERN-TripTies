@@ -4,7 +4,6 @@ const User = require('../services/user.services')
 
 const isAdmin = async (request, response, next) => {
   const id = request.user._id
-  console.log(id)
   User.getUserInformation(id)
     .then(data => {
       if (data.role == 'ADMIN') {

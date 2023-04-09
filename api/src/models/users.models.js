@@ -3,8 +3,8 @@ const { Schema, model, default: mongoose } = require('mongoose')
 const UserSchema = new Schema(
   {
     username: { type: String, required: true, unique: true },
-    first_name: {type: String, required: true},
-    last_name: {type: String, required: true},
+    first_name: {type: String},
+    last_name: {type: String},
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, },
     emailVerified: { default: false, type: Boolean }, 
@@ -14,7 +14,7 @@ const UserSchema = new Schema(
       ref: 'Profile'
     }, 
     role: { type: String, default: 'USER' }, 
-    isOnline: {type: Boolean, required: true, default: false}
+    isOnline: {type: Boolean, default: false}
   },
   
   {

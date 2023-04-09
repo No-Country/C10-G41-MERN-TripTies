@@ -3,8 +3,6 @@ const Participant = require('../chatModels/participants.models')
 
 const createConversation = async (obj) => {
 
-  // console.log(obj)
-
   const newConversation = await Conversation.create({
     title: obj.title,
     user: obj.ownerId //? Creador de la conversación (owner)
@@ -26,7 +24,7 @@ const createConversation = async (obj) => {
   }
 }
 
-const getAllConversations = () => {
+const findAllConversations = () => {
   return new Promise((resolve, reject) => {
     Conversation.find()
       .then(users => {
@@ -38,8 +36,7 @@ const getAllConversations = () => {
   })
 }
 
-
-const getConversationById = async (id) => {
+const findConversationById = async (id) => {
   const user = await Conversation.findById(id)
   if (!user) {
     throw new Error('User not found')
@@ -79,20 +76,10 @@ const removeConversation = async (conversationId) => {
   })
 }
 
-
-
-// createConversation({
-//   title: 'Conversacion de prueba',//? Titulo del chat
-//   ownerId: '642c580d423b098575590474', //? Nicolas como owner
-//   participantId: '6428d2b0317c9ed3dd6d14f3' //? Samuel como invitado
-// })
-//   .then(data => console.log(data))
-//   .catch(err => console.log(err))
-
 module.exports = {
   createConversation,
-  getAllConversations,
-  getConversationById,
+  findAllConversations,
+  findConversationById,
   editConversation,
   removeConversation
 }

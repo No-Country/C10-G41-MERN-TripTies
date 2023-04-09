@@ -2,8 +2,8 @@ const Message = require('../chatModels/message.models')
 
 const createMessage = async (obj) => {
   const data = await Message.create({
-    user: obj.userId, 
     conversation: obj.conversationId, 
+    user: obj.userId, 
     message: obj.message
   })
   return data 

@@ -1,4 +1,3 @@
-const { mongoose } = require('mongoose')
 const Notification = require('../models/Notification.models')
 
 const createNotification = async (NotificationData) => {

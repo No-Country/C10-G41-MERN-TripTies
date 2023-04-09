@@ -16,12 +16,12 @@ const { createRole } = require('../services/user.services')
 
 router.route('/:userId')
   .get(getUserById)
-  .delete(passport.authenticate('jwt', { session: false }), isOwner, deleteUser)
+  .delete(isOwner, deleteUser)
 
-router.put('/:userId/editProfile', passport.authenticate('jwt', { session: false }), isOwner, multerProfilePhotos, putProfile) //Fix put service. Dont save the information
+router.put('/:userId/editProfile',isOwner, multerProfilePhotos, putProfile) //Fix put service. Dont save the information
 
 router.route('/:userId/follow/:followingId')
-  .post(passport.authenticate('jwt', { session: false }), isOwner, followUser)
+  .post(isOwner, followUser)
 
 
 
