@@ -15,4 +15,3 @@ dbConection.on('open', (_) => {
 dbConection.on('error', (error) => {
   console.log(error)
 })
-

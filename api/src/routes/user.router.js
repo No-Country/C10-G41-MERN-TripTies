@@ -12,16 +12,32 @@ const {
 const { followUser } = require('../controllers/follow.controller')
 const { multerProfilePhotos } = require('../middlewares/multer.middleware')
 const { putProfile } = require('../controllers/profile.controller')
+const { createRole } = require('../services/user.services')
 
 router.route('/:userId')
   .get(getUserById)
   .delete(passport.authenticate('jwt', { session: false }), isOwner, deleteUser)
-  
-router.put('/:userId/editProfile', passport.authenticate('jwt', {session: false}), isOwner, multerProfilePhotos, putProfile) //Fix put service. Dont save the information
+
+router.put('/:userId/editProfile', passport.authenticate('jwt', { session: false }), isOwner, multerProfilePhotos, putProfile) //Fix put service. Dont save the information
 
 router.route('/:userId/follow/:followingId')
   .post(passport.authenticate('jwt', { session: false }), isOwner, followUser)
 
 
+
+
+
+
+  
+router.post('/roles', async (req, res) => {
+  const roleName = req.body.name
+  try {
+    const newRole = await createRole(roleName)
+    res.status(201).json(newRole)
+  } catch (error) {
+    console.error(error)
+    res.status(500).send('Error creating role')
+  }
+})
 
 module.exports = router

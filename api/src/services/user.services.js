@@ -20,7 +20,6 @@ const getAllUsers = () => {
 
 const findUserById = async (userId) => {
   let user = await User.findById(userId)
-  // console.log(user)
   return user
 }
 
@@ -92,11 +91,31 @@ const removeUser = async (userId) => {
   })
 }
 
+const updateUser = async (id, obj) => {
+  const data = await User.updateOne({ _id: id }, obj)
+  console.log(data)
+  return data[0]
+}
+
+const getUserInformation = async (userId) => {
+  let user = await User.findOne({  _id: userId  })
+  return {
+    username: user.username,
+    first_name: user.first_name,
+    last_name: user.last_name,
+    email: user.email,
+    role: user.role
+  }
+}
+
+
 
 module.exports = {
   getAllUsers,
   getUserByEmail,
   findUserById,
   createUser,
-  removeUser
+  removeUser,
+  updateUser, 
+  getUserInformation
 }
