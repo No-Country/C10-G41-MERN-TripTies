@@ -13,11 +13,7 @@ const UserSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Profile'
     }, 
-    role: { 
-      type: mongoose.Schema.Types.ObjectId, 
-      ref: 'Role',
-      // default: 'USER'
-    }, 
+    role: { type: String, default: 'USER' }, 
     isOnline: {type: Boolean, required: true, default: false}
   },
   

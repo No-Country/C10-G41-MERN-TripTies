@@ -12,6 +12,7 @@ const {
   postUser,
   getAllUsers,
 } = require('../controllers/user.controller')
+const isAdmin = require('../middlewares/isAdmin.middleware')
 // const isOwner = require('../middlewares/isOwner.middleware')
 
 function routerModels(app) {
@@ -19,10 +20,10 @@ function routerModels(app) {
 
   app.use('/api/v1', router)
 
-  router.use('/', routesLogin)
+  router.use('/auth', routesLogin)
   router.post('/sign-up', postUser)
 
-  router.get('/users', getAllUsers) //Only admins
+  router.get('/users', passport.authenticate('jwt', {session: false}), isAdmin, getAllUsers) //Only admins
   router.use('/user', routesUsers) //Only admins
   router.use('/profiles', routesProfiles) //Some restrictions
   router.use('/conversations', routesConversation) //fix all route 

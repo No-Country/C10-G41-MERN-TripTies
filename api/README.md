@@ -3,12 +3,15 @@
 ### Ruta principal
  http:/localhost:3000/api/v1
 
-- /sign-up
-    - post: Crear un nuevo usuario
-      
-- /login
-    - post: Logea al usuario, Devuelve token de inicio de sesion
-
+- /auth/
+    - /sign-up
+        - post: Crear un nuevo usuario
+    - /login
+        - post: Logea al usuario, Devuelve token de inicio de sesion
+    - /recovery-password
+        - post: Recuperacion de contraseña mediante token y email. 
+    - /recovery-password/:id
+        - patch: Con token enviado a mail, se redirige mediante enlace y se realiza cambio de password. 
 - /users
     - get: Muestra todos los usuarios. (Opcion unicamente para admins)
 
