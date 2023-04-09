@@ -2,9 +2,7 @@ const mongoose = require('mongoose')
 const User = require('../models/users.models')
 const Profile = require('../models/profiles.models')
 
-const { CustomError } = require('../utils/error-handler')
 const { hash } = require('../utils/crypto')
-
 
 const getAllUsers = () => {
   return new Promise((resolve, reject) => {

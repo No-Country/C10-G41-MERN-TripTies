@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const Profile = require('../services/profile.services')
 const User = require('../services/user.services')
 
@@ -76,13 +75,11 @@ const putProfile = async (req, res) => {
 
   try {
     const user = await User.findUserById(userId)
-    console.log(user)
     if (!user) {
       return res.status(404).json({ message: 'User not found' })
     }
 
     const profile = await Profile.findOne({ user: userId })
-    console.log(userId)
     if (!profile) {
       return res.status(404).json({ message: 'Profile not found' })
     }

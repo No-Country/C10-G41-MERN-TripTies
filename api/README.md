@@ -1,38 +1,49 @@
-## Rutas
+## API TRIP TIES
+TRIP-TIES: Social Network focused on travelers 🚗✈🚢 
 
-### Ruta principal
- http:/localhost:3000/api/v1
+This database was developed with NodeJS v-18.13. The diagram was created using dbdiagram, then in VSC we started using Express and MongoDB with mongoose to call the database. We also used libraries like bcrypt for password encryption, nodemailer for email sending, multer for file management. The authentication was done with passport JWT. Best practices were also handled with eslint. A challenge for the backend team since it was our first opportunity to work with non-relational databases. We had the opportunity to learn more in depth and thanks to bugs, understand the code better. 
 
-- /auth/
+
+### Routes ↔
+
+#### Main path: http:/localhost:3000/api/v1
+
+- /auth
     - /sign-up
-        - post: Crear un nuevo usuario
+        - post: Create a new user
     - /login
-        - post: Logea al usuario, Devuelve token de inicio de sesion
+        - post: Log the user in, returns login token
     - /recovery-password
-        - post: Recuperacion de contraseña mediante token y email. 
+        - post: Password recovery via token and email. 
     - /recovery-password/:id
-        - patch: Con token enviado a mail, se redirige mediante enlace y se realiza cambio de password. 
+        - patch: With token sent to email, redirects via link and performs password change. 
 - /users
-    - get: Muestra todos los usuarios. (Opcion unicamente para admins)
+    - get: Displays all users (option only for admins).
 
 - /user
     - /:userId
-        - get: Trae información del perfil del usuario
-        - delete: elimina usuario //Fix ruta
+        - get: Get user profile information
+        - delete: delete user // Deletes user, but not the profile.
+    - /:userId
+        - /following 
+            - /followingId
+                post: Follow a user
 - /profiles 
-    - get: Muestra todos los perfiles
+    - get: Show all profiles, // FIX does not show user info
     - /:profileId 
-        - get: Trae un usuario por id de perfil
+        - get: Get user by profile id
         - /editProfile
-            - put: Edita informacion del perfil. //Fix: No guarda cambios. 
-- FIX THIS ROUTES /conversation
-    - get: Obtener todas las conversations // Fix todos solo user ve sus conversations
-    - post: Crear una nueva conversation // Para probar, unicamente funciona desde conversation.service
+            - put: Edit profile info, //FIX: Do not save changes. 
+- /conversations
+    - get: Get all conversations
+    - post: Create a new conversation 
         - /:conversationId
-            - get: Obtener una conversation por id
-            - put: Editar una conversation // Aún no funciona
-            - delete: Borrar una conversacion //Fix solo user puede eliminar
+            - get: Get a conversation by id
+            - put: Edit a conversation // Doesn't work yet
+            - delete: Delete a conversation 
                 - /messages
-                    - post: Postea nuevo mensaje //Fix que solo el user logeado pueda enviar //Revisar validación participantes (service and middleware)
+                    - post: Post new message 
 
 - /follows
+    - get: All my followers
+    - get: Everyone I follow 

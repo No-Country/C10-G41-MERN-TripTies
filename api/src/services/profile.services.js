@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const Profile = require('../models/profiles.models')
 
 const findAllProfiles = () => {
@@ -17,7 +16,6 @@ const findProfile = async (userId) => {
   try {
     // Buscamos el perfil del usuario por su ID y lo retornamos
     const profile = await Profile.findById(userId)
-    console.log(profile)
     return profile
   } catch (error) {
     throw Error('Not found Profile', 404, 'Not Found')

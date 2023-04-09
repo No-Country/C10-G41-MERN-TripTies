@@ -8,6 +8,6 @@ const {
   getProfile,
 } = require('../controllers/profile.controller')
 
-router.get('/', passport.authenticate('jwt', {session: false}), getAllProfiles)
+router.get('/', getAllProfiles)
 router.get('/:profileId', getProfile)  
 module.exports = router

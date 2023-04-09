@@ -8,6 +8,6 @@ const {
 } = require('../controllers/follow.controller')
 
 
-// router.get('/', passport.authenticate('jwt', {session: false}), followUser)
+router.get('/', followUser)
 
 module.exports = router
