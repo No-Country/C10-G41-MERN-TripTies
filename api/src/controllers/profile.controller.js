@@ -66,35 +66,45 @@ const User = require('../services/user.services')
 //   }
 // }
 
-const putProfile = async (req, res) => {
-  const userId = req.params.userId
-  const {description, birthday, portrait} = req.body
+const putUserProfile = async (req, res) => {
+  let { userId } = req.params
+  let { first_name, last_name, email, profile } = req.body
 
-  // console.log(userId)
-  // console.log(first_name, last_name, photo)
+  // console.log( userId )
+  // console.log( first_name, last_name, email, profile )
 
-  try {
-    const user = await User.findUserById(userId)
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' })
-    }
-
-    const profile = await Profile.findOne({ user: userId })
-    if (!profile) {
-      return res.status(404).json({ message: 'Profile not found' })
-    }
-    profile.description = description || profile.description
-    profile.birthday = birthday || profile.birthday
-    profile.portrait = portrait || profile.portrait
-
-    const updatedProfile = await profile.save()
-
-    return res.status(200).json({ profile: updatedProfile })
-  } catch (error) {
-    return res.status(500).json({ message: 'Server error' })
+  if (profile) {
+    await Profile.editUserProfile(userId, { first_name, last_name, email, profile })
+      .then(data => res.status(200).json(data))
+      .catch(err => res.status(400).json({
+        message: err.message, fields: {
+          first_name: 'STRING',
+          last_name: 'STRING',
+          email: 'STRING',
+          profile: {
+            image_url: 'STRING',
+            code_phone: 'INTEGER',
+            phone: 'INTEGER'
+          }
+        }
+      }))
+  } else {
+    await Profile.editUserProfile(userId, { first_name, last_name, email})
+      .then(data => res.status(200).json(data))
+      .catch(err => res.status(400).json({
+        message: err.message, fields: {
+          first_name: 'String',
+          last_name: 'String',
+          email: 'String',
+          profile: {
+            description: 'Sring',
+            birthday: 'Date',
+            portrait: 'String'
+          }
+        }
+      }))
   }
 }
-
 
 const getProfile = async (req, res, next) => {
   const { profileId } = req.params
@@ -123,5 +133,5 @@ const getAllProfiles = (req, res, next) => {
 module.exports = {
   getProfile,
   getAllProfiles,
-  putProfile
+  putUserProfile
 }

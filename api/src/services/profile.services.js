@@ -1,4 +1,7 @@
 const Profile = require('../models/profiles.models')
+const User = require('../models/users.models')
+const  mongoose = require('mongoose')
+
 
 const findAllProfiles = () => {
   return new Promise((resolve, reject) => {
@@ -22,24 +25,61 @@ const findProfile = async (userId) => {
   }
 }
 
+const editUserProfile = async (userId, userData) => {
+  const session = await mongoose.startSession()
+  session.startTransaction()
 
-const editUserProfile = async(userId, updatedProfile) => {
+  console.log(userId, userData)
+
   try {
-    const profile = await Profile.findOne({ user: userId })
-    if (!profile) {
-      return null
-    }
-    profile.description = updatedProfile.description || profile.description
-    profile.birthday = updatedProfile.birthday || profile.birthday
-    profile.portrait = updatedProfile.portrait || profile.portrait
+    const user = await User.findById(userId).session(session)
+    const  profile  = await Profile.findOne({ user: userId }).session(session)
 
-    const updatedProfile = await profile.save()
-    return updatedProfile
-  } catch (error) {
-    throw new Error(error.message)
+    // console.log(user)
+    // console.log(profile)
+
+    if (!user) {
+      throw new Error('Not found user', 404, 'Not Found')
+    }
+
+    if (!profile) {
+      throw new Error('Not found profiles', 404, 'Not Found')
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        $set: {
+          first_name: userData.first_name,
+          last_name: userData.last_name,
+          photo: userData.photo
+        }
+      },
+      { new: true, session }
+    )
+
+    const updatedProfile = await Profile.findOneAndUpdate(
+      { user: userId },
+      {
+        $set: {
+          description: userData.profile.description,
+          birthday: userData.profile.birthday,
+          portrait: userData.profile.portrait
+        }
+      },
+      { new: true, session }
+    )
+
+    await session.commitTransaction()
+    session.endSession()
+
+    return { updatedUser, updatedProfile }
+  } catch (err) {
+    await session.abortTransaction()
+    session.endSession()
+    throw err
   }
 }
-
 
 module.exports = {
   findProfile,

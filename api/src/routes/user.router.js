@@ -4,21 +4,19 @@ const passport = require('passport')
 require('../middlewares/auth.middleware')(passport)
 const isOwner = require('../middlewares/isOwner.middleware')
 
-
 const {
   deleteUser,
   getUserById,
 } = require('../controllers/user.controller')
 const { followUser } = require('../controllers/follow.controller')
-const { multerProfilePhotos } = require('../middlewares/multer.middleware')
-const { putProfile } = require('../controllers/profile.controller')
+const { putUserProfile } = require('../controllers/profile.controller')
 const { createRole } = require('../services/user.services')
 
 router.route('/:userId')
   .get(getUserById)
   .delete(isOwner, deleteUser)
 
-router.put('/:userId/editProfile',isOwner, multerProfilePhotos, putProfile) //Fix put service. Dont save the information
+router.put('/:userId/editProfile',isOwner, putUserProfile) //Fix put service. Dont save the information
 
 router.route('/:userId/follow/:followingId')
   .post(isOwner, followUser)
