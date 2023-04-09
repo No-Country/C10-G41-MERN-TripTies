@@ -1,4 +1,4 @@
-const { Schema, model, default: mongoose } = require('mongoose')
+const { Schema, model } = require('mongoose')
 
 const UserSchema = new Schema(
   {
@@ -9,10 +9,6 @@ const UserSchema = new Schema(
     password: { type: String, required: true, },
     emailVerified: { default: false, type: Boolean }, 
     photo: {type: String},
-    profile: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Profile'
-    }, 
     role: { type: String, default: 'USER' }, 
     isOnline: {type: Boolean, default: false}
   },
