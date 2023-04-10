@@ -16,34 +16,51 @@ This database was developed with NodeJS v-18.13. The diagram was created using d
     - /recovery-password
         - post: Password recovery via token and email. 
     - /recovery-password/:id
-        - patch: With token sent to email, redirects via link and performs password change. 
+        - patch: With token sent to email, redirects via link and performs password change. //FIX
+
 - /users
     - get: Displays all users (option only for admins).
 
-- /user
     - /:userId
         - get: Get user profile information
         - delete: delete user // Deletes user, but not the profile.
-    - /:userId
-        - /following 
-            - /followingId
-                post: Follow a user
+
+    - 
 - /profiles 
-    - get: Show all profiles, // FIX does not show user info
-    - /:profileId 
+    - get: Show all profiles,
+
+    - /:userId 
         - get: Get user by profile id
-        - /editProfile
-            - put: Edit profile info, //FIX: Do not save changes. 
+        - put: Edit profile info
+
+    - /:userId/following/:followingId
+        post: Follow a user
+ 
+
 - /conversations
     - get: Get all conversations
     - post: Create a new conversation 
         - /:conversationId
             - get: Get a conversation by id
-            - put: Edit a conversation // Doesn't work yet
+            - put: Edit a conversation // FIX Doesn't work yet
             - delete: Delete a conversation 
                 - /messages
                     - post: Post new message 
 
-- /follows
-    - get: All my followers
-    - get: Everyone I follow 
+- /follow //FIX GET FOLLOWS
+    - /:userId/followers  
+        - get: All my followers
+    - /:userId/following
+        - get: Everyone I follow 
+
+
+- /posts
+    - post: Create new post
+    - get: Get all posts
+    
+    - /postId: 
+        - get: get a post by id
+        - put: Edit a post by Id //FIX
+        
+        - /like
+            - post: Like a post

@@ -7,16 +7,16 @@ require('../../middlewares/auth.middleware')(passport)
 
 
 router.route('/')
-  .get( participantValidate, getAllConversations )
-  .post( participantValidate, postConversation ) 
+  .get( passport.authenticate('jwt', {session: false}), getAllConversations )
+  .post( passport.authenticate('jwt', {session: false}), postConversation ) 
 
 router.route('/:conversationId')
-  .get( participantValidate, getConversationById )
-  .put( participantValidate, putConversation ) //Arreglar
-  .delete( participantValidate, deleteConversation )
+  .get( passport.authenticate('jwt', {session: false}), participantValidate, getConversationById )
+  .put( passport.authenticate('jwt', {session: false}), participantValidate, putConversation ) //Arreglar
+  .delete( passport.authenticate('jwt', {session: false}), participantValidate, deleteConversation )
 
 router.route('/:conversationId/message')
-  .post( participantValidate, Message.postMessage)
+  .post( passport.authenticate('jwt', {session: false}), participantValidate, Message.postMessage)
 
 
 module.exports = router
