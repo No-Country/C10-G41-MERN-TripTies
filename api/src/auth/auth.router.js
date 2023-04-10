@@ -1,8 +1,9 @@
 const express = require('express')
-const { postLogin } = require('./auth.controller')
+const { postLogin, postRecoveryToken } = require('./auth.controller')
 const routes = express.Router()
 
 routes.post('/login', postLogin)
+routes.post('/recovery-password', postRecoveryToken)
 
 
 module.exports = routes
