@@ -16,12 +16,14 @@ import saved from "../../img/archive-tick.png";
 import stars from "../../img/stars.png";
 import Dropdown from "./Dropdown";
 import SlideShow from "../SlideShow/SlideShow";
+import Comments from "../Comments/Comments";
 
 type props = {
   places: any;
 };
 function Card({ places }: props) {
   const [display, setDisplay] = useState("none");
+  const [displayComments, setDisplayComments] = useState("none")
   const ref = useRef<HTMLImageElement>(null);
 
   
@@ -49,7 +51,17 @@ function Card({ places }: props) {
     }
   };
 
+
+  const handleSectionComments = () => {
+    if(displayComments === "none"){
+      setDisplayComments("block")
+    } else {
+      setDisplayComments("none")
+    }
+  }
+
   return (
+    <>
     <section className={style.container}>
       <img src={avatar} alt="avatar" />
       <section className={style.content}>
@@ -105,7 +117,7 @@ function Card({ places }: props) {
         <div className={style.actions}>
           <aside>
             <img src={heart} alt="heart" />
-            <img src={messageBig} alt="message" />
+            <img onClick={handleSectionComments} src={messageBig} alt="message" />
             <img src={share} alt="share" />
           </aside>
 
@@ -117,6 +129,8 @@ function Card({ places }: props) {
         </div>
       </section>
     </section>
+      <Comments goingToComment={displayComments} /> 
+    </>
   );
 }
 
