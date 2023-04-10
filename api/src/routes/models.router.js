@@ -9,27 +9,17 @@ const passport = require('passport')
 require('../middlewares/auth.middleware')(passport)
 const routesConversation = require('../chat/chatRoutes/conversation.route')
 
-const {
-  postUser,
-  getAllUsers,
-} = require('../controllers/user.controller')
-const isAdmin = require('../middlewares/isAdmin.middleware')
-// const isOwner = require('../middlewares/isOwner.middleware')
-
 function routerModels(app) {
   const router = express.Router()
 
   app.use('/api/v1', router)
 
   router.use('/auth', routesLogin)
-  router.post('/sign-up', postUser)
-
-  router.get('/users', passport.authenticate('jwt', {session: false}), isAdmin, getAllUsers) //Only admins
-  router.use('/user', passport.authenticate('jwt', {session: false}), routesUsers) //Only admins
-  router.use('/profiles', passport.authenticate('jwt', {session: false}), routesProfiles) //Some restrictions
+  router.use('/user', passport.authenticate('jwt', {session: false}), routesUsers) 
+  router.use('/profiles', passport.authenticate('jwt', {session: false}), routesProfiles)
   router.use('/posts', routesPosts)
-  router.use('/follow', passport.authenticate('jwt', {session: false}), routesFollows)
-  router.use('/conversations', routesConversation) //fix all route 
+  router.use('/follow', routesFollows)
+  router.use('/conversations', routesConversation) 
 
   router.use('/user', routesUsers)
 

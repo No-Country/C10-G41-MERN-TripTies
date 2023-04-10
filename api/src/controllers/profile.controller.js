@@ -1,90 +1,21 @@
 const Profile = require('../services/profile.services')
-const User = require('../services/user.services')
-
-
-// const putProfile = async(req, res) => {
-//   const { userId } = req.params
-//   const {first_name, last_name, photo, description, birthday, portrait } = req.body
-
-//   try {
-//     const updatedProfile = await Profile.editProfile(userId, {first_name, last_name, photo, description, birthday, portrait })
-//     res.status(200).json({ profile: updatedProfile })
-//   } catch (error) {
-//     res.status(500).json({ message: error.message })
-//   }
-// }
-
-
-// const putProfile = async (req, res) => {
-//   const { profileId } = req.params
-//   const { first_name, last_name, photo, description, birthday, portrait } = req.body
-
-//   // console.log('profile Id:', profileId)
-//   // console.log('req:', req.body)
-
-//   try {
-//     const updatedProfile = await Profile.editProfile(profileId, { first_name, last_name, photo, description, birthday, portrait })
-//     console.log('profile Id:', profileId)
-//     console.log('data:', first_name, last_name, photo, description, birthday, portrait)
-//     console.log('updatedProfile:', updatedProfile)
-//     if (!updatedProfile) {
-//       console.log('Profile not updated')
-//       return res.status(400).json({ message: 'Failed to update profile' })
-//     }
-//     console.log('Profile updated successfully')
-//     return res.status(200).json({ profile: updatedProfile })
-//   } catch (error) {
-//     return res.status(500).json({ message: error.message })
-//   }
-// }
-
-
-// const putProfile = async (req, res) => {
-//   let { profileId } = req.params
-//   let { first_name, last_name, photo, description, birthday, portrait } = req.body
-  
-//   try {
-//     if (first_name, last_name, photo, description, birthday, portrait) {
-//       console.log(profileId, {first_name, last_name, photo, description, birthday, portrait})
-//       const data = await Profile.editProfile(profileId, { first_name, last_name, photo, description, birthday, portrait })
-//       res.status(200).json(data)
-//     }
-//   } catch (err) {
-//     res.status(400).json({
-//       message: err.message, fields: {
-//         username: 'STRING',
-//         profile: {
-//           first_name: 'String',
-//           last_name: 'String',
-//           photo: 'String',
-//           description: 'String',
-//           birthday: 'DATE',
-//           portrait: 'String'
-//         }
-//       }
-//     })
-//   }
-// }
 
 const putUserProfile = async (req, res) => {
   let { userId } = req.params
   let { first_name, last_name, email, profile } = req.body
-
-  // console.log( userId )
-  // console.log( first_name, last_name, email, profile )
 
   if (profile) {
     await Profile.editUserProfile(userId, { first_name, last_name, email, profile })
       .then(data => res.status(200).json(data))
       .catch(err => res.status(400).json({
         message: err.message, fields: {
-          first_name: 'STRING',
-          last_name: 'STRING',
-          email: 'STRING',
+          first_name: 'String',
+          last_name: 'String',
+          email: 'String',
           profile: {
-            image_url: 'STRING',
-            code_phone: 'INTEGER',
-            phone: 'INTEGER'
+            description: 'String',
+            birthday: 'Date',
+            portrait: 'String'
           }
         }
       }))
@@ -97,7 +28,7 @@ const putUserProfile = async (req, res) => {
           last_name: 'String',
           email: 'String',
           profile: {
-            description: 'Sring',
+            description: 'String',
             birthday: 'Date',
             portrait: 'String'
           }
@@ -107,31 +38,33 @@ const putUserProfile = async (req, res) => {
 }
 
 const getProfile = async (req, res, next) => {
-  const { profileId } = req.params
+  const { userId } = req.params
   try {
-    const profile = await Profile.findProfile(profileId)
+    const profile = await Profile.findProfile(userId)
     if (!profile) {
       return res.status(404).json({ message: 'Profile not found' })
     }
-    return res.status(200).json({ profile })
+    const { username, first_name, last_name, photo } = profile._doc
+    const { description, birthday, portrait } = profile.profile
+    return res.status(200).json({ username, first_name, last_name, photo, description, birthday, portrait })
   } catch (error) {
     return res.status(500).json({ message: error.message })
   }
 }
 
-const getAllProfiles = (req, res, next) => {
-  Profile.findAllProfiles()
-    .then(profiles => {
-      res.status(200).json(profiles)
-    })
-    .catch(err => {
-      next(err)
-    })
+const getAllUsersWithProfile = async (req, res, next) => {
+  try {
+    const page = parseInt(req.query.page) || 1
+    const users = await Profile.findAllUsersWithProfile(page)
+    res.status(200).json(users)
+  } catch (error) {
+    next(error)
+  }
 }
 
 
 module.exports = {
   getProfile,
-  getAllProfiles,
+  getAllUsersWithProfile,
   putUserProfile
 }
