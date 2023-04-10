@@ -21,6 +21,7 @@ import FooterTerm from "../Footers/FooterTerm";
 import FooterSocial from "../Footers/FooterSocial";
 import MiniFooter from "../MiniFooter/MiniFooter";
 import SlideShow from "../SlideShow/SlideShow";
+import ChatBubble from "../ChatBubble/ChatBubble";
 import ModalPost from "../ModalPost/ModalPost";
 
 interface lugaresType {
@@ -37,6 +38,11 @@ interface lugaresType {
   comments: number;
   tag: string;
   save: string;
+}
+
+interface chat {
+  name: string,
+  avatar: string
 }
 
 function Home(): JSX.Element {
@@ -286,6 +292,9 @@ function Home(): JSX.Element {
     }
   };
 
+  // necesario para la implementacion del chat
+  const [chat, setChat] = useState<chat>({name:'', avatar:''})
+
   return (
     <div className={style.homeContainer}>
       <NavBar handleHome={handleHome} places={places} />
@@ -297,7 +306,7 @@ function Home(): JSX.Element {
                 handleSaved={handleSaved}
                 handleVisited={handleVisited}
               />
-              <SectionChat />
+              <SectionChat chat={chat} setChat={setChat}/>
             </div>
           </div>
           <div className={style.footerLeft}>
@@ -350,12 +359,13 @@ function Home(): JSX.Element {
               handleHash={handleHash}
             />
             <SectionSuggestions />
-          </div>
           <div className={style.footerrigth}>
             <FooterTerm />
           </div>
+          </div>
         </div>
       </div>
+      <ChatBubble chat={chat} setChat={setChat}/>
     </div>
   );
 }

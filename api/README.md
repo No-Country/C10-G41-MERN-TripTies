@@ -1,35 +1,66 @@
-## Rutas
+## API TRIP TIES
+TRIP-TIES: Social Network focused on travelers 🚗✈🚢 
 
-### Ruta principal
- http:/localhost:3000/api/v1
+This database was developed with NodeJS v-18.13. The diagram was created using dbdiagram, then in VSC we started using Express and MongoDB with mongoose to call the database. We also used libraries like bcrypt for password encryption, nodemailer for email sending, multer for file management. The authentication was done with passport JWT. Best practices were also handled with eslint. A challenge for the backend team since it was our first opportunity to work with non-relational databases. We had the opportunity to learn more in depth and thanks to bugs, understand the code better. 
 
-- /sign-up
-    - post: Crear un nuevo usuario
-      
-- /login
-    - post: Logea al usuario, Devuelve token de inicio de sesion
+
+### Routes ↔
+
+#### Main path: http:/localhost:3000/api/v1
+
+- /auth
+    - /sign-up
+        - post: Create a new user
+    - /login
+        - post: Log the user in, returns login token
+    - /recovery-password
+        - post: Password recovery via token and email. 
+    - /recovery-password/:id
+        - patch: With token sent to email, redirects via link and performs password change. //FIX
 
 - /users
-    - get: Muestra todos los usuarios. (Opcion unicamente para admins)
+    - get: Displays all users (option only for admins).
 
-- /user
     - /:userId
-        - get: Trae información del perfil del usuario
-        - delete: elimina usuario //Fix ruta
-- /profiles 
-    - get: Muestra todos los perfiles
-    - /:profileId 
-        - get: Trae un usuario por id de perfil
-        - /editProfile
-            - put: Edita informacion del perfil. //Fix: No guarda cambios. 
-- FIX THIS ROUTES /conversation
-    - get: Obtener todas las conversations // Fix todos solo user ve sus conversations
-    - post: Crear una nueva conversation // Para probar, unicamente funciona desde conversation.service
-        - /:conversationId
-            - get: Obtener una conversation por id
-            - put: Editar una conversation // Aún no funciona
-            - delete: Borrar una conversacion //Fix solo user puede eliminar
-                - /messages
-                    - post: Postea nuevo mensaje //Fix que solo el user logeado pueda enviar //Revisar validación participantes (service and middleware)
+        - get: Get user profile information
+        - delete: delete user // Deletes user, but not the profile.
 
-- /follows
+    - 
+- /profiles 
+    - get: Show all profiles,
+
+    - /:userId 
+        - get: Get user by profile id
+        - put: Edit profile info
+
+    - /:userId/following/:followingId
+        post: Follow a user
+ 
+
+- /conversations
+    - get: Get all conversations
+    - post: Create a new conversation 
+        - /:conversationId
+            - get: Get a conversation by id
+            - put: Edit a conversation // FIX Doesn't work yet
+            - delete: Delete a conversation 
+                - /messages
+                    - post: Post new message 
+
+- /follow //FIX GET FOLLOWS
+    - /:userId/followers  
+        - get: All my followers
+    - /:userId/following
+        - get: Everyone I follow 
+
+
+- /posts
+    - post: Create new post
+    - get: Get all posts
+    
+    - /postId: 
+        - get: get a post by id
+        - put: Edit a post by Id //FIX
+        
+        - /like
+            - post: Like a post

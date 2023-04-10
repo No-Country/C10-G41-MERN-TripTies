@@ -4,15 +4,14 @@ import profileImage from "../../img/profileImage.png";
 import user from "../../img/userpost.png";
 import dropDownArrow from "../../img/dropdownpost.png";
 import addPhoto from "../../img/AddPhoto.png";
-import addPhotoHover from "../../img/AddPhotoHover.png";
 import addVideo from "../../img/AddVideo.png";
-import addVideoHover from "../../img/AddVideoHover.png";
-import stars from "../../img/stars2.png";
-import React, { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getCountries } from "../../redux/actions/VariablesActions";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import { Country } from "../../types";
 import { Rating } from "react-simple-star-rating";
+import { postPublication } from "../../redux/actions/Publications";
+import SelectSearch from "react-select-search";
 
 type props = {
   visible: boolean;
@@ -33,20 +32,39 @@ function ModalPost({ visible, setVisible }: props): JSX.Element {
   const countries = selector<Country[]>((state) => state.countries);
   let filterCountry = countries.map((e: any) => e.name.common);
 
+  const cloudinaryRef = useRef<any>();
+  const widgetRef = useRef<any>();
+
   useEffect(() => {
     dispatch(getCountries());
   }, []);
 
-  const [post, setPost] = useState({
-    privacity: "",
+  let photosArray: object[] = [];
+  let videosArray: object[] = [];
+
+  const [post, setPost] = useState<any>({
+    privacity: "Public",
     text: "",
-    photo: "",
-    video: "",
+    tag: [],
+    photo: photosArray,
+    video: videosArray,
     rate: 0,
     clasification: "",
     location: "",
     name: "",
   });
+
+  let tags = ["#hola", "#prueba", "#prueba 2", "prueba 3"];
+
+  const handleTag = (e: any) => {
+    e.preventDefault();
+    if (!post.tag.includes(e.target.value)) {
+      setPost({
+        ...post,
+        tag: [...post.tag, e.target.value],
+      });
+    }
+  };
 
   const handleRating = (rate: number) => {
     setPost({
@@ -69,18 +87,57 @@ function ModalPost({ visible, setVisible }: props): JSX.Element {
     });
   };
 
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    dispatch(postPublication(post));
+  };
+
+  useEffect(() => {
+    cloudinaryRef.current = (window as any).cloudinary;
+    widgetRef.current = cloudinaryRef.current.createUploadWidget(
+      {
+        cloudName: "dtioqvhiz",
+        uploadPreset: "prueba",
+        sources: ["local"],
+        showUploadMoreButton: false,
+        showCompletedButton: true,
+      },
+      function (_error: unknown, result: any) {
+        if (result.info.resource_type === "image") {
+          photosArray.push({
+            type: "image",
+            url: result.info.url,
+          });
+        }
+        if (result.info.resource_type === "video") {
+          videosArray.push({
+            type: "video",
+            url: result.info.url,
+          });
+        }
+      }
+    );
+  }, []);
+
+  const handleUpload = (e: any) => {
+    e.preventDefault();
+    widgetRef.current.open();
+  };
+
+  console.log("post", post);
+
   return (
     <div className={style.modalContainer}>
       {visible ? (
         <section className={style.modal}>
-          <div className={style.container}>
+          <form onSubmit={handleSubmit} className={style.container}>
             <aside className={style.modalHeader}>
               <h3>Create post</h3>
               <label
                 onClick={() => setVisible(false)}
                 style={{ cursor: "pointer" }}
               >
-                <img src={cross} alt="" />
+                <img src={cross} alt="" width={20} height={20} />
               </label>
             </aside>
             <aside className={style.modalInfoUser}>
@@ -89,7 +146,10 @@ function ModalPost({ visible, setVisible }: props): JSX.Element {
                 <h3>Emma Lopez</h3>
                 <div className={style.infoUserPrivacity}>
                   <img src={user} alt="" />
-                  <h5>Public</h5>
+                  <select onChange={handleSelect} name="privacity">
+                    <option value="Public">Public</option>
+                    <option value="Private">Private</option>
+                  </select>
                   <img src={dropDownArrow} alt="" />
                 </div>
               </div>
@@ -100,8 +160,18 @@ function ModalPost({ visible, setVisible }: props): JSX.Element {
               onChange={handleChange}
               name="text"
             ></textarea>
+            <aside className={style.tags}>
+              <select onChange={handleTag} name="tag" placeholder="Add Tags!">
+                <option value="" disabled selected hidden>
+                  Add Tags!
+                </option>
+                {tags && tags.map((e) => <option value={e}>{e}</option>)}
+              </select>
+              {post.tag && post.tag.map((e: any) => <h2>{e}</h2>)}
+            </aside>
+
             <aside className={style.buttons}>
-              <button>
+              <button onClick={handleUpload}>
                 <img
                   src={addPhoto}
                   alt=""
@@ -110,7 +180,7 @@ function ModalPost({ visible, setVisible }: props): JSX.Element {
                   className={style.media}
                 />
               </button>
-              <button>
+              <button onClick={handleUpload}>
                 <img
                   src={addVideo}
                   alt=""
@@ -142,8 +212,8 @@ function ModalPost({ visible, setVisible }: props): JSX.Element {
                   className={style.clasification}
                   name="clasification"
                 >
-                  <option value="" defaultChecked>
-                    Add classification
+                  <option value="" disabled selected hidden>
+                    Add clasification!
                   </option>
                   {clasification &&
                     clasification.map((e, i) => (
@@ -160,8 +230,8 @@ function ModalPost({ visible, setVisible }: props): JSX.Element {
                   className={style.location}
                   name="location"
                 >
-                  <option value="" defaultChecked>
-                    Add location
+                  <option value="" disabled selected hidden>
+                    Add location!
                   </option>
                   {filterCountry &&
                     filterCountry.map((e, i) => (
@@ -183,9 +253,19 @@ function ModalPost({ visible, setVisible }: props): JSX.Element {
               </div>
             </aside>
             <aside className={style.buttonPost}>
-              <button>Post</button>
+              <button
+                disabled={
+                  post.text === "" ||
+                  post.clasification === "" ||
+                  post.location === "" ||
+                  post.name === ""
+                }
+                type="submit"
+              >
+                Post
+              </button>
             </aside>
-          </div>
+          </form>
         </section>
       ) : null}
     </div>

@@ -16,6 +16,8 @@
     "react-rating-stars-component": "^2.2.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.8.2",
+    "react-select": "^5.7.2",
+    "react-select-search": "^4.1.6",
     "react-simple-star-rating": "^5.1.7",
     "reactjs-social-login": "^2.6.2",
     "redux": "^4.2.1",

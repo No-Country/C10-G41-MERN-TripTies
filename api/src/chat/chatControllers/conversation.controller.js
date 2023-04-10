@@ -1,33 +1,30 @@
 const Conversation = require('../chatServices/conversation.services')
 
-const postConversation = (req, res) =>{
+const postConversation = (req, res) => {
   const { title, participantId } = req.body
   const ownerId = req.user._id
-
-  console.log("owner: ", ownerId)
-  console.log("Participant :", participantId)
-  console.log("Title: ", title)
-
-  Conversation.createConversation({title, participantId, ownerId})
+  
+  Conversation.createConversation({ title, participantId, ownerId })
     .then(data => {
       res.status(201).json(data)
-      // console.log(data)
     })
     .catch((err) => {
-      res.status(400).json({message: err.message, fields: {
-        title: 'String', 
-        participantId: 'id'
-      }})
+      res.status(400).json({
+        message: err.message, fields: {
+          title: 'String',
+          participantId: 'id'
+        }
+      })
     })
 }
 
-const getAllConversations = (req, res, next) => {
-  Conversation.getAllConversations()
+const getAllConversations = (req, res) => {
+  Conversation.findAllConversations()
     .then(users => {
       res.status(200).json(users)
     })
     .catch(err => {
-      next(err)
+      res.status(400).json({message: err.message})
     })
 }
 
@@ -36,7 +33,7 @@ const getConversationById = async (req, res, next) => {
   const { conversationId } = req.params
 
   try {
-    const conversation = await Conversation.getConversationById(conversationId)
+    const conversation = await Conversation.findConversationById(conversationId)
 
     if (!conversation) {
       return res.status(404).json({ message: 'Conversation not found' })
@@ -48,7 +45,7 @@ const getConversationById = async (req, res, next) => {
   }
 }
 
-const putConversation =  async(req, res) => {
+const putConversation = async (req, res) => {
   const { conversationId } = req.params
   const { title } = req.body
   try {
@@ -72,9 +69,9 @@ const deleteConversation = (req, res, next) => {
 }
 
 module.exports = {
-  postConversation, 
-  getAllConversations, 
-  getConversationById, 
-  putConversation, 
+  postConversation,
+  getAllConversations,
+  getConversationById,
+  putConversation,
   deleteConversation
 }

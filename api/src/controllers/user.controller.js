@@ -1,10 +1,10 @@
 const User = require("../services/user.services");
-// const CustomError = require('../utils/error-handler')
 
-const postUser = async (req, res, next) => {
+const postUser = async (req, res) => {
   try {
-    const { username, email, password, first_name, last_name, photo } =
+    const { username, email, password, first_name, last_name, photo, role } =
       req.body;
+
     const user = await User.createUser({
       username,
       first_name,
@@ -12,10 +12,21 @@ const postUser = async (req, res, next) => {
       email,
       password,
       photo,
+      role,
     });
     res.status(201).json(user);
   } catch (error) {
-    next(error);
+    res.status(400).json({
+      message: error.message,
+      fields: {
+        username: "String",
+        first_name: "String",
+        last_name: "String",
+        email: "example@example.com",
+        password: "String",
+        photo: "URL",
+      },
+    });
   }
 };
 
@@ -33,7 +44,8 @@ const getUserById = async (req, res, next) => {
   const { userId } = req.params;
 
   try {
-    const user = await User.findUserById(userId);
+    const user = await User.findUserById(userId, "profile");
+
     if (!user) {
       throw new Error(404, "User not found");
     }
@@ -43,7 +55,7 @@ const getUserById = async (req, res, next) => {
   }
 };
 
-const deleteUser = (req, res, next) => {
+const deleteUser = (req, res) => {
   const { userId } = req.params;
 
   User.removeUser(userId)
@@ -51,7 +63,7 @@ const deleteUser = (req, res, next) => {
       res.status(200).json({ message: "User deleted succesfully", user });
     })
     .catch((err) => {
-      next(err);
+      res.status(400).json(err);
     });
 };
 

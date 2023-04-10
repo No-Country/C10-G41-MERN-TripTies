@@ -40,6 +40,18 @@ const followUser = async (followerId, followingId) => {
   }
 }
 
+const findFollowers = async (userId) => {
+  const data = await Follow.find({ follower: userId }).populate('follower', '_id username first_name last_name').lean().exec()
+  return data.map(item => item.follower)
+}
+
+const findFollowings = async (userId) => {
+  const data = await Follow.find({ following: userId }).populate('following', '_id username first_name last_name').lean().exec()
+  return data.map(item => item.following)
+}
+
 module.exports = {
-  followUser
+  followUser,
+  findFollowers,
+  findFollowings
 }
