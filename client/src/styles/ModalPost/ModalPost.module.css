@@ -234,4 +234,8 @@
     display: flex;
     justify-content: center;
   }
+
+  .modalContainer {
+    height: auto;
+  }
 }

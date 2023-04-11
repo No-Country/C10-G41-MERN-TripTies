@@ -197,15 +197,30 @@
     max-width: 100%;
   }
 
-  .feedRight {
-    display:none;
-  }
+   /* .feedRight {
+    display:initial;
+  } */
 
   .feedLeft {
+    position: initial;
+    width: 100vw;
     display: none;
   }
 
   .leftContainer {
+    position: initial;
+  }
+
+  .feedContainer {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rigthcontainer {
+    display: none;
+  }
+
+  .footerLeft {
     display: none;
   }
 }
