@@ -12,7 +12,7 @@ const {
 const isAdmin = require('../middlewares/isAdmin.middleware')
 
 
-router.get('/', passport.authenticate('jwt', {session: false}), isAdmin, getAllUsers) //Only admins
+router.get('/', passport.authenticate('jwt', {session: false}), getAllUsers) //Only admins
 
 router.route('/:userId')
   .get(getUserById)

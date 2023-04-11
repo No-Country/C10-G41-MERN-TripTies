@@ -3,52 +3,94 @@ import {
   LoginSocialGoogle,
   LoginSocialFacebook,
 } from "reactjs-social-login";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import google from "../../img/google.png";
 import facebook from "../../img/facebook.png";
-// import FacebookLogin from "react-facebook-login";
+import { Users } from "../../types";
+import { useAppDispatch } from "../../redux/store/hooks";
+import { createUser, loginUser } from "../../redux/actions/Users";
+import swal from "sweetalert";
+import { useNavigate } from "react-router-dom";
 
-function SocialNetworks(): JSX.Element {
-  const clientID =
-    "456183635923-ah5r94hf6iaktfsrstmq4r2gafl73mdr.apps.googleusercontent.com";
+type props = {
+  setInput: any;
+  newUser: object;
+};
 
-  const appID = "139090382264569";
+function SocialNetworks({ setInput, newUser }: props): JSX.Element {
+  const dispatch = useAppDispatch();
+  const nav = useNavigate();
+  const [userGoogle, setUserGoogle] = useState<Users>({
+    password: "",
+    username: "",
+    email: "",
+    firstName: "",
+    lastName: "",
+    photo: "",
+  });
 
-  const [provider, setProvider] = useState("");
-  const [profile, setProfile] = useState<any>();
+  const [userFacebook, setUserFacebook] = useState<Users>({
+    password: "",
+    username: "",
+    email: "",
+    firstName: "",
+    lastName: "",
+    photo: "",
+  });
 
-  const onLoginStart = useCallback(() => {
-    setProfile(null);
-  }, []);
+  // ESTO NO FUNCIONA TODAVIA
 
-  const onResolve = (response: any) => {
-    console.log(response);
+  const onResolveGoogle = ({ data, provider }: IResolveParams) => {
+    setUserGoogle({
+      username: (data && data.name) || (data && data.email.split("@")[0]),
+      email: data && data.email,
+      firstName: data && data.first_name,
+      lastName: data && data.last_name,
+      photo: data && data.picture,
+      password: `${Math.random().toString(36).substring(2, 7)}`,
+    });
   };
+
+  const onResolveFacebook = ({ data }: IResolveParams) => {
+    setUserFacebook({
+      username: data && data.name,
+      email: data && data.email,
+      firstName: data && data.first_name,
+      lastName: data && data.last_name,
+      photo: data && data.picture.data.url,
+      password: `${Math.random().toString(36).substring(2, 7)}`,
+    });
+  };
+
+  useEffect(() => {
+    if (userGoogle.email !== "") {
+      dispatch(createUser(userGoogle));
+    } else if (userFacebook.email !== "") {
+      dispatch(createUser(userFacebook));
+    }
+  }, [userGoogle || userFacebook]);
 
   const onReject = (err: unknown) => {
-    console.log(err);
+    throw err;
   };
 
-  // const onLogoutSuccess = useCallback(() => {
-  //   setProfile(null);
-  //   setProvider("");
-  //   alert("logout success");
-  // }, []);
   return (
     <>
       <LoginSocialGoogle
-        client_id={clientID}
-        onLoginStart={onLoginStart}
-        onResolve={onResolve}
+        client_id={import.meta.env.VITE_GG_APP_ID}
+        onResolve={onResolveGoogle}
         onReject={onReject}
+        scope={"https://www.googleapis.com/auth/userinfo.email"}
       >
         <img src={google} alt="Google" style={{ cursor: "pointer" }} />
       </LoginSocialGoogle>
       <LoginSocialFacebook
-        appId={appID}
-        onLoginStart={onLoginStart}
-        onResolve={onResolve}
+        appId={import.meta.env.VITE_FB_APP_ID}
+        onResolve={onResolveFacebook}
         onReject={onReject}
+        fieldsProfile={
+          "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
+        }
       >
         <img src={facebook} alt="Facebook" style={{ cursor: "pointer" }} />
       </LoginSocialFacebook>

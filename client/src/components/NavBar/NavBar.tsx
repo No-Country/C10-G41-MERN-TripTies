@@ -8,11 +8,16 @@ import { useEffect, useRef, useState } from "react";
 import DropdownUser from "./DropdownUser";
 import { Link } from "react-router-dom";
 import Search from "../Search/Search";
+import Cookies from "universal-cookie/cjs/Cookies";
 
 function NavBar({ handleHome, places }: any): JSX.Element {
   const [name, setName] = useState("");
   const [display, setDisplay] = useState("none");
   const ref = useRef<HTMLImageElement>(null);
+  const cookies = new Cookies();
+  const firstName = cookies.get("firstName");
+  const lastName = cookies.get("lastName");
+  const photo = cookies.get("photo");
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -53,7 +58,7 @@ function NavBar({ handleHome, places }: any): JSX.Element {
       <div className={style.navButtons}>
         <img className={style.navBell} src={bell} alt="bell" />
         <section className={style.dropDownArrow}>
-          <h2 className={style.navButtonsh2}>{name ? name : "Traveler"}</h2>
+          <h2 className={style.navButtonsh2}>{`${firstName} ${lastName}`}</h2>
           <img
             ref={ref}
             onClick={handleAppear}
@@ -63,7 +68,7 @@ function NavBar({ handleHome, places }: any): JSX.Element {
           />
           <DropdownUser display={display} />
         </section>
-        <img src={profile} alt="" width="24" height="24" />
+        <img src={photo} alt="" width="24" height="24" />
         <div className={style.navSelectContainer}>
           <select
             defaultValue={"en"}

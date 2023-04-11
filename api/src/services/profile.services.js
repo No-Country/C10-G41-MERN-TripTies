@@ -1,22 +1,21 @@
-const Profile = require('../models/profiles.models')
-const User = require('../models/users.models')
-const  mongoose = require('mongoose')
+const Profile = require("../models/profiles.models");
+const User = require("../models/users.models");
+const mongoose = require("mongoose");
 
-
-const PAGE_SIZE = 5
+const PAGE_SIZE = 30;
 
 const findAllUsersWithProfile = async (page) => {
-  const skip = (page - 1) * PAGE_SIZE
-  const limit = PAGE_SIZE
-  
+  const skip = (page - 1) * PAGE_SIZE;
+  const limit = PAGE_SIZE;
+
   const usersWithProfile = await User.aggregate([
     {
       $lookup: {
-        from: 'profiles',
-        localField: '_id',
-        foreignField: 'user',
-        as: 'profile'
-      }
+        from: "profiles",
+        localField: "_id",
+        foreignField: "user",
+        as: "profile",
+      },
     },
     {
       $project: {
@@ -24,50 +23,58 @@ const findAllUsersWithProfile = async (page) => {
         username: 1,
         first_name: 1,
         last_name: 1,
-        photo: { $arrayElemAt: ['$profile.portrait', 0] },
-        description: { $arrayElemAt: ['$profile.description', 0] },
-        birthday: { $arrayElemAt: ['$profile.birthday', 0] }
-      }
+        photo: { $arrayElemAt: ["$profile.portrait", 0] },
+        description: { $arrayElemAt: ["$profile.description", 0] },
+        birthday: { $arrayElemAt: ["$profile.birthday", 0] },
+      },
     },
     {
-      $skip: skip
+      $skip: skip,
     },
     {
-      $limit: limit
-    }
-  ])
+      $limit: limit,
+    },
+  ]);
 
-  return usersWithProfile
-}
+  return usersWithProfile;
+};
 
-const findProfile = async (userId) => {
+const findProfileById = async (id) => {
   try {
     // Buscamos el perfil del usuario por su ID y lo retornamos
-    const user = await User.findById(userId)
-    const profile = await Profile.findOne({user: userId})
-    const userProfile = {profile, ...user}
-    return userProfile
+    const profile = await Profile.findById(id);
+    return profile;
   } catch (error) {
-    throw Error('Not found Profile', 404, 'Not Found')
+    throw Error("Not found Profile", 404, "Not Found");
   }
-}
+};
+
+const findProfileByUser = async (userId) => {
+  try {
+    // Buscamos el perfil del usuario por su ID y lo retornamos
+    const profile = await Profile.findOne({ user: userId });
+    return profile;
+  } catch (error) {
+    throw Error("Not found Profile", 404, "Not Found");
+  }
+};
 
 const editUserProfile = async (userId, userData) => {
-  const session = await mongoose.startSession()
-  session.startTransaction()
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
-  console.log(userId, userData)
+  console.log(userId, userData);
 
   try {
-    const user = await User.findById(userId).session(session)
-    const  profile  = await Profile.findOne({ user: userId }).session(session)
+    const user = await User.findById(userId).session(session);
+    const profile = await Profile.findOne({ user: userId }).session(session);
 
     if (!user) {
-      throw new Error('Not found user', 404, 'Not Found')
+      throw new Error("Not found user", 404, "Not Found");
     }
 
     if (!profile) {
-      throw new Error('Not found profiles', 404, 'Not Found')
+      throw new Error("Not found profiles", 404, "Not Found");
     }
 
     const updatedUser = await User.findByIdAndUpdate(
@@ -76,11 +83,11 @@ const editUserProfile = async (userId, userData) => {
         $set: {
           first_name: userData.first_name,
           last_name: userData.last_name,
-          photo: userData.photo
-        }
+          photo: userData.photo,
+        },
       },
       { new: true, session }
-    )
+    );
 
     const updatedProfile = await Profile.findOneAndUpdate(
       { user: userId },
@@ -88,25 +95,24 @@ const editUserProfile = async (userId, userData) => {
         $set: {
           description: userData.profile.description,
           birthday: userData.profile.birthday,
-          portrait: userData.profile.portrait
-        }
+          portrait: userData.profile.portrait,
+        },
       },
       { new: true, session }
-    )
+    );
 
-    await session.commitTransaction()
-    session.endSession()
+    await session.commitTransaction();
+    session.endSession();
 
-    return { updatedUser, updatedProfile }
+    return { updatedUser, updatedProfile };
   } catch (err) {
-    await session.abortTransaction()
-    session.endSession()
-    throw err
+    await session.abortTransaction();
+    session.endSession();
+    throw err;
   }
-}
+};
 
 module.exports = {
-  findProfile,
   findAllUsersWithProfile,
-  editUserProfile
-}
+  editUserProfile,
+};
