@@ -173,3 +173,27 @@
   justify-content: center;
   margin-top: 2rem;
 }
+
+@media (max-width: 768px) {
+  .homeContainer {
+    display: flex;
+    max-width: 100vw;
+    flex-direction: column;
+  }
+
+  .feedCenter {
+    max-width: 100%;
+  }
+
+  .postGenerator {
+    max-width: 100%;
+  }
+
+  .buttonsPost {
+    max-width: 70%;
+  }
+
+  .inputPost {
+    max-width: 100%;
+  }
+}

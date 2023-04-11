@@ -101,3 +101,20 @@
   border: none;
   cursor: pointer;
 }
+
+@media (max-width: 768px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .description {
+    max-width: 80vw;
+    word-wrap: break-word;
+  }
+
+  .publicationInfo {
+    gap: 0;
+  }
+
+}
