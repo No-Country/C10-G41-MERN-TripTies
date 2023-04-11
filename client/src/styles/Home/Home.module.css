@@ -196,4 +196,16 @@
   .inputPost {
     max-width: 100%;
   }
+
+  .feedRight {
+    display:none;
+  }
+
+  .feedLeft {
+    display: none;
+  }
+
+  .leftContainer {
+    display: none;
+  }
 }
