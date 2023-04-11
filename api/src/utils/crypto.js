@@ -1,11 +1,14 @@
-const bcrypt = require('bcrypt')
-require('dotenv').config()
+const bcrypt = require("bcrypt");
+require("dotenv").config();
 
-const saltRouds = parseInt(process.env.BCRYPT_SALT_ROUNDS)
+const saltRouds = parseInt(process.env.BCRYPT_SALT_ROUNDS);
 
-const hash = myPlaintextPassword => bcrypt.hashSync(myPlaintextPassword, saltRouds)
-const comparePassword = (myPlaintextPassword, password) => bcrypt.compareSync(myPlaintextPassword, password)
+const hash = (myPlaintextPassword) =>
+  bcrypt.hashSync(myPlaintextPassword, saltRouds);
+const comparePassword = (myPlaintextPassword, password) =>
+  bcrypt.compareSync(myPlaintextPassword, password);
 
 module.exports = {
-  hash, comparePassword
-}
+  hash,
+  comparePassword,
+};
