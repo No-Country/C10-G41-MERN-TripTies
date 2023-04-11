@@ -1,10 +1,12 @@
 const User = require('../services/user.services')
 
+// const userService = new User()
+
 const isAdmin = async (request, response, next) => {
   const id = request.user._id
-  User.findUserById(id)
+  User.getUserInformation(id)
     .then(data => {
-      if (data.profile.role === 'ADMIN') {
+      if (data.role == 'ADMIN') {
         next()
       }
       else {

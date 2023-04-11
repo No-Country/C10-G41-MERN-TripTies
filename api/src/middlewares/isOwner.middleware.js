@@ -4,7 +4,6 @@ async function isOwner(req, res, next) {
   const authenticatedUserId = req.user._id
   const userId = req.params.userId
 
-
   try {
     const user = await User.findUserById(userId)
     if (!user) {

@@ -4,23 +4,19 @@ const passport = require('passport')
 require('../middlewares/auth.middleware')(passport)
 const isOwner = require('../middlewares/isOwner.middleware')
 
-
 const {
   deleteUser,
   getUserById,
+  getAllUsers,
 } = require('../controllers/user.controller')
-const { followUser } = require('../controllers/follow.controller')
-const { multerProfilePhotos } = require('../middlewares/multer.middleware')
-const { putProfile } = require('../controllers/profile.controller')
+const isAdmin = require('../middlewares/isAdmin.middleware')
+
+
+router.get('/', passport.authenticate('jwt', {session: false}), isAdmin, getAllUsers) //Only admins
 
 router.route('/:userId')
   .get(getUserById)
-  .delete(passport.authenticate('jwt', { session: false }), isOwner, deleteUser)
-  
-router.put('/:userId/editProfile', passport.authenticate('jwt', {session: false}), isOwner, multerProfilePhotos, putProfile) //Fix put service. Dont save the information
-
-router.route('/:userId/follow/:followingId')
-  .post(passport.authenticate('jwt', { session: false }), isOwner, followUser)
+  .delete(isOwner, deleteUser)
 
 
 

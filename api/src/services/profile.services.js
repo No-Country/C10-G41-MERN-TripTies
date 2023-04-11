@@ -1,16 +1,43 @@
-const mongoose = require('mongoose')
 const Profile = require('../models/profiles.models')
+const User = require('../models/users.models')
+const  mongoose = require('mongoose')
 
-const findAllProfiles = () => {
-  return new Promise((resolve, reject) => {
-    Profile.find()
-      .then(profiles => {
-        resolve(profiles)
-      })
-      .catch(err => {
-        reject(err)
-      })
-  })
+
+const PAGE_SIZE = 5
+
+const findAllUsersWithProfile = async (page) => {
+  const skip = (page - 1) * PAGE_SIZE
+  const limit = PAGE_SIZE
+  
+  const usersWithProfile = await User.aggregate([
+    {
+      $lookup: {
+        from: 'profiles',
+        localField: '_id',
+        foreignField: 'user',
+        as: 'profile'
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        username: 1,
+        first_name: 1,
+        last_name: 1,
+        photo: { $arrayElemAt: ['$profile.portrait', 0] },
+        description: { $arrayElemAt: ['$profile.description', 0] },
+        birthday: { $arrayElemAt: ['$profile.birthday', 0] }
+      }
+    },
+    {
+      $skip: skip
+    },
+    {
+      $limit: limit
+    }
+  ])
+
+  return usersWithProfile
 }
 
 const findProfileById = async (id) => {
@@ -33,29 +60,60 @@ const findProfileByUser = async (userId) => {
   }
 }
 
+const editUserProfile = async (userId, userData) => {
+  const session = await mongoose.startSession()
+  session.startTransaction()
 
-const editUserProfile = async(userId, profileData) => {
+  console.log(userId, userData)
+
   try {
-    const profile = await Profile.findOne({ user: userId })
-    if (!profile) {
-      return null
+    const user = await User.findById(userId).session(session)
+    const  profile  = await Profile.findOne({ user: userId }).session(session)
+
+    if (!user) {
+      throw new Error('Not found user', 404, 'Not Found')
     }
-    console.log('still running?:')
-    profile.description = profileData.description || profile.description
-    profile.birthday = profileData.birthday || profile.birthday
-    profile.portrait = profileData.portrait || profile.portrait
-    
-    const profileUpdated = await profile.save()
-    return profileUpdated
-  } catch (error) {
-    throw new Error(error.message)
+
+    if (!profile) {
+      throw new Error('Not found profiles', 404, 'Not Found')
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        $set: {
+          first_name: userData.first_name,
+          last_name: userData.last_name,
+          photo: userData.photo
+        }
+      },
+      { new: true, session }
+    )
+
+    const updatedProfile = await Profile.findOneAndUpdate(
+      { user: userId },
+      {
+        $set: {
+          description: userData.profile.description,
+          birthday: userData.profile.birthday,
+          portrait: userData.profile.portrait
+        }
+      },
+      { new: true, session }
+    )
+
+    await session.commitTransaction()
+    session.endSession()
+
+    return { updatedUser, updatedProfile }
+  } catch (err) {
+    await session.abortTransaction()
+    session.endSession()
+    throw err
   }
 }
 
-
 module.exports = {
-  findProfileById,
-  findProfileByUser,
-  findAllProfiles,
+  findAllUsersWithProfile,
   editUserProfile
 }

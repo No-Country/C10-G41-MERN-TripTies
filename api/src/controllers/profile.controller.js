@@ -1,7 +1,8 @@
-const mongoose = require('mongoose')
 const Profile = require('../services/profile.services')
-const User = require('../services/user.services')
 
+const putUserProfile = async (req, res) => {
+  let { userId } = req.params
+  let { first_name, last_name, email, profile } = req.body
 
 const putProfile = async (req, res) => {
   const userId = req.params.userId
@@ -21,33 +22,34 @@ const putProfile = async (req, res) => {
   }
 }
 
-
 const getProfile = async (req, res, next) => {
-  const { profileId } = req.params
+  const { userId } = req.params
   try {
     const profile = await Profile.findProfileById(profileId)
     if (!profile) {
       return res.status(404).json({ message: 'Profile not found' })
     }
-    return res.status(200).json({ profile })
+    const { username, first_name, last_name, photo } = profile._doc
+    const { description, birthday, portrait } = profile.profile
+    return res.status(200).json({ username, first_name, last_name, photo, description, birthday, portrait })
   } catch (error) {
     return res.status(500).json({ message: error.message })
   }
 }
 
-const getAllProfiles = (req, res, next) => {
-  Profile.findAllProfiles()
-    .then(profiles => {
-      res.status(200).json(profiles)
-    })
-    .catch(err => {
-      next(err)
-    })
+const getAllUsersWithProfile = async (req, res, next) => {
+  try {
+    const page = parseInt(req.query.page) || 1
+    const users = await Profile.findAllUsersWithProfile(page)
+    res.status(200).json(users)
+  } catch (error) {
+    next(error)
+  }
 }
 
 
 module.exports = {
   getProfile,
-  getAllProfiles,
-  putProfile
+  getAllUsersWithProfile,
+  putUserProfile
 }

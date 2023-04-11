@@ -1,21 +1,21 @@
 const router = require('express').Router()
 const participantValidate = require('../../middlewares/participantChatValidate')
-const Conversation = require('../chatControllers/conversation.controller')
+const { getAllConversations, postConversation, getConversationById, putConversation, deleteConversation } = require('../chatControllers/conversation.controller')
 const Message = require('../chatControllers/message.controller')
 const passport = require('passport')
 require('../../middlewares/auth.middleware')(passport)
 
 
 router.route('/')
-  .get( passport.authenticate('jwt', {session: false}), Conversation.getAllConversations)
-  .post( passport.authenticate('jwt', {session: false}), Conversation.postConversation)
+  .get( passport.authenticate('jwt', {session: false}), getAllConversations )
+  .post( passport.authenticate('jwt', {session: false}), postConversation ) 
 
 router.route('/:conversationId')
-  .get( passport.authenticate('jwt', {session: false}), Conversation.getConversationById)
-  .put( passport.authenticate('jwt', {session: false}), Conversation.putConversation) //Arreglar
-  .delete( passport.authenticate('jwt', {session: false}), Conversation.deleteConversation)
+  .get( passport.authenticate('jwt', {session: false}), participantValidate, getConversationById )
+  .put( passport.authenticate('jwt', {session: false}), participantValidate, putConversation ) //Arreglar
+  .delete( passport.authenticate('jwt', {session: false}), participantValidate, deleteConversation )
 
-router.route('/:conversationId/messages')
+router.route('/:conversationId/message')
   .post( passport.authenticate('jwt', {session: false}), participantValidate, Message.postMessage)
 
 
