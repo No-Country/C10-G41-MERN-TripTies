@@ -16,6 +16,7 @@ import saved from "../../img/archive-tick.png";
 import stars from "../../img/stars.png";
 import Dropdown from "./Dropdown";
 import SlideShow from "../SlideShow/SlideShow";
+import { Rating } from "react-simple-star-rating";
 
 type props = {
   places: any;
@@ -24,22 +25,19 @@ function Card({ places }: props) {
   const [display, setDisplay] = useState("none");
   const ref = useRef<HTMLImageElement>(null);
 
-  
-
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
-          setDisplay("none");
+        setDisplay("none");
       }
-  };
+    };
 
-  document.addEventListener('mousedown', handleOutsideClick);
+    document.addEventListener("mousedown", handleOutsideClick);
 
-  return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
-  };
-  }, [ref])
-   
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [ref]);
 
   const handleAppear = () => {
     if (display === "none") {
@@ -51,11 +49,13 @@ function Card({ places }: props) {
 
   return (
     <section className={style.container}>
-      <img src={avatar} alt="avatar" />
+      <img src={places.user.photo} alt="avatar" />
       <section className={style.content}>
         <div className={style.userInfo}>
           <aside>
-            <h4 className={style.name}>{places.name}</h4>
+            <h4 className={style.name}>
+              {places.user.firstName} {places.user.lastName}
+            </h4>
             <span>{places.time}</span>
           </aside>
           <div>
@@ -71,16 +71,28 @@ function Card({ places }: props) {
         </div>
         <article>
           <p className={style.description}>
-            {places.description} {places.tag}
+            {places.content} {places.tag}
           </p>
         </article>
         <div className={style.publicationInfo}>
           <aside>
-            <img src={places.stars} alt="stars" />
+            <Rating
+              initialValue={places.rate}
+              readonly
+              fillColorArray={[
+                "#31135e",
+                "#31135e",
+                "#31135e",
+                "#31135e",
+                "#31135e",
+                "#31135e",
+              ]}
+              size={20}
+            />
           </aside>
           <aside>
             <img src={coffee} alt="coffe" />
-            <span>{places.attraction}</span>
+            <span>{places.clasification}</span>
           </aside>
           <aside>
             <img src={location} alt="location" />
@@ -88,14 +100,14 @@ function Card({ places }: props) {
           </aside>
           <aside>
             <img src={tagPlace} alt="Place" />
-            <span>{places.place}</span>
+            <span>{places.name}</span>
           </aside>
         </div>
         <SlideShow media={[places.photo, places.video]} />
         <div className={style.likesAndComments}>
           <aside>
             <img src={boldHeart} alt="bold heart" />
-            <span>{places.likes}</span>
+            <span>{places.liked}</span>
           </aside>
           <aside>
             <img src={message} alt="message" />

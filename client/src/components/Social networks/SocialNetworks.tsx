@@ -8,8 +8,9 @@ import google from "../../img/google.png";
 import facebook from "../../img/facebook.png";
 import { Users } from "../../types";
 import { useAppDispatch } from "../../redux/store/hooks";
-import { createUser } from "../../redux/actions/Users";
+import { createUser, loginUser } from "../../redux/actions/Users";
 import swal from "sweetalert";
+import { useNavigate } from "react-router-dom";
 
 type props = {
   setInput: any;
@@ -18,7 +19,7 @@ type props = {
 
 function SocialNetworks({ setInput, newUser }: props): JSX.Element {
   const dispatch = useAppDispatch();
-
+  const nav = useNavigate();
   const [userGoogle, setUserGoogle] = useState<Users>({
     password: "",
     username: "",
@@ -40,37 +41,24 @@ function SocialNetworks({ setInput, newUser }: props): JSX.Element {
   // ESTO NO FUNCIONA TODAVIA
 
   const onResolveGoogle = ({ data, provider }: IResolveParams) => {
-    swal({
-      title: "Attention",
-      text: `Recaudaremos informacion de tu cuenta de ${provider} para ayudarte a completar el registro`,
-      icon: "info",
-    }).then(
-      setInput({
-        username: data && data.name,
-        email: data && data.email,
-        firstName: data && data.first_name,
-        lastName: data && data.last_name,
-        photo: data && data.picture,
-        password: "",
-      })
-    );
+    setUserGoogle({
+      username: (data && data.name) || (data && data.email.split("@")[0]),
+      email: data && data.email,
+      firstName: data && data.first_name,
+      lastName: data && data.last_name,
+      photo: data && data.picture,
+      password: `${Math.random().toString(36).substring(2, 7)}`,
+    });
   };
 
-  console.log(newUser);
-
   const onResolveFacebook = ({ data }: IResolveParams) => {
-    swal({
-      title: "All the fields are required",
-      icon: "warning",
-    }).then(() => {
-      setInput({
-        username: data && data.name,
-        email: data && data.email,
-        firstName: data && data.first_name,
-        lastName: data && data.last_name,
-        photo: data && data.picture.data.url,
-        password: "",
-      });
+    setUserFacebook({
+      username: data && data.name,
+      email: data && data.email,
+      firstName: data && data.first_name,
+      lastName: data && data.last_name,
+      photo: data && data.picture.data.url,
+      password: `${Math.random().toString(36).substring(2, 7)}`,
     });
   };
 
@@ -83,7 +71,7 @@ function SocialNetworks({ setInput, newUser }: props): JSX.Element {
   }, [userGoogle || userFacebook]);
 
   const onReject = (err: unknown) => {
-    console.log(err);
+    throw err;
   };
 
   return (

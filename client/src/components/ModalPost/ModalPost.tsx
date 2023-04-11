@@ -11,7 +11,6 @@ import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import { Country } from "../../types";
 import { Rating } from "react-simple-star-rating";
 import { postPublication } from "../../redux/actions/Publications";
-import SelectSearch from "react-select-search";
 
 type props = {
   visible: boolean;
@@ -124,8 +123,6 @@ function ModalPost({ visible, setVisible }: props): JSX.Element {
     widgetRef.current.open();
   };
 
-  console.log("post", post);
-
   return (
     <div className={style.modalContainer}>
       {visible ? (
@@ -224,6 +221,7 @@ function ModalPost({ visible, setVisible }: props): JSX.Element {
                 </select>
                 <img src={dropDownArrow} alt="" />
               </div>
+
               <div className={style.selectContainer}>
                 <select
                   onChange={handleSelect}
