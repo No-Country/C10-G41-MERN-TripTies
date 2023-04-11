@@ -9,8 +9,8 @@ const createComment = async (commentData) => {
   return newComment
 }
 
-const findComments = async () => {
-  const comments = await Comment.find({})
+const findComments = async (post_id) => {
+  const comments = await Comment.find({post_id: post_id})
   const commentMap = new Map()
   for(let comment of comments){
     if(!comment.parent_id) {
