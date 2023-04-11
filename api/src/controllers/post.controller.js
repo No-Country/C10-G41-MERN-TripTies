@@ -3,10 +3,11 @@ const Post = require('../services/post.services')
 
 const postNewPost = (req, res) => {
   const userId = req.user._id
+  const image = req.files
   const { content } = req.body
 
 
-  Post.createPost(userId, { content })
+  Post.createPost(userId, { content }, image)
     .then(data => {
       res.status(201).json(data)
     })
@@ -14,13 +15,10 @@ const postNewPost = (req, res) => {
       res.status(400).json({
         message: err.message, fields: {
           content: 'String',
-          media: [
-            'type',
-            'url',
-            'description'
-          ],
+          images: 'req.files',
           location: 'point/coordinates',
-          reported: 'Number'
+          reported: 'Number',
+          rating: 'Number'
         }
       })
     })
@@ -28,14 +26,14 @@ const postNewPost = (req, res) => {
 
 const putPost = (req, res) => {
   const { content, location } = req.body
-  const {postId} = req.params
+  const { postId } = req.params
   const userId = req.user._id
 
   // console.log(content, location)
   // console.log(postId)
   // console.log(userId)
 
-  Post.updatePost({_id: postId, user: userId}, { content, location })
+  Post.updatePost({ _id: postId, user: userId }, { content, location })
 
     .then(data => {
       if (data.nModified > 0) {
@@ -111,7 +109,7 @@ const postLikeByPost = async (request, response) => {
 module.exports = {
   getAllPosts,
   getPostById,
-  postNewPost, 
-  putPost, 
+  postNewPost,
+  putPost,
   postLikeByPost
 }

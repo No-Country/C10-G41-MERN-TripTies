@@ -1,15 +1,10 @@
 const {Schema, model, default: mongoose} = require('mongoose')
 
+
 const postSchema = new Schema({
   user: {type: mongoose.Schema.Types.ObjectId, required: true},
-  // title: { type: String, required: true },
-  content: { type: String, required: true },
-  media: [{
-    type: { type: String, required: true, enum: ['image', 'video'] },
-    url: { type: String, required: true },
-    description: { type: String },
-    // other metadata for each media file, e.g. size, duration, format, etc.
-  }],
+  content: { type: String},
+  images: { type: mongoose.Types.ObjectId, ref: 'PostsImages', required: true },
   location: {
     type: {
       type: String,
@@ -19,7 +14,8 @@ const postSchema = new Schema({
       type: [Number],
     }
   }, 
-  reported: { type: Number, default: 0 }
+  reported: { type: Number, default: 0 },
+  rating: { type: Number, min: 1, max: 5 }
 })
 
 postSchema.index({ location: '2dsphere' })

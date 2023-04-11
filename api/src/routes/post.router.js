@@ -6,10 +6,11 @@ require('../middlewares/auth.middleware')(passport)
 const {
   postNewPost, getAllPosts, getPostById, putPost, postLikeByPost
 } = require('../controllers/post.controller')
+const { multerPublicationsPhotos } = require('../utils/multer')
 
 router.route('/')
   .get( getAllPosts)
-  .post(passport.authenticate('jwt', {session: false}), postNewPost)
+  .post(passport.authenticate('jwt', {session: false}), multerPublicationsPhotos.array('image', 3), postNewPost)
 
 router.route('/:postId')
   .get(passport.authenticate('jwt', {session: false}), getPostById)
