@@ -1,0 +1,70 @@
+.container {
+    background-color: #f2f2f2;
+    margin-block-start: -2.1rem;
+    margin-block-end: 2.1rem;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.commentForm {
+    display: flex;
+    justify-content: space-around;
+}
+
+.commentForm > input {
+    width: 80%;
+    border: 1.5px solid var(--violetLight);
+    border-radius: 10px;
+    padding: 10px;
+    outline: none;
+    height: 20px;
+}
+
+.commentForm > input::placeholder {
+    color: var(--brown);
+}
+
+.commentForm > input:hover,
+.commentForm > input:focus {
+    border-color: var(--violet);
+}
+
+
+.commentForm > button {
+    width: 10%;
+    border: none;
+    /* background: #ffdb6e; */
+    /* box-shadow: 0px 2.9566px 2.9566px rgba(0, 0, 0, 0.25),
+      inset 0px 1.4783px 2.9566px rgba(255, 255, 255, 0.25),
+      inset 0px -1.4783px 2.9566px rgba(0, 0, 0, 0.25); */
+    border-radius: 10px;
+    color: #31135e;
+    font-style: normal;
+    font-size: 15px;
+    height: 40px;
+}
+
+.commentCont {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+.commentCont > img {
+    width: 35px;
+    height: 35px;
+}
+
+.commentCont > button {
+    border: none;
+    color: red;
+    font-size: 15px;
+}
+
+.comment {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    width: 80%;
+}

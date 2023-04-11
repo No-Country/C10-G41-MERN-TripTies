@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
+const routesComments = require("./comment.router");
 require("../middlewares/auth.middleware")(passport);
 
 const {
@@ -20,6 +21,8 @@ router
   .route("/:postId")
   .get(passport.authenticate("jwt", { session: false }), getPostById)
   .put(passport.authenticate("jwt", { session: false }), putPost);
+
+router.use("/:postId/comments", routesComments);
 
 router
   .route("/:postId/like")
