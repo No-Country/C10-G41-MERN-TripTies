@@ -11,10 +11,5 @@ const CommentSchema = new Schema(
   }, 
 )
 
-// CommentSchema.virtual('likesCount').get( () => {
-//   return this.likes.length
-// })
-// CommentSchema.set('toJSON', { virtuals: true })
-
 
 module.exports = model('Comment', CommentSchema)
