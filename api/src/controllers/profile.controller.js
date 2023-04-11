@@ -1,4 +1,5 @@
 const Profile = require("../services/profile.services");
+const findProfileById = require("../services/profile.services");
 
 const putUserProfile = async (req, res) => {
   let { userId } = req.params;
@@ -50,8 +51,9 @@ const putUserProfile = async (req, res) => {
 
 const getProfile = async (req, res, next) => {
   const { userId } = req.params;
+  console.log("user", userId);
   try {
-    const profile = await Profile.findProfile(userId);
+    const profile = await Profile.findProfileById(userId);
     if (!profile) {
       return res.status(404).json({ message: "Profile not found" });
     }

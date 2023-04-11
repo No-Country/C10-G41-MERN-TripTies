@@ -69,6 +69,9 @@ const editUserProfile = async (userId, userData) => {
     const user = await User.findById(userId).session(session);
     const profile = await Profile.findOne({ user: userId }).session(session);
 
+    console.log(user);
+    console.log(profile);
+
     if (!user) {
       throw new Error("Not found user", 404, "Not Found");
     }
@@ -115,4 +118,5 @@ const editUserProfile = async (userId, userData) => {
 module.exports = {
   findAllUsersWithProfile,
   editUserProfile,
+  findProfileById,
 };
