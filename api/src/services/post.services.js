@@ -50,6 +50,7 @@ const createPost = async (id, obj) => {
   return data;
 };
 
+
 const updatePost = async (postId, userId, obj) => {
   console.log(postId);
   console.log(userId);
