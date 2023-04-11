@@ -10,13 +10,15 @@ const findAllPosts = async ({ page = 1, limit = 10 }) => {
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit)
-    .select("content media.location")
+    .select(
+      "content photo video privacity rate name clasification reported user liked comments media.location"
+    )
     .lean();
 
   const count = await Post.countDocuments();
   const totalPages = Math.ceil(count / limit);
 
-  return { posts, totalPages };
+  return { posts };
 };
 
 const findPostById = async (postId) => {
@@ -27,12 +29,23 @@ const findPostById = async (postId) => {
 const createPost = async (id, obj) => {
   let userId = await User.findOne({ _id: id });
 
+  let user = {
+    id: userId._id,
+    firstName: userId.first_name,
+    lastName: userId.last_name,
+    photo: userId.photo,
+  };
+
   const data = await Post.create({
-    user: userId._id,
+    user: user,
     content: obj.content,
-    media: obj.media,
+    privacity: obj.privacity,
+    photo: obj.photo,
+    video: obj.video,
+    rate: obj.rate,
+    name: obj.name,
+    clasification: obj.clasification,
     location: obj.location,
-    reported: obj.reported,
   });
   return data;
 };

@@ -33,6 +33,18 @@ const getUserByEmail = (email) => {
   });
 };
 
+const getUserByUsername = (username) => {
+  return new Promise((resolve, reject) => {
+    User.findOne({ username: username })
+      .then((user) => {
+        resolve(user);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
 const createUser = async (userData) => {
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -41,11 +53,11 @@ const createUser = async (userData) => {
     // Crear nuevo usuario con campos obligatorios
     const user = new User({
       username: userData.username,
-      first_name: userData.first_name,
-      last_name: userData.last_name,
+      first_name: userData.first_name || "",
+      last_name: userData.last_name || "",
       email: userData.email,
       password: hash(userData.password),
-      photo: userData.photo,
+      photo: userData.photo || "",
       role: userData.role,
     });
     // Guardar usuario en la base de datos
@@ -114,4 +126,5 @@ module.exports = {
   removeUser,
   updateUser,
   getUserInformation,
+  getUserByUsername,
 };

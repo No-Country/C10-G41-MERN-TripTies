@@ -3,6 +3,7 @@ const {
   verifyUser,
   createRecoveryToken,
   changePassword,
+  verifyUserSocial,
 } = require("./auth.services");
 require("dotenv").config();
 const mailer = require("../utils/mailer");
@@ -39,6 +40,25 @@ const postLogin = (req, res) => {
   }
 };
 
+const postLoginSocialNetwork = async (req, res) => {
+  const { username } = req.body;
+  const user = await verifyUserSocial(username)
+    .then((data) => {
+      if (data) {
+        const token = jwt.sign(
+          {
+            username: data.username,
+          },
+          process.env.JWT_SECRET
+        );
+        res.status(200).json({ message: "Correct credentials", token });
+      } else {
+        res.status(400).json({ message: "Invalid credentials" });
+      }
+    })
+    .catch((err) => res.status(400).json({ message: err.message }));
+};
+
 const postRecoveryToken = (req, res) => {
   const { email } = req.body;
   if (email) {
@@ -71,9 +91,6 @@ const patchPassword = (req, res) => {
   const { userId } = req.params; //? es el id del registro de recoveryPassword (para recuperar la contraseña)
   const { password } = req.body;
 
-  // console.log('userId: ', userId)
-  // console.log('password: ', password)
-
   changePassword(userId, password)
     .then((data) => {
       if (data) {
@@ -89,6 +106,7 @@ const patchPassword = (req, res) => {
 
 module.exports = {
   postLogin,
+  postLoginSocialNetwork,
   postRecoveryToken,
   patchPassword,
 };
