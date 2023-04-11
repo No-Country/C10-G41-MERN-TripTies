@@ -48,3 +48,9 @@
 .containerButtons button:hover {
   background-color: rgb(245 245 245 / 20%);
 }
+
+@media (max-width: 768px) {
+  .containerSlider {
+    max-width: 80vw;
+  }
+}

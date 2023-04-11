@@ -46,3 +46,9 @@
   width: 35px;
   height: 35px;
 }
+
+@media (max-width: 768px)  {
+  .containerNavBarL {
+    max-width: 100vw;
+  }
+}
