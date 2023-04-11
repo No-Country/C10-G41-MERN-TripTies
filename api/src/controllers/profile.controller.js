@@ -4,28 +4,43 @@ const putUserProfile = async (req, res) => {
   let { userId } = req.params
   let { first_name, last_name, email, profile } = req.body
 
-const putProfile = async (req, res) => {
-  const userId = req.params.userId
-  const {description, birthday, portrait} = req.body
-
-  try {
-    const user = await User.findUserById(userId)
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' })
-    }
-
-    const profileData = {description, birthday, portrait}
-    const updatedProfile = await Profile.editUserProfile(userId, profileData)
-    return res.status(200).json({ profile: updatedProfile })
-  } catch (error) {
-    return res.status(500).json({ message: 'Server error' })
+  if (profile) {
+    await Profile.editUserProfile(userId, { first_name, last_name, email, profile })
+      .then(data => res.status(200).json(data))
+      .catch(err => res.status(400).json({
+        message: err.message, fields: {
+          first_name: 'String',
+          last_name: 'String',
+          email: 'String',
+          profile: {
+            description: 'String',
+            birthday: 'Date',
+            portrait: 'String'
+          }
+        }
+      }))
+  } else {
+    await Profile.editUserProfile(userId, { first_name, last_name, email})
+      .then(data => res.status(200).json(data))
+      .catch(err => res.status(400).json({
+        message: err.message, fields: {
+          first_name: 'String',
+          last_name: 'String',
+          email: 'String',
+          profile: {
+            description: 'String',
+            birthday: 'Date',
+            portrait: 'String'
+          }
+        }
+      }))
   }
 }
 
 const getProfile = async (req, res, next) => {
   const { userId } = req.params
   try {
-    const profile = await Profile.findProfileById(profileId)
+    const profile = await Profile.findProfile(userId)
     if (!profile) {
       return res.status(404).json({ message: 'Profile not found' })
     }
