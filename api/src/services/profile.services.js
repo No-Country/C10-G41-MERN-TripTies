@@ -40,13 +40,21 @@ const findAllUsersWithProfile = async (page) => {
   return usersWithProfile
 }
 
-const findProfile = async (userId) => {
+const findProfileById = async (id) => {
   try {
     // Buscamos el perfil del usuario por su ID y lo retornamos
-    const user = await User.findById(userId)
-    const profile = await Profile.findOne({user: userId})
-    const userProfile = {profile, ...user}
-    return userProfile
+    const profile = await Profile.findById(id)
+    return profile
+  } catch (error) {
+    throw Error('Not found Profile', 404, 'Not Found')
+  }
+}
+
+const findProfileByUser = async (userId) => {
+  try {
+    // Buscamos el perfil del usuario por su ID y lo retornamos
+    const profile = await Profile.findOne({ user: userId})
+    return profile
   } catch (error) {
     throw Error('Not found Profile', 404, 'Not Found')
   }
@@ -106,7 +114,6 @@ const editUserProfile = async (userId, userData) => {
 }
 
 module.exports = {
-  findProfile,
   findAllUsersWithProfile,
   editUserProfile
 }

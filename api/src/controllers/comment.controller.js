@@ -2,8 +2,9 @@ const { createComment, findComments, changeComment, removeComment } = require('.
 
 const postComment = (req, res) => {
   const user_id = req.userToken._id
+  const post_id = req.baseUrl.split('/')[4]
   const { parent_id, content } = req.body
-  createComment({ user_id, parent_id, content })
+  createComment({ user_id, parent_id, content, post_id })
     .then((response) => {
       res.status(201).json(response)
     })
@@ -11,15 +12,15 @@ const postComment = (req, res) => {
       res.status(400).json({
         message: err.message, fields: {
           parent_id : 'String-Optional',
-          content: 'String',
-          // publicationId: 'String'
+          content: 'String'
         }
       })
     })
 }
 
 const getComments = (req, res, next) => {
-  findComments()
+  const post_id = req.baseUrl.split('/')[4]
+  findComments(post_id)
     .then((response) => {
       res.status(200).json(response)
     })
