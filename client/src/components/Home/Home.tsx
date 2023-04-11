@@ -21,7 +21,11 @@ import FooterTerm from "../Footers/FooterTerm";
 import FooterSocial from "../Footers/FooterSocial";
 import MiniFooter from "../MiniFooter/MiniFooter";
 import SlideShow from "../SlideShow/SlideShow";
+import ChatBubble from "../ChatBubble/ChatBubble";
 import ModalPost from "../ModalPost/ModalPost";
+import { useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
+import { getAllPublications } from "../../redux/actions/Publications";
 
 interface lugaresType {
   name: string;
@@ -39,206 +43,20 @@ interface lugaresType {
   save: string;
 }
 
+interface chat {
+  name: string;
+  avatar: string;
+}
+
 function Home(): JSX.Element {
+  const selector = useAppSelector;
+  const dispatch = useAppDispatch();
   let [hash, setHash] = useState("");
+  const allPublications = selector<any>((state) => state.publications);
 
-  const places = [
-    {
-      name: "Julio Humere",
-      time: "3 hours ago",
-      place: "Torre Eiffel",
-      photo: [
-        {
-          url: "https://img.asmedia.epimg.net/resizer/QbgIKPOqmxvtzkusQK-P-C_yD5Q=/1952x1098/cloudfront-eu-central-1.images.arcpublishing.com/diarioas/7FLYNLT7ZZLDJCQ6DYMZO2KXTQ.jpg",
-          type: "image",
-        },
-      ],
-      video: [],
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt vero placeat optio aliquam blanditiis eligendi officia culpa ad iusto magni doloribus, commodi assumenda sit amet, animi nisi, nobis corporis ab libero rerum voluptatibus in inventore repellendus consequuntur! Ducimus doloremque enim dolorum doloribus aut, consequatur nobis molestiae delectus necessitatibus aliquid laboriosam.",
-      stars: stars3,
-      attraction: "heigth & funny",
-      location: "Paris, France",
-      likes: 34,
-      comments: 12,
-      tag: "#Paris",
-      save: "Unsaved",
-    },
-    {
-      name: "Edgard Pazos",
-      time: "1 hours ago",
-      place: "Museo Louvre",
-      photo: [
-        {
-          url: "https://upload.wikimedia.org/wikipedia/commons/6/66/Louvre_Museum_Wikimedia_Commons.jpg",
-          type: "image",
-        },
-      ],
-      video: [],
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt vero placeat optio aliquam blanditiis eligendi officia culpa ad iusto magni doloribus, commodi assumenda sit amet, animi nisi, nobis corporis ab libero rerum voluptatibus in inventore repellendus consequuntur! Ducimus doloremque enim dolorum doloribus aut, consequatur nobis molestiae delectus necessitatibus aliquid laboriosam.",
-      stars: stars2,
-      attraction: "interested & art",
-      location: "Paris, France",
-      likes: 56,
-      comments: 32,
-      tag: "#Paris",
-      save: "Saved",
-    },
-    {
-      name: "Jose Castro",
-      time: "12 hours ago",
-      place: "Santiago Bernabeu",
-      photo: [
-        {
-          url: "https://www.spain.info/export/sites/segtur/.content/imagenes/cabeceras-grandes/madrid/estadio-bernabeu-vista-aerea-c-turismo-madrid.jpg",
-          type: "image",
-        },
-      ],
-      video: [],
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt vero placeat optio aliquam blanditiis eligendi officia culpa ad iusto magni doloribus, commodi assumenda sit amet, animi nisi, nobis corporis ab libero rerum voluptatibus in inventore repellendus consequuntur! Ducimus doloremque enim dolorum doloribus aut, consequatur nobis molestiae delectus necessitatibus aliquid laboriosam.",
-      stars: stars1,
-      attraction: "funny & sports",
-      location: "Madrid, Spain",
-      likes: 83,
-      comments: 49,
-      tag: "#Madrid",
-      save: "Unsaved",
-    },
-    {
-      name: "Nazarena Prieto",
-      time: "20 hours ago",
-      place: "Tuneles de Cuchi",
-      photo: [
-        {
-          url: "https://media-cdn.tripadvisor.com/media/photo-s/0a/78/2b/b2/inside-of-tunnel.jpg",
-          type: "image",
-        },
-      ],
-      video: [],
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt vero placeat optio aliquam blanditiis eligendi officia culpa ad iusto magni doloribus, commodi assumenda sit amet, animi nisi, nobis corporis ab libero rerum voluptatibus in inventore repellendus consequuntur! Ducimus doloremque enim dolorum doloribus aut, consequatur nobis molestiae delectus necessitatibus aliquid laboriosam.",
-      stars: stars1,
-      attraction: "older & history",
-      location: "Ciudad Ho Chi Minh, Vietnam",
-      likes: 1,
-      comments: 2,
-      tag: "#Vietnam",
-      save: "Unsaved",
-    },
-    {
-      name: "Nazarena Prieto",
-      time: "20 hours ago",
-      place: "La Bombonera",
-      photo: [
-        {
-          url: "https://statics.eleconomista.com.ar/2023/03/64062d3073bd9.png",
-          type: "image",
-        },
-        {
-          url: "https://media.tycsports.com/files/2023/02/16/535189/foto-bombonera_862x485_wmk.webp?v=7",
-          type: "image",
-        },
-        {
-          url: "https://fotos.perfil.com/2023/04/02/trim/720/410/bombonera-1539489.jpg",
-          type: "image",
-        },
-      ],
-      video: [
-        {
-          url: "https://res.cloudinary.com/dtpsfvnfo/video/upload/v1680545377/prueba_video_uzwzph.mp4",
-          type: "video",
-        },
-
-        {
-          url: "https://res.cloudinary.com/dtpsfvnfo/video/upload/v1680546131/prueba_video_2_tsjgxk.mp4",
-          type: "video",
-        },
-      ],
-
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt vero placeat optio aliquam blanditiis eligendi officia culpa ad iusto magni doloribus, commodi assumenda sit amet, animi nisi, nobis corporis ab libero rerum voluptatibus in inventore repellendus consequuntur! Ducimus doloremque enim dolorum doloribus aut, consequatur nobis molestiae delectus necessitatibus aliquid laboriosam.",
-      stars: stars3,
-      attraction: "sports & history",
-      location: "Buenos Aires, Argentina",
-      likes: 1000,
-      comments: 200,
-      tag: "#Argentina",
-      save: "Saved",
-    },
-  ];
-
-  const saved = [
-    {
-      name: "Edgar Pazos",
-      time: "1 hours ago",
-      place: "Museo Louvre",
-      photo: [
-        {
-          url: "https://upload.wikimedia.org/wikipedia/commons/6/66/Louvre_Museum_Wikimedia_Commons.jpg",
-          type: "image",
-        },
-      ],
-      video: [],
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt vero placeat optio aliquam blanditiis eligendi officia culpa ad iusto magni doloribus, commodi assumenda sit amet, animi nisi, nobis corporis ab libero rerum voluptatibus in inventore repellendus consequuntur! Ducimus doloremque enim dolorum doloribus aut, consequatur nobis molestiae delectus necessitatibus aliquid laboriosam.",
-      stars: stars2,
-      attraction: "interested & art",
-      location: "Paris, France",
-      likes: 56,
-      comments: 32,
-      tag: "#Paris",
-      save: "Saved",
-    },
-    {
-      name: "Nazarena Prieto",
-      time: "20 hours ago",
-      place: "La Bombonera",
-      photo: [
-        "https://statics.eleconomista.com.ar/2023/03/64062d3073bd9.png",
-
-        "https://media.tycsports.com/files/2023/02/16/535189/foto-bombonera_862x485_wmk.webp?v=7",
-
-        "https://www.ole.com.ar/2020/05/25/G_THA0PzV_860x575__1.jpg",
-      ],
-      video: [
-        "https://res.cloudinary.com/dtpsfvnfo/video/upload/v1680545377/prueba_video_uzwzph.mp4",
-
-        "https://res.cloudinary.com/dtpsfvnfo/video/upload/v1680546131/prueba_video_2_tsjgxk.mp4",
-      ],
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt vero placeat optio aliquam blanditiis eligendi officia culpa ad iusto magni doloribus, commodi assumenda sit amet, animi nisi, nobis corporis ab libero rerum voluptatibus in inventore repellendus consequuntur! Ducimus doloremque enim dolorum doloribus aut, consequatur nobis molestiae delectus necessitatibus aliquid laboriosam.",
-      stars: stars3,
-      attraction: "sports & history",
-      location: "Buenos Aires, Argentina",
-      likes: 1000,
-      comments: 200,
-      tag: "#Argentina",
-      save: "Saved",
-    },
-  ];
-
-  const Visited = [
-    {
-      name: "Julio Humere",
-      time: "3 hours ago",
-      place: "Torre Eiffel",
-      photo: [
-        "https://img.asmedia.epimg.net/resizer/QbgIKPOqmxvtzkusQK-P-C_yD5Q=/1952x1098/cloudfront-eu-central-1.images.arcpublishing.com/diarioas/7FLYNLT7ZZLDJCQ6DYMZO2KXTQ.jpg",
-      ],
-      video: [],
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt vero placeat optio aliquam blanditiis eligendi officia culpa ad iusto magni doloribus, commodi assumenda sit amet, animi nisi, nobis corporis ab libero rerum voluptatibus in inventore repellendus consequuntur! Ducimus doloremque enim dolorum doloribus aut, consequatur nobis molestiae delectus necessitatibus aliquid laboriosam.",
-      stars: stars3,
-      attraction: "heigth & funny",
-      location: "Paris, France",
-      likes: 34,
-      comments: 12,
-      tag: "#Paris",
-      save: "Unsaved",
-    },
-  ];
+  useEffect(() => {
+    dispatch(getAllPublications());
+  }, []);
 
   const [visible, setVisible] = useState(false);
 
@@ -247,12 +65,12 @@ function Home(): JSX.Element {
     setHash(e.target.value);
   };
 
-  const tagPlaces = places && places.filter((e) => e.tag.includes(hash));
+  // const tagPlaces = places && places.filter((e) => e.tag.includes(hash));
 
-  const tagPlacesSaved = saved && saved.filter((e) => e.tag.includes(hash));
+  // const tagPlacesSaved = saved && saved.filter((e) => e.tag.includes(hash));
 
-  const tagPlacesVisited =
-    Visited && Visited.filter((e) => e.tag.includes(hash));
+  // const tagPlacesVisited =
+  //   Visited && Visited.filter((e) => e.tag.includes(hash));
 
   let [publications, setPublications] = useState(true);
   let [publicationsSaved, setPublicationSaved] = useState(false);
@@ -286,9 +104,12 @@ function Home(): JSX.Element {
     }
   };
 
+  // necesario para la implementacion del chat
+  const [chat, setChat] = useState<chat>({ name: "", avatar: "" });
+
   return (
     <div className={style.homeContainer}>
-      <NavBar handleHome={handleHome} places={places} />
+      <NavBar handleHome={handleHome} user={allPublications} />
       <div className={style.feedContainer}>
         <div className={style.leftContainer}>
           <div>
@@ -297,7 +118,7 @@ function Home(): JSX.Element {
                 handleSaved={handleSaved}
                 handleVisited={handleVisited}
               />
-              <SectionChat />
+              <SectionChat chat={chat} setChat={setChat} />
             </div>
           </div>
           <div className={style.footerLeft}>
@@ -329,12 +150,9 @@ function Home(): JSX.Element {
             </div>
           </div>
           <div className={style.feedPublications}>
-            {(publications &&
-              tagPlaces &&
-              tagPlaces.map((e, i) => <Card places={e} key={i} />)) ||
-              (publicationsSaved && <Saved place={tagPlacesSaved} />) ||
-              (publicationsVisited && (
-                <PlaceIVisited visited={tagPlacesVisited} />
+            {allPublications &&
+              allPublications.posts?.map((e: any, i: number) => (
+                <Card places={e} key={i} />
               ))}
           </div>
         </div>
@@ -344,18 +162,19 @@ function Home(): JSX.Element {
               publications={publications}
               publicationsSaved={publicationsSaved}
               publicationsVisited={publicationsVisited}
-              hashTag={tagPlaces}
-              hashTagSaved={tagPlacesSaved}
-              hashTagVisited={tagPlacesVisited}
               handleHash={handleHash}
+              hashTag={undefined}
+              hashTagSaved={undefined}
+              hashTagVisited={undefined}
             />
             <SectionSuggestions />
-          </div>
-          <div className={style.footerrigth}>
-            <FooterTerm />
+            <div className={style.footerrigth}>
+              <FooterTerm />
+            </div>
           </div>
         </div>
       </div>
+      <ChatBubble chat={chat} setChat={setChat} />
     </div>
   );
 }

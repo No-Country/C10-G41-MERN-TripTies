@@ -1,0 +1,146 @@
+/* Este código define el estilo CSS de un chat desplegable */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid var(--violet);
+    background-color: #fff;
+    border-start-end-radius: 5px;
+    border-start-start-radius: 5px;
+    position: fixed;
+    bottom: 0;
+    right: 5%;
+    box-shadow: 0px 2px 15px 1px #999999;
+    width: 300px;
+    z-index: 1;
+}
+
+/* Encabezado del chat */
+.header {
+    background-color: var(--violet);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.infoHeader {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0px 10px;
+    border: 1px solid var(--violet);
+    border-radius: 2px;
+}
+
+/* Botón para cerrar el chat */
+.header button {
+    border: none;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 90%;
+    background: none;
+    padding: 10px;
+}
+
+.button {
+    margin-inline-end: 10%;
+}
+
+button:hover {
+    color: #fff;
+    transition: all 0.3s;
+}
+
+/* Contenedor de mensajes */
+.Contentmessages {
+    display: flex;
+    flex-direction: column;
+    cursor: auto;
+    height: 100%;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    margin-bottom: 10px;
+    gap: 10px;
+    word-wrap: break-word;
+}
+
+/* Mensajes enviados y recibidos */
+.MessageSent {
+    display: flex;
+    justify-content: end;
+    padding-inline-end: 20px;
+    background: var(--violet);
+    color: #fff;
+    font-weight: 500;
+    padding: 10px;
+    border-radius: 5%;
+    border-start-start-radius: 15%;
+    border-start-end-radius: 15%;
+    border-end-start-radius: 15%;
+    border-end-end-radius: 0;
+    margin-left: auto;
+    max-width: 50%;
+    height: auto;
+    margin-right: 10px;
+    overflow-wrap: break-word;
+    user-select: text;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.messageReceived {
+    display: flex;
+    justify-content: start;
+    padding-inline-start: 20px;
+    background: var(--violetLight);
+    font-weight: 500;
+    padding: 10px;
+    border-radius: 5%;
+    border-start-start-radius: 10%;
+    border-start-end-radius: 10%;
+    border-end-start-radius: 0;
+    border-end-end-radius: 10%;
+    margin-right: auto;
+    max-width: 50%;
+    margin-left: 10px;
+    overflow-wrap: break-word;
+    user-select: text;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* Caja de texto para enviar mensajes */
+.boxtext {
+    width: 100%;
+    background-color: var(--violetLight);
+    padding-top: 5px;
+}
+
+.boxtext input {
+    appearance: none;
+    width: 90%;
+    padding: 10px;
+    border: 1px solid var(--violetLight);
+    position: static;
+    font-size: 16px;
+}
+
+.boxtext input:hover {
+    border: 2px solid var(--violet);
+}
+
+.boxtext input:focus {
+    border: 1px solid var(--violet);
+    outline: none;
+}
+
+.boxtext input::placeholder {
+    color: var(--brown);
+}
+
+.boxtext input:focus::placeholder {
+    color: #fff;
+}
