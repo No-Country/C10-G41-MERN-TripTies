@@ -37,7 +37,9 @@ function Log(): JSX.Element {
     } else {
         try {
             dispatch(loginUser(email, password));
-            nav("/home");
+            setTimeout(() => {
+              nav("/home");
+            }, 1000);
         } catch (error) {
             swal({
                 title: `Error: ${error}`,
