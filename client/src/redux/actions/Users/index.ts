@@ -17,10 +17,10 @@ export const createUser = (newUser: Users) => {
 }
 
 //Action para logear a un usuario
-export const loginUser = (email: string, password: string) => {
+export const loginUser = (user: object) => {
     return async function () {
         try {
-            const response = await axios.post('auth/login', { email, password });
+            const response = await axios.post('auth/login', user);
             await localStorage.setItem("token", `${response.data.token}`)
             return response
         } catch (error) {
@@ -65,7 +65,7 @@ export const getAllConversations = () => {
             console.log(response)
             dispatch({ type: "GET_CONVERSATIONS", payload: response.data });
             return response.data
-        
+
         } catch (error) {
             console.log(error);
             throw error;
@@ -74,7 +74,7 @@ export const getAllConversations = () => {
 }
 
 // Action para la creacion de un nuevo mensaje
-export const newMessage = (id: string,newMessage: Message) => {
+export const newMessage = (id: string, newMessage: Message) => {
     return async function () {
         try {
             const response = await axios.post(`conversations/${id}/message`, newMessage, {
@@ -112,3 +112,15 @@ export const createConversation = (newConversation: Conversation) => {
         }
     }
 }
+
+// Logueo con redes sociales
+export const loginSocialNetworks = (user: object) => {
+    return async function () {
+        try {
+            const response = await axios.post("/auth/loginSocial", user);
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    };
+};

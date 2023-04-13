@@ -78,6 +78,13 @@ button:hover {
   border-radius: 10px;
 }
 
+@media (max-width: 768px)  {
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

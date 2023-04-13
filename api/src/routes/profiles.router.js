@@ -15,7 +15,7 @@ router.get('/', getAllUsersWithProfile)
 
 router.route('/:userId')
   .get(getProfile) 
-  .put(isOwner, putUserProfile)
+  .put(passport.authenticate('jwt', {session: false}), putUserProfile)
   
 router.route('/:userId/follow/:followingId')
   .post(isOwner, followUser)

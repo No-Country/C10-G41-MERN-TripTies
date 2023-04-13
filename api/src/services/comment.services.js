@@ -9,10 +9,8 @@ const createComment = async (commentData) => {
   return newComment
 }
 
-//TODO: return in a tree form, with replies as a list in a field "replies :"
-const findComments = async () => {
-  const comments = await Comment.find({})
-  console.log('COMMENTS:', comments)
+const findComments = async (post_id) => {
+  const comments = await Comment.find({post_id: post_id})
   const commentMap = new Map()
   for(let comment of comments){
     if(!comment.parent_id) {
@@ -27,6 +25,7 @@ const findComments = async () => {
       parentAux.replies.push(comment)
     }
   }
+  console.log('COMMENTS:', commentMap)
   return([...commentMap.values()])
 }
 

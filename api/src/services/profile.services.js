@@ -1,14 +1,13 @@
+const { default: mongoose } = require('mongoose')
 const Profile = require('../models/profiles.models')
 const User = require('../models/users.models')
-const  mongoose = require('mongoose')
-
 
 const PAGE_SIZE = 5
 
 const findAllUsersWithProfile = async (page) => {
   const skip = (page - 1) * PAGE_SIZE
   const limit = PAGE_SIZE
-  
+
   const usersWithProfile = await User.aggregate([
     {
       $lookup: {
@@ -39,13 +38,13 @@ const findAllUsersWithProfile = async (page) => {
 
   return usersWithProfile
 }
-
 const findProfile = async (userId) => {
   try {
     // Buscamos el perfil del usuario por su ID y lo retornamos
+
     const user = await User.findById(userId)
-    const profile = await Profile.findOne({user: userId})
-    const userProfile = {profile, ...user}
+    const profile = await Profile.findOne({ user: userId })
+    const userProfile = { profile, ...user }
     return userProfile
   } catch (error) {
     throw Error('Not found Profile', 404, 'Not Found')
@@ -55,9 +54,7 @@ const findProfile = async (userId) => {
 const editUserProfile = async (userId, userData) => {
   const session = await mongoose.startSession()
   session.startTransaction()
-
   console.log(userId, userData)
-
   try {
     const user = await User.findById(userId).session(session)
     const  profile  = await Profile.findOne({ user: userId }).session(session)
@@ -65,11 +62,9 @@ const editUserProfile = async (userId, userData) => {
     if (!user) {
       throw new Error('Not found user', 404, 'Not Found')
     }
-
     if (!profile) {
       throw new Error('Not found profiles', 404, 'Not Found')
     }
-
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       {
@@ -81,7 +76,6 @@ const editUserProfile = async (userId, userData) => {
       },
       { new: true, session }
     )
-
     const updatedProfile = await Profile.findOneAndUpdate(
       { user: userId },
       {
@@ -93,10 +87,8 @@ const editUserProfile = async (userId, userData) => {
       },
       { new: true, session }
     )
-
     await session.commitTransaction()
     session.endSession()
-
     return { updatedUser, updatedProfile }
   } catch (err) {
     await session.abortTransaction()
@@ -104,9 +96,9 @@ const editUserProfile = async (userId, userData) => {
     throw err
   }
 }
-
 module.exports = {
   findProfile,
+  // findAllProfiles,
   findAllUsersWithProfile,
   editUserProfile
 }
