@@ -1,5 +1,7 @@
 import axios from "axios";
 import { AppDispatch } from "../../store";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 
 export const getAllPublications = () => {
   return async function (dispatch: AppDispatch) {
@@ -29,7 +31,7 @@ export const postPublication = (newPublication: any) => {
         },
         {
           headers: {
-            Authorization: `${document.cookie.split(";")[0]}`,
+            Authorization: `jwt ${cookies.get("token")}`,
           },
         }
       );
@@ -37,5 +39,13 @@ export const postPublication = (newPublication: any) => {
     } catch (error) {
       throw error;
     }
+  };
+};
+
+export const editProfile = (user: object) => {
+  return async function () {
+    const response = await axios.put(`/profiles/${cookies.get("id")}`, user, {
+      headers: { Authorization: `jwt ${cookies.get("token")}` },
+    });
   };
 };

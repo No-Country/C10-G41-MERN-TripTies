@@ -19,13 +19,14 @@ function SectionDiscover({
   publicationsSaved,
   publicationsVisited,
 }: props): JSX.Element {
-  let [arrayHashTag, setArrayHashTag] = useState([]);
+  // let [arrayHashTag, setArrayHashTag] = useState([]);
   let [arrayHashTagSaved, setArrayHashTagSaved] = useState([]);
   let [arrayHashTagVisited, setArrayHashTagVisited] = useState([]);
-
+  let arrayHashTag = ["#Paris", "#Madrid", "#Argentina", "#Uruguay", "#Berlin"];
   useEffect(() => {
-    let arrayTag = hashTag && hashTag.map((e: any) => e.tag);
-    setArrayHashTag(arrayTag);
+    // let arrayTag = hashTag && hashTag.map((e: any) => e.tag);
+    // setArrayHashTag(arrayTag);
+
     let arrayHashTagSaved = hashTagSaved && hashTagSaved.map((e: any) => e.tag);
     setArrayHashTagSaved(arrayHashTagSaved);
     let arrayHashTagVisited =

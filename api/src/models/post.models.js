@@ -1,8 +1,6 @@
 const { Schema, model, default: mongoose } = require("mongoose");
 
-
 const postSchema = new Schema({
-
   user: { type: Object, required: true },
   content: { type: String, required: true },
   privacity: { type: String, enum: ["Public", "Private"], required: true },
@@ -21,11 +19,11 @@ const postSchema = new Schema({
   //     type: [Number],
   //   },
   // },
+  tag: { type: [String], required: true },
   reported: { type: Number, default: 0 },
   liked: { type: Number, default: 0 },
   comments: { type: Number, default: 0 },
 });
-
 
 //  postSchema.index({ location: "2dsphere" });
 

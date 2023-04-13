@@ -6,7 +6,11 @@ import facebook from "../../img/facebook.png";
 import Cross from "../../img/cross.png";
 import { useState, useEffect } from "react";
 import MiniFooter from "../MiniFooter/MiniFooter";
-import { createUser } from "../../redux/actions/Users";
+import {
+  createUser,
+  loginSocialNetworks,
+  loginUser,
+} from "../../redux/actions/Users";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../redux/store/hooks";
 import { FormState, Users } from "../../types";
@@ -16,12 +20,15 @@ import {
   LoginSocialGoogle,
   LoginSocialFacebook,
 } from "reactjs-social-login";
-import TermsPrivacityJSON from "../../assets/TermsPrivacity.json";
+import Cookies from "universal-cookie";
+import { Privacity } from "../../assets/TermsPrivacity";
+import { terms } from "../../assets/TermsPrivacity";
 
 function Register(): JSX.Element {
   const [visibility, setVisibility] = useState<FormState["visibility"]>(oculto);
   const [passwordType, setPasswordType] =
     useState<FormState["passwordType"]>("password");
+  const cookies = new Cookies();
 
   const [TermsPrivacity, setTermsPrivacity] = useState(false);
   const [info, setInfo] = useState("");
@@ -48,7 +55,9 @@ function Register(): JSX.Element {
   }
 
   /* Maneja el evento de envío del formulario */
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     e.preventDefault();
     try {
       if (
@@ -72,7 +81,18 @@ function Register(): JSX.Element {
           photo: "",
         });
 
-        // nav("/login");
+        if (newUser.firstName === "" && newUser.lastName === "") {
+          swal({
+            title: "You will be redirected to complete data for your profile",
+            className: `${style.alert}`,
+            icon: "warning",
+          })
+            .then(() => {
+              dispatch(loginUser(newUser));
+              cookies.set("login", true);
+            })
+            .then(() => nav("/completeProfile"));
+        }
       }
     } catch (error) {
       throw error;
@@ -81,15 +101,10 @@ function Register(): JSX.Element {
 
   /* Setea el estado local con los datos del fomulario */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    e.target.name === "name"
-      ? setInput({
-          ...newUser,
-          username: e.target.value,
-        })
-      : setInput({
-          ...newUser,
-          [e.target.name]: e.target.value,
-        });
+    setInput({
+      ...newUser,
+      [e.target.name]: e.target.value,
+    });
   };
 
   // Register Social network
@@ -113,10 +128,10 @@ function Register(): JSX.Element {
   });
   const onResolveGoogle = ({ data, provider }: IResolveParams) => {
     setUserGoogle({
-      username: (data && data.name) || (data && data.email.split("@")[0]),
+      username: data && data.name,
       email: data && data.email,
-      firstName: data && data.first_name,
-      lastName: data && data.last_name,
+      firstName: data && data.given_name,
+      lastName: data && data.family_name,
       photo: data && data.picture,
       password: `${Math.random().toString(36).substring(2, 7)}`,
     });
@@ -139,11 +154,16 @@ function Register(): JSX.Element {
 
   useEffect(() => {
     if (userGoogle.email !== "") {
-      dispatch(createUser(userGoogle));
-    } else if (userFacebook.email !== "") {
-      dispatch(createUser(userFacebook));
+      dispatch(createUser(userGoogle))
+        .then(() => {
+          dispatch(loginSocialNetworks(userGoogle));
+          cookies.set("login", true);
+        })
+        .then(() => {
+          nav("/home");
+        });
     }
-  }, [userGoogle || userFacebook]);
+  }, [userGoogle]);
 
   return (
     <>
@@ -152,16 +172,16 @@ function Register(): JSX.Element {
           <div className={style.Logo}></div>
           <h1>Create Account</h1>
           <input
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
             className={style.input}
             type="text"
             placeholder="Full Name"
-            name="name"
+            name="username"
             id="name"
             value={newUser.username}
           />
           <input
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
             className={style.input}
             type="email"
             placeholder="Email address"
@@ -171,7 +191,7 @@ function Register(): JSX.Element {
           />
           <div className={style.password}>
             <input
-              onChange={(e) => handleChange(e)}
+              onChange={handleChange}
               className={style.input}
               type={passwordType}
               placeholder="Password"
@@ -211,6 +231,7 @@ function Register(): JSX.Element {
           <button className={style.btn} type="submit">
             SIGN UP
           </button>
+
           <section>
             <p>Or Sign Up with</p>
             <div className={style.redes}>
@@ -218,7 +239,6 @@ function Register(): JSX.Element {
                 client_id={import.meta.env.VITE_GG_APP_ID}
                 onResolve={onResolveGoogle}
                 onReject={onReject}
-                scope={"https://www.googleapis.com/auth/userinfo.email"}
               >
                 <img src={google} alt="Google" style={{ cursor: "pointer" }} />
               </LoginSocialGoogle>
@@ -251,23 +271,35 @@ function Register(): JSX.Element {
               {(info === "Terms" && (
                 <aside>
                   <div className={style.title}>
-                    <h2>{TermsPrivacityJSON[0].type}</h2>
+                    <h2>Terms</h2>
                     <button onClick={() => setTermsPrivacity(false)}>
                       <img src={Cross} />
                     </button>
                   </div>
-                  <p className={style.text}>{TermsPrivacityJSON[0].text}</p>
+                  <div className={style.text}>
+                    {terms.map((e: any) => (
+                      <>
+                        <p>{e.text}</p>
+                      </>
+                    ))}
+                  </div>
                 </aside>
               )) ||
                 (info === "Privacity" && (
                   <aside>
                     <div className={style.title}>
-                      <h2>{TermsPrivacityJSON[1].type}</h2>
+                      <h2>Privacity</h2>
                       <button onClick={() => setTermsPrivacity(false)}>
                         <img src={Cross} />
                       </button>
                     </div>
-                    <p className={style.text}>{TermsPrivacityJSON[1].text}</p>
+                    <div className={style.text}>
+                      {Privacity.map((e: any) => (
+                        <>
+                          <p>{e.text}</p>
+                        </>
+                      ))}
+                    </div>
                   </aside>
                 ))}
             </section>

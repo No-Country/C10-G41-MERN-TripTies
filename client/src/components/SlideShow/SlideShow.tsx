@@ -18,6 +18,8 @@ function SlideShow({ media }: props): JSX.Element {
   let dataComplete = [media[0].concat(media[1])];
   let dataLength = media[0].length + media[1].length;
 
+  console.log(media);
+
   const next = () => {
     setCurrent((current) =>
       current === dataComplete[0].length - 1 ? 0 : current + 1

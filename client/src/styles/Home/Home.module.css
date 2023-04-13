@@ -152,7 +152,7 @@
 
 .rigthcontainer {
   position: sticky;
-  top: -170px;
+  top: -200px;
 }
 
 .feedRight {
@@ -197,7 +197,7 @@
     max-width: 100%;
   }
 
-   /* .feedRight {
+  /* .feedRight {
     display:initial;
   } */
 

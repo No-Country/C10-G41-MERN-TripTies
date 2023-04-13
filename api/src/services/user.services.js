@@ -49,15 +49,17 @@ const createUser = async (userData) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
+  console.log("userData", userData);
+
   try {
     // Crear nuevo usuario con campos obligatorios
     const user = new User({
       username: userData.username,
-      first_name: userData.first_name || "",
-      last_name: userData.last_name || "",
+      first_name: userData.firstName,
+      last_name: userData.lastName,
       email: userData.email,
       password: hash(userData.password),
-      photo: userData.photo || "",
+      photo: userData.photo,
       role: userData.role,
     });
     // Guardar usuario en la base de datos
@@ -74,6 +76,8 @@ const createUser = async (userData) => {
     // Completar la transacción
     await session.commitTransaction();
     session.endSession();
+    console.log("total user", user);
+    console.log("total profile", profile);
     return user;
   } catch (error) {
     // Si hay un error, deshacer la transacción
