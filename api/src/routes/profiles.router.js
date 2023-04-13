@@ -13,7 +13,12 @@ const isOwner = require("../middlewares/isOwner.middleware");
 
 router.get("/", getAllUsersWithProfile);
 
-router.route("/:userId").get(getProfile).put(putUserProfile);
+router
+  .route("/:userId")
+  .get(getProfile)
+  .put(passport.authenticate("jwt", { session: false }), putUserProfile);
+
+router.route("/:userId/follow/:followingId").post(isOwner, followUser);
 
 router.route("/:userId/follow/:followingId").post(isOwner, followUser);
 

@@ -36,13 +36,21 @@ const findAllConversations = () => {
   })
 }
 
-const findConversationById = async (id) => {
-  const user = await Conversation.findById(id)
-  if (!user) {
-    throw new Error('User not found')
+const findConversationById = async (conversationId) => {
+  try {
+    const conversation = await Conversation.findById(conversationId)
+    const participants = await Participant.find({ conversation: conversationId }).select('user')
+
+    return {
+      conversation: conversation,
+      creator: conversation.user,
+      participants: participants.map(participant => participant.user)
+    }
+  } catch (error) {
+    console.error(error)
   }
-  return user
 }
+
 
 const editConversation = async (conversationId, obj) => {
   try {

@@ -12,6 +12,7 @@ import { store } from "./redux/store";
 import "./index.css";
 import Saved from "./components/Saved/Saved";
 import PlaceIVisited from "./components/PlaceIVisited/PlaceIVisited";
+import CompleteProfile from "./components/completeProfile/completeProfile";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Log />,
+  },
+  {
+    path: "/completeProfile",
+    element: <CompleteProfile />,
   },
   {
     path: "/register",

@@ -2,10 +2,14 @@ import style from "../../styles/Log/Log.module.css";
 import MiniFooter from "../MiniFooter/MiniFooter";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../redux/store/hooks";
-import { loginUser, loginSocialNetworks } from "../../redux/actions/Users";
+import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
+import {
+  loginUser,
+  loginSocialNetworks,
+  getProfileUser,
+} from "../../redux/actions/Users";
 import swal from "sweetalert";
-import { Users } from "../../types";
+import { Profile, Users } from "../../types";
 import {
   IResolveParams,
   LoginSocialGoogle,
@@ -18,12 +22,20 @@ import Cookies from "universal-cookie";
 function Log(): JSX.Element {
   const cookies = new Cookies();
   const [user, setUser] = useState({
+    username: "",
     email: "",
     password: "",
   });
 
   const nav = useNavigate();
   const dispatch = useAppDispatch();
+  const selector = useAppSelector;
+
+  const profile: Profile = selector((state) => state.profile);
+
+  useEffect(() => {
+    dispatch(getProfileUser());
+  }, []);
 
   const handleChange = (e: any) => {
     setUser({
@@ -32,7 +44,7 @@ function Log(): JSX.Element {
     });
   };
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (user.email === "" && user.password === "") {
       swal({
@@ -54,8 +66,9 @@ function Log(): JSX.Element {
       });
     } else {
       try {
-        dispatch(loginUser(user));
-        // nav("/home");
+        await dispatch(loginUser(user));
+        cookies.set("login", true);
+        nav("/home");
       } catch (error) {
         swal({
           title: `Error: ${error}`,
@@ -78,19 +91,14 @@ function Log(): JSX.Element {
   const [userFacebook, setUserFacebook] = useState({ username: "" });
 
   const onResolveGoogle = ({ data, provider }: IResolveParams) => {
-    setUserGoogle({
-      username: (data && data.name) || (data && data.email.split("@")[0]),
-      email: data && data.email,
-      firstName: data && data.first_name,
-      lastName: data && data.last_name,
-      photo: data && data.picture,
+    setUser({
+      username: data && data.name,
+      email: "",
+      password: "",
     });
-
-    cookies.set("firstName", data?.firstName, { path: "/" });
-    cookies.set("lastName", data?.lastName, { path: "/" });
-    cookies.set("photo", data?.picture, { path: "/" });
-    nav("/home");
   };
+
+  // No funciona el login con facebook
 
   const onResolveFacebook = ({ data }: IResolveParams) => {
     setUserFacebook(data && data.name);
@@ -101,16 +109,20 @@ function Log(): JSX.Element {
   };
 
   useEffect(() => {
-    if (userGoogle.username !== "") {
-      dispatch(loginSocialNetworks(userGoogle));
+    if (user.username !== "") {
+      dispatch(loginSocialNetworks(user)).then(() => {
+        cookies.set("login", true);
+        cookies.remove("visit");
+        nav("/home");
+      });
     } else if (userFacebook.username !== "") {
       dispatch(loginSocialNetworks(userFacebook));
     }
-  }, [userGoogle || userFacebook]);
+  }, [user]);
 
   return (
     <div className={style.container}>
-      <form className={style.content} onSubmit={(e) => handleLogin(e)}>
+      <form className={style.content} onSubmit={handleLogin}>
         <div className={style.Logo}></div>
         <h2 className={style.title}>Log In</h2>
         <input
@@ -148,7 +160,6 @@ function Log(): JSX.Element {
               client_id={import.meta.env.VITE_GG_APP_ID}
               onResolve={onResolveGoogle}
               onReject={onReject}
-              scope={"https://www.googleapis.com/auth/userinfo.email"}
             >
               <img src={google} alt="Google" style={{ cursor: "pointer" }} />
             </LoginSocialGoogle>

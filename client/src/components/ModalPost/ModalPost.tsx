@@ -8,13 +8,16 @@ import addVideo from "../../img/AddVideo.png";
 import { useEffect, useRef, useState } from "react";
 import { getCountries } from "../../redux/actions/VariablesActions";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
-import { Country } from "../../types";
+import { Country, Profile } from "../../types";
 import { Rating } from "react-simple-star-rating";
 import { postPublication } from "../../redux/actions/Publications";
+import Cookies from "universal-cookie";
+import { useNavigate } from "react-router-dom";
 
 type props = {
   visible: boolean;
   setVisible: (e: boolean) => void;
+  profile: Profile;
 };
 
 const clasification = [
@@ -24,45 +27,75 @@ const clasification = [
   "Transportation",
 ];
 
-function ModalPost({ visible, setVisible }: props): JSX.Element {
+function ModalPost({ visible, setVisible, profile }: props): JSX.Element {
   const dispatch = useAppDispatch();
   const selector = useAppSelector;
+  const nav = useNavigate();
 
   const countries = selector<Country[]>((state) => state.countries);
   let filterCountry = countries.map((e: any) => e.name.common);
-
-  const cloudinaryRef = useRef<any>();
-  const widgetRef = useRef<any>();
 
   useEffect(() => {
     dispatch(getCountries());
   }, []);
 
-  let photosArray: object[] = [];
-  let videosArray: object[] = [];
-
   const [post, setPost] = useState<any>({
     privacity: "Public",
     text: "",
-    tag: [],
-    photo: photosArray,
-    video: videosArray,
+    tag: ["#Paris"],
+    photo: [
+      {
+        url: "https://res.cloudinary.com/dtioqvhiz/image/upload/v1681420019/506659-eiffel-tower_uruuy6.webp",
+        type: "image",
+      },
+      {
+        url: "https://res.cloudinary.com/dtioqvhiz/image/upload/v1681420007/paris_37bc088a_1280x720_zyikii.jpg",
+        type: "image",
+      },
+      {
+        url: "https://res.cloudinary.com/dtioqvhiz/image/upload/v1681420007/230324090551-01-visiting-france-during-protests-what-to-know-top_od59li.jpg",
+        type: "image",
+      },
+    ],
+    video: [
+      {
+        url: "https://res.cloudinary.com/dtioqvhiz/video/upload/v1681420038/y2mate.com_-_Par%C3%ADs_Francia_una_ciudad_hermosa_y_tur%C3%ADstica_v240P_jbn2rr.mp4",
+        type: "video",
+      },
+    ],
     rate: 0,
     clasification: "",
     location: "",
     name: "",
   });
 
-  let tags = ["#hola", "#prueba", "#prueba 2", "prueba 3"];
+  let tags = [
+    "#hola",
+    "#prueba",
+    "#prueba 2",
+    "prueba 3",
+    "#hola111",
+    "#prueba111",
+    "#prueba 2111111",
+    "prueba 311111",
+  ];
 
   const handleTag = (e: any) => {
     e.preventDefault();
-    if (!post.tag.includes(e.target.value)) {
+    if (!post.tag.includes(e.target.value) && post.tag.length < 3) {
       setPost({
         ...post,
         tag: [...post.tag, e.target.value],
       });
     }
+  };
+
+  const deleteHandleTag = (e: any) => {
+    e.preventDefault();
+    setPost({
+      ...post,
+      tag: post.tag.filter((tag: string) => tag !== e.target.value),
+    });
   };
 
   const handleRating = (rate: number) => {
@@ -86,41 +119,8 @@ function ModalPost({ visible, setVisible }: props): JSX.Element {
     });
   };
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    dispatch(postPublication(post));
-  };
-
-  useEffect(() => {
-    cloudinaryRef.current = (window as any).cloudinary;
-    widgetRef.current = cloudinaryRef.current.createUploadWidget(
-      {
-        cloudName: "dtioqvhiz",
-        uploadPreset: "prueba",
-        sources: ["local"],
-        showUploadMoreButton: false,
-        showCompletedButton: true,
-      },
-      function (_error: unknown, result: any) {
-        if (result.info.resource_type === "image") {
-          photosArray.push({
-            type: "image",
-            url: result.info.url,
-          });
-        }
-        if (result.info.resource_type === "video") {
-          videosArray.push({
-            type: "video",
-            url: result.info.url,
-          });
-        }
-      }
-    );
-  }, []);
-
-  const handleUpload = (e: any) => {
-    e.preventDefault();
-    widgetRef.current.open();
+  const handleSubmit = () => {
+    dispatch(postPublication(post)).then(() => nav("/home"));
   };
 
   return (
@@ -138,16 +138,32 @@ function ModalPost({ visible, setVisible }: props): JSX.Element {
               </label>
             </aside>
             <aside className={style.modalInfoUser}>
-              <img src={profileImage} alt="" width="72" height="72" />
+              <img
+                src={profile.photo === "" ? user : profile.photo}
+                alt=""
+                width="72"
+                height="72"
+                style={{ borderRadius: "50%" }}
+              />
               <div className={style.infoUser}>
-                <h3>Emma Lopez</h3>
+                <h3>
+                  {profile.first_name} {profile.last_name}
+                </h3>
                 <div className={style.infoUserPrivacity}>
                   <img src={user} alt="" />
-                  <select onChange={handleSelect} name="privacity">
+                  <select
+                    className={style.selectPrivacity}
+                    onChange={handleSelect}
+                    name="privacity"
+                  >
                     <option value="Public">Public</option>
                     <option value="Private">Private</option>
                   </select>
-                  <img src={dropDownArrow} alt="" />
+                  <img
+                    className={style.dropDownArrowPrivacity}
+                    src={dropDownArrow}
+                    alt=""
+                  />
                 </div>
               </div>
             </aside>
@@ -156,19 +172,34 @@ function ModalPost({ visible, setVisible }: props): JSX.Element {
               placeholder="What would you like to share?"
               onChange={handleChange}
               name="text"
+              value={post.text}
             ></textarea>
             <aside className={style.tags}>
-              <select onChange={handleTag} name="tag" placeholder="Add Tags!">
-                <option value="" disabled selected hidden>
-                  Add Tags!
-                </option>
-                {tags && tags.map((e) => <option value={e}>{e}</option>)}
-              </select>
-              {post.tag && post.tag.map((e: any) => <h2>{e}</h2>)}
+              <div className={style.selectTag}>
+                <select onChange={handleTag} name="tag" placeholder="Add Tags!">
+                  <option value="" disabled selected hidden>
+                    Add Tags!
+                  </option>
+                  {tags && tags.map((e) => <option value={e}>{e}</option>)}
+                </select>
+                <img src={dropDownArrow} alt="" />
+              </div>
+
+              <div className={style.previewTag}>
+                {post.tag &&
+                  post.tag.map((e: string) => (
+                    <>
+                      <h3>{e}</h3>
+                      <button onClick={deleteHandleTag} value={e}>
+                        X
+                      </button>
+                    </>
+                  ))}
+              </div>
             </aside>
 
             <aside className={style.buttons}>
-              <button onClick={handleUpload}>
+              <button>
                 <img
                   src={addPhoto}
                   alt=""
@@ -177,7 +208,7 @@ function ModalPost({ visible, setVisible }: props): JSX.Element {
                   className={style.media}
                 />
               </button>
-              <button onClick={handleUpload}>
+              <button>
                 <img
                   src={addVideo}
                   alt=""

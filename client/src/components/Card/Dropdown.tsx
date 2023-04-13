@@ -1,15 +1,14 @@
 import React from "react";
 import style from "../../styles/Card/Dropdown.module.css";
 
-function Dropdown({ display, name }: string | any) {
-  const data: any = window.localStorage.getItem("users");
-  const user = JSON.parse(data);
-  // const Name = name.split(" ");
-  // const firstName = Name[0];
+function Dropdown({ display, name, profile }: string | any) {
+  const user = name;
+  console.log(profile);
+  console.log(user);
 
   return (
     <div className={style.container} style={{ display: display }}>
-      {user?.name === name ? (
+      {user.username === profile.username ? (
         <ul>
           <li className={style.dropdownElement}>
             <p>Edit</p>

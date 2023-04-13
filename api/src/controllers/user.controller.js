@@ -2,13 +2,43 @@ const User = require("../services/user.services");
 
 const postUser = async (req, res) => {
   try {
-    const { username, email, password, first_name, last_name, photo, role } =
+    const { username, email, password, firstName, lastName, photo, role } =
       req.body;
-
+    console.log("user controller", req.body);
     const user = await User.createUser({
       username,
-      first_name,
-      last_name,
+      firstName,
+      lastName,
+      email,
+      password,
+      photo,
+      role,
+    });
+    res.status(201).json(user);
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+      fields: {
+        username: "String",
+        first_name: "String",
+        last_name: "String",
+        email: "example@example.com",
+        password: "String",
+        photo: "URL",
+      },
+    });
+  }
+};
+
+const postUserSocialNetwork = async (req, res) => {
+  try {
+    const { username, email, password, firstName, lastName, photo, role } =
+      req.body;
+    console.log("user controller", req.body);
+    const user = await User.createUser({
+      username,
+      firstName,
+      lastName,
       email,
       password,
       photo,
@@ -42,7 +72,7 @@ const getAllUsers = (req, res, next) => {
 
 const getUserById = async (req, res, next) => {
   const { userId } = req.params;
-
+  console.log(userId);
   try {
     const user = await User.findUserById(userId, "profile");
 
@@ -69,6 +99,7 @@ const deleteUser = (req, res) => {
 
 module.exports = {
   postUser,
+  postUserSocialNetwork,
   getAllUsers,
   getUserById,
   deleteUser,

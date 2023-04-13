@@ -10,3 +10,9 @@
   color: var(--purple);
   margin-inline-end: 20px;
 }
+
+@media (max-width: 768px) {
+  .container {
+    width: 50vw;
+  }
+}

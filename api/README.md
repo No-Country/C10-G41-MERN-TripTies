@@ -44,7 +44,7 @@ This database was developed with NodeJS v-18.13. The diagram was created using d
             - get: Get a conversation by id
             - put: Edit a conversation // FIX Doesn't work yet
             - delete: Delete a conversation 
-                - /messages
+                - /message
                     - post: Post new message 
 
 - /follow //FIX GET FOLLOWS

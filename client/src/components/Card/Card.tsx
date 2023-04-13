@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import style from "../../styles/Card/Card.module.css";
 import avatar from "../../img/avatar.png";
+import user from "../../img/user.png";
 import menuVertical from "../../img/menu-vertical.png";
 import coffee from "../../img/coffee.png";
 import location from "../../img/smallPin.png";
@@ -21,8 +22,10 @@ import Comments from "../Comments/Comments";
 
 type props = {
   places: any;
+  login: string;
+  profile: object;
 };
-function Card({ places }: props) {
+function Card({ places, login, profile }: props) {
   const [display, setDisplay] = useState("none");
   const [displayComments, setDisplayComments] = useState("none");
   const ref = useRef<HTMLImageElement>(null);
@@ -42,7 +45,7 @@ function Card({ places }: props) {
   }, [ref]);
 
   const handleAppear = () => {
-    if (display === "none") {
+    if (display === "none" && login === "true") {
       setDisplay("block");
     } else {
       setDisplay("none");
@@ -60,7 +63,13 @@ function Card({ places }: props) {
   return (
     <>
       <section className={style.container}>
-        <img src={places.user.photo} alt="avatar" />
+        <img
+          src={places.user.photo === "" ? user : places.user.photo}
+          alt="avatar"
+          width={50}
+          height={50}
+          style={{ borderRadius: "50%" }}
+        />
         <section className={style.content}>
           <div className={style.userInfo}>
             <aside>
@@ -77,7 +86,12 @@ function Card({ places }: props) {
                 src={menuVertical}
                 alt="dots menu"
               />
-              <Dropdown name={places?.name} display={display} />
+              <Dropdown
+                name={places.user}
+                login={login}
+                profile={profile}
+                display={display}
+              />
             </div>
           </div>
           <article>
@@ -144,7 +158,7 @@ function Card({ places }: props) {
           </div>
         </section>
       </section>
-      <Comments goingToComment={displayComments} />
+      <Comments profile={profile} goingToComment={displayComments} />
     </>
   );
 }
