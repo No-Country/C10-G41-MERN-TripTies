@@ -1,64 +1,45 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styles from '../../styles/SectionDiscover/SectionChat.module.css'
-import avatar1 from '../../img/avatar.png'
-import avatar2 from '../../img/avatar2.png'
-import avatar3 from '../../img/avatar3.png'
-import avatar4 from '../../img/avatar4.png'
-import avatar5 from '../../img/avatar5.png'
-import avatar6 from '../../img/avatar6.png'
+import avatar7 from '../../img/user_avatar_default.jpg'
 import add from '../../img/message-add.png'
 import setting from '../../img/setting.png'
 import connected from '../../img/connected.png'
 import { useNavigate } from 'react-router-dom'
-import { ChatProps, Chat } from '../../types'
+import { ChatProps } from '../../types'
+import { useAppDispatch, useAppSelector } from '../../redux/store/hooks'
+import { getAllUsers } from '../../redux/actions/Users'
 
 interface User {
-    name: string;
-    avatar: string;
-    connected: boolean;
+    _id: string;
+    username: string;
+    email: string;
+    password: string;
+    first_name: string;
+    last_name: string;
+    photo: string;
+    role: string;
+    createdAt: string;
+    updatedAt: string;
+    emailVerified: boolean;
+    isOnline: boolean;
 }
 
 export default function SectionChat({ setChat }: ChatProps): JSX.Element {
-    // Array de usuarios para mostrar en la lista de chats
-    const users: User[] = [
-        {
-            name: 'Jane Johnson',
-            avatar: avatar1,
-            connected: true
-        },
-        {
-            name: 'Jan Patrick',
-            avatar: avatar2,
-            connected: true
-        },
-        {
-            name: 'Pablo Alvarado',
-            avatar: avatar3,
-            connected: false
-        },
-        {
-            name: 'Lea Bates',
-            avatar: avatar4,
-            connected: true
-        },
-        {
-            name: 'Flor Pérez',
-            avatar: avatar5,
-            connected: false
-        },
-        {
-            name: 'Thomas May',
-            avatar: avatar6,
-            connected: true
-        }
-    ];
+
+    const avatarDefault = avatar7
+
+    // Obtener token del almacenamiento local
+    const token: string | null = localStorage.getItem("token");
 
     const [isOpen, setIsOpen] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
+    const dispatch = useAppDispatch()
+    const user = useAppSelector(state => state.users)
     const nav = useNavigate();
 
     // Hook para manejar el click fuera del menú de configuración y cerrarlo
     useEffect(() => {
+        dispatch(getAllUsers())
         const handleOutsideClick = (event: MouseEvent) => {
             if (ref.current && !ref.current.contains(event.target as Node)) {
                 setIsOpen(false);
@@ -75,12 +56,15 @@ export default function SectionChat({ setChat }: ChatProps): JSX.Element {
     // Función para cerrar sesión
     function logOut(): void {
         window.localStorage.removeItem("users");
+        window.localStorage.removeItem("token");
         nav("/login");
     }
 
-    function handleNewChat(name: string,avatar: string){
-        localStorage.setItem("UserChat", JSON.stringify({ name: name, avatar: avatar }))
-        setChat({name,avatar})
+    function handleNewChat(name: string, avatar: string, id: string) {
+
+        localStorage.setItem("UserChat", JSON.stringify({ name: name, avatar: avatar, id }))
+
+        setChat({ name, avatar })
     }
 
     return (
@@ -96,17 +80,20 @@ export default function SectionChat({ setChat }: ChatProps): JSX.Element {
                     {/* Lista de usuarios */}
                     <div className={styles.scroll}>
                         {
-                            users.map((e: User, index: number) => {
+                            token &&
+
+                            user.map((e: User, index: number) => {
+
                                 return (
                                     <div key={index} className={styles.avatar}>
-                                        <img src={e.avatar} alt={e.name} />
-                                        <a style={{ cursor: 'pointer' }} onClick={() => handleNewChat(e.name,e.avatar)}>
+                                        <img src={e.photo && e.photo?.length > 10 ? e.photo : avatarDefault} alt={e.username} />
+                                        <a style={{ cursor: 'pointer' }} onClick={() => handleNewChat(e.username, e.photo, e._id)}>
                                             <div className={styles.text}>
-                                                <h2>{e.name}</h2>
+                                                <h2>{e.username}</h2>
                                             </div>
                                         </a>
                                         {
-                                            e.connected &&
+                                            e.isOnline &&
                                             <img src={connected} alt="connected" />
                                         }
                                     </div>
@@ -135,7 +122,7 @@ export default function SectionChat({ setChat }: ChatProps): JSX.Element {
                                 {/* Opciones del menú */}
                                 <ul className={`${styles.menu} ${isOpen ? styles.show : ""} ${isOpen ? styles.center : ''}`}>
                                     <li className={styles.space}></li>
-                                    <a href="#" onClick={() => setIsOpen(!isOpen)}>
+                                    <a href='/profile' onClick={() => setIsOpen(!isOpen)}>
                                         <li>
                                             View profile
                                         </li>

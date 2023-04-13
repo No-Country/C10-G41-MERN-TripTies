@@ -13,6 +13,7 @@ import "./index.css";
 import Saved from "./components/Saved/Saved";
 import PlaceIVisited from "./components/PlaceIVisited/PlaceIVisited";
 import CompleteProfile from "./components/completeProfile/completeProfile";
+import Profile from "./components/Profile/Profile";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
   {
     path: "/about",
     element: <AboutUs />,
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
   },
 ]);
 

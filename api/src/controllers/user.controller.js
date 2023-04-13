@@ -4,7 +4,7 @@ const postUser = async (req, res) => {
   try {
     const { username, email, password, firstName, lastName, photo, role } =
       req.body;
-    console.log("user controller", req.body);
+
     const user = await User.createUser({
       username,
       firstName,
@@ -72,7 +72,7 @@ const getAllUsers = (req, res, next) => {
 
 const getUserById = async (req, res, next) => {
   const { userId } = req.params;
-  console.log(userId);
+
   try {
     const user = await User.findUserById(userId, "profile");
 

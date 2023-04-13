@@ -27,6 +27,20 @@ interface Chat {
   name: string;
   avatar: string;
 }
+interface Message {
+  message: string;
+}
+
+interface Chat {
+  name: string;
+  avatar: string;
+  id: string;
+}
+
+interface Conversation {
+  title: string;
+  participantId: string;
+}
 
 export interface ChatProps {
   chat: Chat;

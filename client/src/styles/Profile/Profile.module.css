@@ -1,0 +1,33 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: normal;
+    height: 100vh;
+}
+
+.children {
+    width: 50%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.name {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.follows {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.follows .following h2{
+    margin-bottom: 0;
+}
+
+.follows .followers h2{
+    margin-bottom: 0;
+}

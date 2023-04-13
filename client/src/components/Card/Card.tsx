@@ -28,7 +28,7 @@ type props = {
 function Card({ places, login, profile }: props) {
   const [display, setDisplay] = useState("none");
   const [displayComments, setDisplayComments] = useState("none");
-  const ref = useRef<HTMLImageElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -78,9 +78,8 @@ function Card({ places, login, profile }: props) {
               </h4>
               <span>{places.time}</span>
             </aside>
-            <div>
+            <div ref={ref}>
               <img
-                ref={ref}
                 onClick={handleAppear}
                 className={style.dotMenu}
                 src={menuVertical}

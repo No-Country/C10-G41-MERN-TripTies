@@ -33,6 +33,13 @@
   padding: 0px 10px;
   border: 1px solid var(--violet);
   border-radius: 2px;
+  box-sizing: border-box;
+}
+
+.infoHeader img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
 }
 
 /* Botón para cerrar el chat */
