@@ -2,6 +2,7 @@ const initialState = {
   publications: [],
   users: [],
   countries: [],
+  conversations: []
 };
 
 interface Action {
@@ -21,11 +22,16 @@ const rootReducer = (state = initialState, action: Action) => {
         ...state,
         users: action.payload,
       };
-    case "GET_COUNTRIES":
-      return {
-        ...state,
-        countries: action.payload,
-      };
+      case "GET_COUNTRIES":
+          return {
+          ...state,
+          countries: action.payload,
+        };
+        case "GET_CONVERSATIONS":
+          return {
+            ...state,
+            conversations: action.payload
+          };
     default:
       return { ...state };
   }
