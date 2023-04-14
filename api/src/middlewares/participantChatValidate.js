@@ -5,8 +5,7 @@ const participantValidate = (req, res, next) => {
   const userId = req.user._id
 
   findParticipantConversation(userId, conversationId)
-    // console.log("conversationId:" , conversationId)
-    // console.log("user:" , userId)
+
     .then(data => {
       if(data) {
         next()

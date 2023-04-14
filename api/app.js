@@ -40,8 +40,6 @@ app.use(express.urlencoded({ extended: false }))
 
 //! Authenticate DB
 
-const getUserFromToken = require('./src/middlewares/auth.aux.middleware')
-app.use(getUserFromToken)
 
 
 //serve static html
