@@ -6,7 +6,7 @@ const routesPosts = require('./post.router')
 const routesComments = require('./comment.router')
 const routesFollows = require('./follow.router')
 const passport = require('passport')
-require('../middlewares/auth.middleware")(passpor')
+require('../middlewares/auth.middleware')(passport)
 const routesConversation = require('../chat/chatRoutes/conversation.route')
 
 function routerModels(app) {
