@@ -5,10 +5,12 @@
   margin-bottom: 2.1rem;
   background-color: var(--white);
   border-radius: 20px;
+  width: 90%;
 }
 
 .content {
   margin-left: 0.7rem;
+  width: 100%;
 }
 
 .dotMenu {
@@ -124,5 +126,4 @@
   .publicationInfo {
     gap: 0;
   }
-
 }

@@ -1,8 +1,6 @@
 const { Schema, model } = require('mongoose')
 
-
 const postSchema = new Schema({
-
   user: { type: Object, required: true },
   content: { type: String, required: true },
   privacity: { type: String, enum: ['Public', 'Private'], required: true },
@@ -15,7 +13,6 @@ const postSchema = new Schema({
   liked: { type: Number, default: 0 },
   comments: { type: Number, default: 0 },
 })
-
 
 
 module.exports = model('Post', postSchema)

@@ -1,6 +1,7 @@
 const initialState = {
   publications: [],
-  users: [],
+  user: {},
+  profile: {},
   countries: [],
   conversations: []
 };
@@ -17,10 +18,20 @@ const rootReducer = (state = initialState, action: Action) => {
         ...state,
         publications: action.payload,
       };
+    case "GET_PROFILE":
+      return {
+        ...state,
+        profile: action.payload,
+      };
+    case "CLEAN_PROFILE":
+      return {
+        ...state,
+        profile: {},
+      };
     case "GET_USER":
       return {
         ...state,
-        users: action.payload,
+        user: action.payload,
       };
       case "GET_COUNTRIES":
           return {

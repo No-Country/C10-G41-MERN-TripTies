@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const passport = require('passport')
-require('../middlewares/auth.middleware')(passport)
+require('../middlewares/auth.middleware")(passpor')
 
 const {
   getProfile,
@@ -16,6 +16,12 @@ router.route('/:userId')
   .get(getProfile) 
   .put(passport.authenticate('jwt', {session: false}), putUserProfile)
   
+router.route('/:userId/follow/:followingId')
+  .post(passport.authenticate('jwt', {session: false}), followUser)
+
+router.route('/:userId/follow/:followingId')
+  .post(passport.authenticate('jwt', {session: false}), followUser)
+
 router.route('/:userId/follow/:followingId')
   .post(passport.authenticate('jwt', {session: false}), followUser)
 

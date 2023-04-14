@@ -14,8 +14,8 @@ const findAllUsersWithProfile = async (page) => {
         from: 'profiles',
         localField: '_id',
         foreignField: 'user',
-        as: 'profile'
-      }
+        as: 'profile',
+      },
     },
     {
       $project: {
@@ -25,15 +25,15 @@ const findAllUsersWithProfile = async (page) => {
         last_name: 1,
         photo: { $arrayElemAt: ['$profile.portrait', 0] },
         description: { $arrayElemAt: ['$profile.description', 0] },
-        birthday: { $arrayElemAt: ['$profile.birthday', 0] }
-      }
+        birthday: { $arrayElemAt: ['$profile.birthday', 0] },
+      },
     },
     {
-      $skip: skip
+      $skip: skip,
     },
     {
-      $limit: limit
-    }
+      $limit: limit,
+    },
   ])
 
   return usersWithProfile
@@ -57,7 +57,7 @@ const editUserProfile = async (userId, userData) => {
   console.log(userId, userData)
   try {
     const user = await User.findById(userId).session(session)
-    const  profile  = await Profile.findOne({ user: userId }).session(session)
+    const profile = await Profile.findOne({ user: userId }).session(session)
 
     if (!user) {
       throw new Error('Not found user', 404, 'Not Found')
@@ -71,8 +71,8 @@ const editUserProfile = async (userId, userData) => {
         $set: {
           first_name: userData.first_name,
           last_name: userData.last_name,
-          photo: userData.photo
-        }
+          photo: userData.photo,
+        },
       },
       { new: true, session }
     )
@@ -82,8 +82,8 @@ const editUserProfile = async (userId, userData) => {
         $set: {
           description: userData.profile.description,
           birthday: userData.profile.birthday,
-          portrait: userData.profile.portrait
-        }
+          portrait: userData.profile.portrait,
+        },
       },
       { new: true, session }
     )
@@ -96,9 +96,9 @@ const editUserProfile = async (userId, userData) => {
     throw err
   }
 }
+
 module.exports = {
   findProfile,
-  // findAllProfiles,
   findAllUsersWithProfile,
-  editUserProfile
+  editUserProfile,
 }

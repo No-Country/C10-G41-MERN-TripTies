@@ -39,6 +39,7 @@ const createPost = async (id, obj) => {
   const data = await Post.create({
     user: user,
     content: obj.content,
+    tag: obj.tag,
     privacity: obj.privacity,
     photo: obj.photo,
     video: obj.video,
@@ -49,7 +50,6 @@ const createPost = async (id, obj) => {
   })
   return data
 }
-
 
 const updatePost = async (postId, userId, obj) => {
 

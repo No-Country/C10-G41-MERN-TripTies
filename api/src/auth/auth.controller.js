@@ -23,7 +23,8 @@ const postLogin = (req, res) => {
             },
             process.env.JWT_SECRET
           )
-          res.status(200).json({ message: 'Correct credentials', token })
+          const id = data._id
+          res.status(200).json({ message: 'Correct credentials', token, id })
         } else {
           res.status(400).json({ message: 'Invalid credentials' })
         }
@@ -42,21 +43,33 @@ const postLogin = (req, res) => {
 
 const postLoginSocialNetwork = async (req, res) => {
   const { username } = req.body
-  const user = await verifyUserSocial(username)
-    .then((data) => {
-      if (data) {
-        const token = jwt.sign(
-          {
-            username: data.username,
-          },
-          process.env.JWT_SECRET
-        )
-        res.status(200).json({ message: 'Correct credentials', token })
-      } else {
-        res.status(400).json({ message: 'Invalid credentials' })
-      }
+  if (username) {
+    verifyUserSocial(username)
+      .then((data) => {
+        if (data) {
+          const token = jwt.sign(
+            {
+              _id: data._id,
+              username: data.username,
+              email: data.email,
+            },
+            process.env.JWT_SECRET
+          )
+          const id = data._id
+          res.status(200).json({ message: 'Correct credentials', token, id })
+        } else {
+          res.status(400).json({ message: 'Invalid credentials' })
+        }
+      })
+      .catch((err) => res.status(400).json({ message: err.message }))
+  } else {
+    res.status(400).json({
+      message: 'All parameters are required',
+      fields: {
+        username: 'Username is required',
+      },
     })
-    .catch((err) => res.status(400).json({ message: err.message }))
+  }
 }
 
 const postRecoveryToken = (req, res) => {

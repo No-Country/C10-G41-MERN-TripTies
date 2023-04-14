@@ -59,6 +59,7 @@
   font-size: 20px;
   line-height: 20px;
   width: 150px;
+  padding: 0.6em 1.2em;
 }
 
 .containerGuy {
@@ -91,7 +92,7 @@
   .flyAndTitle {
     max-width: 100vw;
   }
-  
+
   .flyAndTitle > img {
     width: 379px;
     height: 300px;

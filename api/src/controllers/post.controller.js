@@ -2,25 +2,23 @@ const Likes = require('../models/likes.models')
 const Post = require('../services/post.services')
 
 const postNewPost = (req, res) => {
-
   const userId = req.user._id
   const image = req.files
-  const { content } = req.body
+  const content = req.body
 
-
-  Post.createPost(userId, { content }, image)
-    .then(data => {
+  Post.createPost(userId, content, image)
+    .then((data) => {
       res.status(201).json(data)
     })
     .catch((err) => {
       res.status(400).json({
-        message: err.message, fields: {
+        message: err.message,
+        fields: {
           content: 'String',
           images: 'req.files',
-          location: 'point/coordinates',
           reported: 'Number',
-          rating: 'Number'
-        }
+          rating: 'Number',
+        },
       })
     })
 }
@@ -107,6 +105,5 @@ module.exports = {
   getPostById,
   postNewPost,
   putPost,
-  postLikeByPost
+  postLikeByPost,
 }
-

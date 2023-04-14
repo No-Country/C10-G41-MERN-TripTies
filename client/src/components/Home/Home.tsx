@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import style from "../../styles/Home/Home.module.css";
-import profile from "../../img/profileImage.png";
+import imgProfile from "../../img/profileImage.png";
 import edit from "../../img/edit.png";
 import gallery from "../../img/gallery.png";
 import location from "../../img/location.png";
@@ -26,6 +26,10 @@ import ModalPost from "../ModalPost/ModalPost";
 import { useSelector } from "react-redux";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import { getAllPublications } from "../../redux/actions/Publications";
+import Cookies from "universal-cookie";
+import { Profile } from "../../types";
+import { getProfileUser } from "../../redux/actions/Users";
+import { useNavigate } from "react-router-dom";
 
 interface lugaresType {
   name: string;
@@ -51,12 +55,22 @@ interface chat {
 function Home(): JSX.Element {
   const selector = useAppSelector;
   const dispatch = useAppDispatch();
+  const nav = useNavigate();
   let [hash, setHash] = useState("");
   const allPublications = selector<any>((state) => state.publications);
+  const profile: Profile = selector((state) => state.profile);
+  const cookies = new Cookies();
+  const login = cookies.get("login");
+  const visit = cookies.get("visit");
 
   useEffect(() => {
-    dispatch(getAllPublications());
-  }, []);
+    if (login === "true" || visit === "true") {
+      dispatch(getAllPublications());
+      dispatch(getProfileUser());
+    } else {
+      nav("/");
+    }
+  }, [login, visit]);
 
   const [visible, setVisible] = useState(false);
 
@@ -109,7 +123,13 @@ function Home(): JSX.Element {
 
   return (
     <div className={style.homeContainer}>
-      <NavBar handleHome={handleHome} user={allPublications} />
+      <NavBar
+        handleHome={handleHome}
+        user={allPublications}
+        profile={profile}
+        login={login}
+        visit={visit}
+      />
       <div className={style.feedContainer}>
         <div className={style.leftContainer}>
           <div>
@@ -127,9 +147,13 @@ function Home(): JSX.Element {
         </div>
 
         <div className={style.feedCenter}>
-          <ModalPost visible={visible} setVisible={setVisible} />
+          <ModalPost
+            visible={visible}
+            setVisible={setVisible}
+            profile={profile}
+          />
           <div className={style.postGenerator}>
-            <img src={profile} alt="Perfil" className={style.imgProfile} />
+            <img src={imgProfile} alt="Perfil" className={style.imgProfile} />
             <div className={style.buttonsPost}>
               <input
                 type="text"
@@ -152,7 +176,7 @@ function Home(): JSX.Element {
           <div className={style.feedPublications}>
             {allPublications &&
               allPublications.posts?.map((e: any, i: number) => (
-                <Card places={e} key={i} />
+                <Card places={e} login={login} profile={profile} key={i} />
               ))}
           </div>
         </div>

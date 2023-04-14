@@ -30,7 +30,7 @@ app.use(cors())
 if (process.env.NODE_ENV === 'production') {
   /* Set security HTTP headers */
   /* For Error ERR_BLOCKED_BY_RESPONSE.NotSameOrigin 200 
-       https://stackoverflow.com/questions/70752770/helmet-express-err-blocked-by-response-notsameorigin-200
+      https://stackoverflow.com/questions/70752770/helmet-express-err-blocked-by-response-notsameorigin-200
   */
   app.use(helmet({ crossOriginResourcePolicy: false }))
 }
@@ -61,5 +61,5 @@ app.get('*', (req, res) => {
 })
 
 app.listen(PORT, () => {
-  console.log(`Server on PORT: ${PORT}`)
+  console.log(`Server active on PORT: ${PORT} 🚀`)
 })

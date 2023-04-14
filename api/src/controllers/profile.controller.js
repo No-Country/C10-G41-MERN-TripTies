@@ -4,7 +4,6 @@ const putUserProfile = async (req, res) => {
   let { userId } = req.params
   let { first_name, last_name, email, profile } = req.body
 
-
   if (profile) {
     await Profile.editUserProfile(userId, {
       first_name,
@@ -23,7 +22,7 @@ const putUserProfile = async (req, res) => {
             profile: {
               description: 'String',
               birthday: 'Date',
-              portrait: 'String'
+              portrait: 'String',
             },
           },
         })
@@ -41,7 +40,7 @@ const putUserProfile = async (req, res) => {
             profile: {
               description: 'String',
               birthday: 'Date',
-              portrait: 'String'
+              portrait: 'String',
             },
           },
         })
@@ -51,7 +50,7 @@ const putUserProfile = async (req, res) => {
 
 const getProfile = async (req, res, next) => {
   const { userId } = req.params
-  
+
   try {
     const profile = await Profile.findProfile(userId)
     if (!profile) {
