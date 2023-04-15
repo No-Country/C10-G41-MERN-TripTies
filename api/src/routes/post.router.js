@@ -12,6 +12,7 @@ const {
   postLikeByPost,
 } = require("../controllers/post.controller");
 const { multerPublicationsPhotos } = require("../utils/multer");
+const { postTag } = require("../controllers/tag.controller");
 
 router
   .route("/")
@@ -19,7 +20,8 @@ router
   .post(
     passport.authenticate("jwt", { session: false }),
     multerPublicationsPhotos.array("image", 3),
-    postNewPost
+    postNewPost,
+    postTag
   );
 
 router

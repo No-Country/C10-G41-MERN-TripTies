@@ -1,7 +1,7 @@
 const Likes = require("../models/likes.models");
 const Post = require("../services/post.services");
 
-const postNewPost = (req, res) => {
+const postNewPost = (req, res, next) => {
   const userId = req.user._id;
   const image = req.files;
   const content = req.body;
@@ -9,6 +9,7 @@ const postNewPost = (req, res) => {
   Post.createPost(userId, content, image)
     .then((data) => {
       res.status(201).json(data);
+      next();
     })
     .catch((err) => {
       res.status(400).json({

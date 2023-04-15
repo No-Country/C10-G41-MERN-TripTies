@@ -5,6 +5,7 @@ const routesLogin = require("../auth/auth.router");
 const routesPosts = require("./post.router");
 const routesComments = require("./comment.router");
 const routesFollows = require("./follow.router");
+const routesTag = require("./tag.router");
 const passport = require("passport");
 require("../middlewares/auth.middleware")(passport);
 const routesConversation = require("../chat/chatRoutes/conversation.route");
@@ -24,7 +25,7 @@ function routerModels(app) {
   router.use("/posts", routesPosts);
   router.use("/follow", routesFollows);
   router.use("/conversations", routesConversation);
-
+  router.use("/tag", routesTag);
   router.use("/user", routesUsers);
 
   // TODO : change after publication's logic is ready

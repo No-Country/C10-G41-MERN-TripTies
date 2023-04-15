@@ -3,6 +3,7 @@ const Likes = require("../models/likes.models");
 const Post = require("../models/post.models");
 const Profile = require("../models/profiles.models");
 const User = require("../models/users.models");
+const Tag = require("../services/tag.services");
 
 const findAllPosts = async ({ page = 1, limit = 10 }) => {
   const skip = (page - 1) * limit;
@@ -11,7 +12,7 @@ const findAllPosts = async ({ page = 1, limit = 10 }) => {
     .skip(skip)
     .limit(limit)
     .select(
-      "content photo video privacity rate name clasification reported user liked comments media.location"
+      "content photo video privacity rate name clasification reported tag user liked comments media.location"
     )
     .lean();
 
@@ -29,8 +30,6 @@ const findPostById = async (postId) => {
 const createPost = async (id, obj) => {
   console.log("id", id);
   let userId = await User.findOne({ _id: id });
-
-  console.log(userId);
 
   let user = {
     id: userId._id,
@@ -52,7 +51,9 @@ const createPost = async (id, obj) => {
     clasification: obj.clasification,
     location: obj.location,
   });
-  console.log(data);
+
+  await Tag.createTag(data._id.valueOf(), data.tag);
+
   return data;
 };
 
