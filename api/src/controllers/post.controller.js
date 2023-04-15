@@ -17,7 +17,6 @@ const postNewPost = (req, res, next) => {
         fields: {
           content: "String",
           images: "req.files",
-          location: "point/coordinates",
           reported: "Number",
           rating: "Number",
         },
@@ -29,10 +28,6 @@ const putPost = (req, res) => {
   const { content, location } = req.body;
   const { postId } = req.params;
   const userId = req.user._id;
-
-  // console.log(content, location)
-  // console.log(postId)
-  // console.log(userId)
 
   Post.updatePost({ _id: postId, user: userId }, { content, location })
 
@@ -68,7 +63,7 @@ const getAllPosts = async (req, res, next) => {
 
 const getPostById = async (req, res) => {
   const { postId } = req.params;
-  console.log(req);
+
   try {
     const post = await Post.findPostById(postId);
     if (!post) {

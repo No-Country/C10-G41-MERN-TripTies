@@ -28,7 +28,6 @@ const findPostById = async (postId) => {
 };
 
 const createPost = async (id, obj) => {
-  console.log("id", id);
   let userId = await User.findOne({ _id: id });
 
   let user = {
@@ -36,7 +35,6 @@ const createPost = async (id, obj) => {
     firstName: userId.first_name,
     lastName: userId.last_name,
     photo: userId.photo,
-    username: userId.username,
   };
 
   const data = await Post.create({
@@ -51,16 +49,11 @@ const createPost = async (id, obj) => {
     clasification: obj.clasification,
     location: obj.location,
   });
-
   await Tag.createTag(data._id.valueOf(), data.tag);
-
   return data;
 };
 
 const updatePost = async (postId, userId, obj) => {
-  console.log(postId);
-  console.log(userId);
-  console.log(obj);
   const post = await Post.findOneAndUpdate({ _id: postId, user: userId }, obj, {
     new: true,
   });
