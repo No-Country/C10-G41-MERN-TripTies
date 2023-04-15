@@ -13,8 +13,7 @@ const {
 } = require('../controllers/post.controller')
 const { multerPublicationsPhotos } = require('../utils/multer')
 
-router
-  .route('/')
+router.route('/')
   .get(getAllPosts)
   .post(
     passport.authenticate('jwt', { session: false }),
@@ -22,15 +21,13 @@ router
     postNewPost
   )
 
-router
-  .route('/:postId')
+router.route('/:postId')
   .get(passport.authenticate('jwt', { session: false }), getPostById)
   .put(passport.authenticate('jwt', { session: false }), putPost)
 
 router.use('/:postId/comments', routesComments)
 
-router
-  .route('/:postId/like')
+router.route('/:postId/like')
   .post(passport.authenticate('jwt', { session: false }), postLikeByPost)
 
 module.exports = router

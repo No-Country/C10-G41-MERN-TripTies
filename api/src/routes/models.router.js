@@ -8,6 +8,7 @@ const routesFollows = require('./follow.router')
 const passport = require('passport')
 require('../middlewares/auth.middleware')(passport)
 const routesConversation = require('../chat/chatRoutes/conversation.route')
+const { getInfoUser } = require('../controllers/user.controller')
 
 function routerModels(app) {
   const router = express.Router()
@@ -16,11 +17,8 @@ function routerModels(app) {
 
   router.use('/auth', routesLogin)
   router.use('/user', routesUsers)
-  router.use(
-    '/profiles',
-    passport.authenticate('jwt', { session: false }),
-    routesProfiles
-  )
+  router.get('/user-info', passport.authenticate('jwt', { session: false }), getInfoUser)
+  router.use('/profiles', routesProfiles)
   router.use('/posts', routesPosts)
   router.use('/follow', routesFollows)
   router.use('/conversations', routesConversation)
