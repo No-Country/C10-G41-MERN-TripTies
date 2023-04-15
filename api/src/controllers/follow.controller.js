@@ -1,6 +1,6 @@
 const Follow = require('../services/follow.services')
 
-async function followUser(req, res, next) {
+async function followUser(req, res) {
   try {
     const followerId = req.user._id
     const { followingId } = req.params
