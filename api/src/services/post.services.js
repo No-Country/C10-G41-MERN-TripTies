@@ -19,8 +19,8 @@ const findAllPosts = async ({ page = 1, limit = 10 }) => {
   const count = await Post.countDocuments();
   const totalPages = Math.ceil(count / limit);
 
-  return { posts };
-};
+  return { posts, totalPages }
+}
 
 const findPostById = async (postId) => {
   const post = await Post.findById(postId);
@@ -60,26 +60,10 @@ const updatePost = async (postId, userId, obj) => {
   return post;
 };
 
-// const addLikeByPost = async(id, postId) => {
-//   const session = await mongoose.startSession()
-//   session.startTransaction()
-//   try {
-//     const profile = await Profile.findOne( { user: id } )
-//     let like = await Likes.create({
-//       user: profile._id,
-//       post: postId
-//     })
-//     await like.save({ session })
-//     await session.commitTransaction()
-//     session.endSession()
-//     return like
-//   }
-//   catch (error) {
-//     await session.abortTransaction()
-//     session.endSession()
-//     throw new Error(error.message)
-//   }
-// }
+
+//! --------- LIKES --------------------
+
+
 const addLikeByPost = async (id, postId) => {
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -99,6 +83,7 @@ const addLikeByPost = async (id, postId) => {
     throw new Error(error.message);
   }
 };
+
 
 module.exports = {
   findAllPosts,

@@ -14,8 +14,8 @@ const {
 const { multerPublicationsPhotos } = require("../utils/multer");
 const { postTag } = require("../controllers/tag.controller");
 
-router
-  .route("/")
+router.route('/')
+
   .get(getAllPosts)
   .post(
     passport.authenticate("jwt", { session: false }),
@@ -24,15 +24,15 @@ router
     postTag
   );
 
-router
-  .route("/:postId")
-  .get(passport.authenticate("jwt", { session: false }), getPostById)
-  .put(passport.authenticate("jwt", { session: false }), putPost);
+router.route('/:postId')
+  .get(passport.authenticate('jwt', { session: false }), getPostById)
+  .put(passport.authenticate('jwt', { session: false }), putPost)
+
 
 router.use("/:postId/comments", routesComments);
 
-router
-  .route("/:postId/like")
-  .post(passport.authenticate("jwt", { session: false }), postLikeByPost);
+router.route('/:postId/like')
+  .post(passport.authenticate('jwt', { session: false }), postLikeByPost)
+
 
 module.exports = router;

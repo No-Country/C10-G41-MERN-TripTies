@@ -15,10 +15,16 @@ const postNewPost = (req, res, next) => {
       res.status(400).json({
         message: err.message,
         fields: {
-          content: "String",
-          images: "req.files",
-          reported: "Number",
-          rating: "Number",
+
+          user: 'any',
+          content: 'string',
+          privacity: 'Public' | 'Private',
+          photo: '[req.files]',
+          video: '[req.files]',
+          rate: 'number',
+          name: 'string',
+          clasification: 'string',
+          reported: 'number'
         },
       });
     });
@@ -54,8 +60,9 @@ const getAllPosts = async (req, res, next) => {
     res.status(200).json({
       posts,
       currentPage: page,
-      totalPages,
-    });
+      totalPages: totalPages,
+    })
+
   } catch (err) {
     next(err);
   }
@@ -74,15 +81,6 @@ const getPostById = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
-
-// const postLikeByPost = (request, response) => {
-//   const id = request.user._id
-//   const { postId } = request.params
-
-//   Post.addLikeByPost(id, postId)
-//     .then(data => response.status(201).json(data))
-//     .catch(err => response.status(400).json({ message: err.message }))
-// }
 
 const postLikeByPost = async (request, response) => {
   const id = request.user._id;
