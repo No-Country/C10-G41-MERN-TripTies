@@ -14,6 +14,10 @@ const followUser = async (followerId, followingId) => {
       throw new Error('Follower or following user not found')
     }
 
+    if (follower == following) {
+      throw new Error('You cannot follow yourself')
+    }    
+
     const existingFollow = await Follow.findOne({
       follower: followerId,
       following: followingId

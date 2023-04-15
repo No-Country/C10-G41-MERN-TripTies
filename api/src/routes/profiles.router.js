@@ -18,13 +18,7 @@ router.route('/:userId')
   .put(passport.authenticate('jwt', {session: false}), putUserProfile)
   .delete(passport.authenticate('jwt', {session: false}), deleteUser)
   
-router.route('/:userId/follow/:followingId')
-  .post(passport.authenticate('jwt', {session: false}), followUser)
-
-router.route('/:userId/follow/:followingId')
-  .post(passport.authenticate('jwt', {session: false}), followUser)
-
-router.route('/:userId/follow/:followingId')
+router.route('/:followingId/follow')
   .post(passport.authenticate('jwt', {session: false}), followUser)
 
 module.exports = router
