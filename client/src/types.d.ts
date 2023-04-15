@@ -23,21 +23,23 @@ export interface UserLogin {
   photo?: string;
 }
 
-interface Chat {
+export interface Chat {
+  id: string;
   name: string;
   avatar: string;
 }
-interface Message {
+
+export interface Message {
   message: string;
 }
 
-interface Chat {
-  name: string;
-  avatar: string;
-  id: string;
-}
+// export interface Chat {
+//   name: string;
+//   avatar: string;
+//   id: string;
+// }
 
-interface Conversation {
+export interface Conversation {
   title: string;
   participantId: string;
 }
@@ -64,3 +66,14 @@ export interface Profile {
   profile?: object;
   description?: string;
 }
+
+type TagsItem = {
+  _id: string;
+  number: number;
+  posts: any[];
+  tag: string;
+};
+
+export type Tags = {
+  tags: TagsItem[];
+};

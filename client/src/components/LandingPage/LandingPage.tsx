@@ -9,7 +9,6 @@ import Cookies from "universal-cookie";
 const LandingPage = (): JSX.Element => {
   const nav = useNavigate();
   const cookies = new Cookies();
-  console.log(cookies.get("login"));
 
   const handleVisit = () => {
     cookies.set("visit", true);

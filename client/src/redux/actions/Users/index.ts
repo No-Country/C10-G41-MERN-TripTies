@@ -32,92 +32,6 @@ export const loginUser = (user: object) => {
   };
 };
 
-//Action para obtener todos los usuarios
-export const getAllUsers = () => {
-  return async function (dispatch: AppDispatch) {
-    try {
-      const response = await axios.get("/user", {
-        headers: {
-          Authorization: `jwt ${localStorage.getItem("token")}`,
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(response);
-      dispatch({ type: "GET_USER", payload: response.data });
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  };
-};
-
-//Action para obtener todas las conversaciones
-export const getAllConversations = () => {
-  return async function (dispatch: AppDispatch) {
-    try {
-      const response = await axios.get("/conversations", {
-        headers: {
-          Authorization: `jwt ${localStorage.getItem("token")}`,
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(response);
-      dispatch({ type: "GET_CONVERSATIONS", payload: response.data });
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  };
-};
-
-// Action para la creacion de un nuevo mensaje
-export const newMessage = (id: string, newMessage: Message) => {
-  return async function () {
-    try {
-      const response = await axios.post(
-        `conversations/${id}/message`,
-        newMessage,
-        {
-          headers: {
-            Authorization: `jwt ${localStorage.getItem("token")}`,
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log(response.data);
-      return response;
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  };
-};
-
-// Action para la creacion de una nueva conversacion
-export const createConversation = (newConversation: Conversation) => {
-  return async function () {
-    try {
-      const response = await axios.post(`/conversations`, newConversation, {
-        headers: {
-          Authorization: `jwt ${localStorage.getItem("token")}`,
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(response.data);
-      return response;
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  };
-};
-
 // Logueo con redes sociales
 export const loginSocialNetworks = (user: object) => {
   return async function () {
@@ -166,5 +80,84 @@ export const cleanProfile = () => {
     dispatch({
       type: "CLEAN_PROFILE",
     });
+  };
+};
+
+//Action para obtener todos los usuarios
+export const getAllUsers = () => {
+  return async function (dispatch: AppDispatch) {
+    try {
+      const response = await axios.get("/user", {
+        headers: {
+          Authorization: `jwt ${cookies.get("token")}`,
+        },
+      });
+      dispatch({ type: "GET_USERS", payload: response.data });
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+};
+
+//Action para obtener todas las conversaciones
+export const getAllConversations = () => {
+  return async function (dispatch: AppDispatch) {
+    try {
+      const response = await axios.get("/conversations", {
+        headers: {
+          Authorization: `jwt ${cookies.get("token")}`,
+        },
+      });
+      console.log(response);
+      dispatch({ type: "GET_CONVERSATIONS", payload: response.data });
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+};
+
+// Action para la creacion de un nuevo mensaje
+export const newMessage = (id: string, newMessage: Message) => {
+  return async function () {
+    try {
+      const response = await axios.post(
+        `conversations/${id}/message`,
+        newMessage,
+        {
+          headers: {
+            Authorization: `jwt ${localStorage.getItem("token")}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+};
+
+// Action para la creacion de una nueva conversacion
+export const createConversation = (newConversation: Conversation) => {
+  return async function () {
+    try {
+      const response = await axios.post(`/conversations`, newConversation, {
+        headers: {
+          Authorization: `jwt ${localStorage.getItem("token")}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   };
 };
