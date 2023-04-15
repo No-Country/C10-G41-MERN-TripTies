@@ -17,6 +17,7 @@ export const getAllPublications = () => {
 export const postPublication = (newPublication: any) => {
   return async function () {
     try {
+      console.log("action", newPublication);
       const response = await axios.post(
         "/posts",
         {
@@ -28,6 +29,7 @@ export const postPublication = (newPublication: any) => {
           name: newPublication.name,
           clasification: newPublication.clasification,
           location: newPublication.location,
+          tag: newPublication.tag,
         },
         {
           headers: {
@@ -47,5 +49,25 @@ export const editProfile = (user: object) => {
     const response = await axios.put(`/profiles/${cookies.get("id")}`, user, {
       headers: { Authorization: `jwt ${cookies.get("token")}` },
     });
+  };
+};
+
+// Tags
+
+export const getTags = () => {
+  return async function (dispatch: AppDispatch) {
+    const response = await axios.get("/tag").then((response) => {
+      dispatch({
+        type: "GET_TAGS",
+        payload: response.data,
+      });
+    });
+  };
+};
+
+export const createTag = (newTag: object) => {
+  return async function () {
+    const response = await axios.post("/tag/createTag", newTag);
+    return response;
   };
 };

@@ -30,6 +30,8 @@ function Card({ places, login, profile }: props) {
   const [displayComments, setDisplayComments] = useState("none");
   const ref = useRef<HTMLDivElement>(null);
 
+  const tags = places.tag?.map((e: string) => e);
+
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
@@ -95,7 +97,7 @@ function Card({ places, login, profile }: props) {
           </div>
           <article>
             <p className={style.description}>
-              {places.content} {places.tag}
+              {places.content}. {places.tag.join(" ")}
             </p>
           </article>
           <div className={style.publicationInfo}>
