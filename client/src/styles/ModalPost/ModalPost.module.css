@@ -138,13 +138,12 @@
 
 .selectTag {
   height: 24px;
-  width: 90px;
+  width: 300px;
   align-items: center;
   display: flex;
-  justify-content: center;
-  position: relative;
-  outline: none;
-  margin-right: 1rem;
+  justify-content: space-between;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .selectTag select {
@@ -193,9 +192,10 @@
 }
 
 .previewTag {
-  min-width: 40%;
+  min-width: 60%;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .previewTag button {

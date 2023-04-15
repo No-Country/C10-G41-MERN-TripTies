@@ -3,8 +3,6 @@ import style from "../../styles/Card/Dropdown.module.css";
 
 function Dropdown({ display, name, profile }: string | any) {
   const user = name;
-  console.log(profile);
-  console.log(user);
 
   return (
     <div className={style.container} style={{ display: display }}>

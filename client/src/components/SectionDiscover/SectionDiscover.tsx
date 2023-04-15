@@ -1,90 +1,48 @@
 import { useEffect, useState } from "react";
 import style from "../../styles/SectionDiscover/SectionDiscover.module.css";
+import { Tags } from "../../types";
+import Loading from "../Loading/Loading";
 
 type props = {
-  hashTag: any;
-  hashTagSaved: any;
-  hashTagVisited: any;
-  handleHash: (value: any) => void;
-  publications: any;
-  publicationsSaved: any;
-  publicationsVisited: any;
+  tags: any;
+  setPublications: any;
+  setLoading: any;
 };
 function SectionDiscover({
-  hashTag,
-  hashTagSaved,
-  hashTagVisited,
-  handleHash,
-  publications,
-  publicationsSaved,
-  publicationsVisited,
+  tags,
+  setPublications,
+  setLoading,
 }: props): JSX.Element {
-  // let [arrayHashTag, setArrayHashTag] = useState([]);
-  let [arrayHashTagSaved, setArrayHashTagSaved] = useState([]);
-  let [arrayHashTagVisited, setArrayHashTagVisited] = useState([]);
-  let arrayHashTag = ["#Paris", "#Madrid", "#Argentina", "#Uruguay", "#Berlin"];
-  useEffect(() => {
-    // let arrayTag = hashTag && hashTag.map((e: any) => e.tag);
-    // setArrayHashTag(arrayTag);
+  let tagsRender = tags.tags
+    ?.sort((a: any, b: any) => {
+      if (a.number < b.number) return 1;
+      if (a.number > b.number) return -1;
+      return 0;
+    })
+    .slice(0, 5);
 
-    let arrayHashTagSaved = hashTagSaved && hashTagSaved.map((e: any) => e.tag);
-    setArrayHashTagSaved(arrayHashTagSaved);
-    let arrayHashTagVisited =
-      hashTagVisited && hashTagVisited.map((e: any) => e.tag);
-    setArrayHashTagVisited(arrayHashTagVisited);
-  }, []);
-
-  let Tags =
-    arrayHashTag &&
-    arrayHashTag.filter((e, i) => arrayHashTag.indexOf(e) === i);
-
-  let TagsSaved =
-    arrayHashTagSaved &&
-    arrayHashTagSaved.filter((e, i) => arrayHashTagSaved.indexOf(e) === i);
-
-  let TagVisited =
-    arrayHashTagVisited &&
-    arrayHashTagVisited.filter((e, i) => arrayHashTagVisited.indexOf(e) === i);
+  const handleTag = (e: any) => {
+    setPublications(e.target.value);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  };
 
   return (
     <section className={style.hashTagContainer}>
       <h2 className={style.hashTagTitle}>Discover</h2>
-      {(publications &&
-        Tags &&
-        Tags.map((e: any, i) => (
+      {tagsRender &&
+        tagsRender.map((e: any, i: number) => (
           <button
             key={i}
+            onClick={(e) => handleTag(e)}
             className={style.hashTagButton}
-            onClick={handleHash}
-            value={e}
+            value={e.tag}
           >
-            {e}
+            {e.tag}
           </button>
-        ))) ||
-        (publicationsSaved &&
-          TagsSaved &&
-          TagsSaved.map((e: any, i) => (
-            <button
-              key={i}
-              className={style.hashTagButton}
-              onClick={handleHash}
-              value={e}
-            >
-              {e}
-            </button>
-          ))) ||
-        (publicationsVisited &&
-          TagVisited &&
-          TagVisited.map((e: any, i) => (
-            <button
-              key={i}
-              className={style.hashTagButton}
-              onClick={handleHash}
-              value={e}
-            >
-              {e}
-            </button>
-          )))}
+        ))}
     </section>
   );
 }

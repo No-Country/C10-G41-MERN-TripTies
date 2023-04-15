@@ -25,14 +25,18 @@ import { Privacity } from "../../assets/TermsPrivacity";
 import { terms } from "../../assets/TermsPrivacity";
 
 function Register(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const nav = useNavigate();
+
+  //Cookies
+  const cookies = new Cookies();
+
+  //State of components
   const [visibility, setVisibility] = useState<FormState["visibility"]>(oculto);
   const [passwordType, setPasswordType] =
     useState<FormState["passwordType"]>("password");
-  const cookies = new Cookies();
-
   const [TermsPrivacity, setTermsPrivacity] = useState(false);
   const [info, setInfo] = useState("");
-
   const [newUser, setInput] = useState<FormState["newUser"]>({
     username: "",
     email: "",
@@ -41,11 +45,24 @@ function Register(): JSX.Element {
     lastName: "",
     photo: "",
   });
+  const [userGoogle, setUserGoogle] = useState<Users>({
+    password: "",
+    username: "",
+    email: "",
+    firstName: "",
+    lastName: "",
+    photo: "",
+  });
+  const [userFacebook, setUserFacebook] = useState<Users>({
+    password: "",
+    username: "",
+    email: "",
+    firstName: "",
+    lastName: "",
+    photo: "",
+  });
 
-  const dispatch = useAppDispatch();
-  const nav = useNavigate();
-
-  /* Maneja la visibilidad de la contraseña cuando se hace click en el botón */
+  //Handles
   function handlePassword(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): void {
@@ -54,7 +71,13 @@ function Register(): JSX.Element {
     setVisibility(visibility === oculto ? visible : oculto);
   }
 
-  /* Maneja el evento de envío del formulario */
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setInput({
+      ...newUser,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
@@ -99,34 +122,7 @@ function Register(): JSX.Element {
     }
   };
 
-  /* Setea el estado local con los datos del fomulario */
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setInput({
-      ...newUser,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  // Register Social network
-
-  const [userGoogle, setUserGoogle] = useState<Users>({
-    password: "",
-    username: "",
-    email: "",
-    firstName: "",
-    lastName: "",
-    photo: "",
-  });
-
-  const [userFacebook, setUserFacebook] = useState<Users>({
-    password: "",
-    username: "",
-    email: "",
-    firstName: "",
-    lastName: "",
-    photo: "",
-  });
-  const onResolveGoogle = ({ data, provider }: IResolveParams) => {
+  const handleOnResolveGoogle = ({ data, provider }: IResolveParams) => {
     setUserGoogle({
       username: data && data.name,
       email: data && data.email,
@@ -137,7 +133,7 @@ function Register(): JSX.Element {
     });
   };
 
-  const onResolveFacebook = ({ data }: IResolveParams) => {
+  const handleOnResolveFacebook = ({ data }: IResolveParams) => {
     setUserFacebook({
       username: data && data.name,
       email: data && data.email,
@@ -148,10 +144,11 @@ function Register(): JSX.Element {
     });
   };
 
-  const onReject = (err: unknown) => {
+  const handleOnReject = (err: unknown) => {
     throw err;
   };
 
+  //InitialState of component
   useEffect(() => {
     if (userGoogle.email !== "") {
       dispatch(createUser(userGoogle))
@@ -160,7 +157,9 @@ function Register(): JSX.Element {
           cookies.set("login", true);
         })
         .then(() => {
-          nav("/home");
+          setTimeout(() => {
+            nav("/home");
+          }, 1000);
         });
     }
   }, [userGoogle]);
@@ -168,11 +167,11 @@ function Register(): JSX.Element {
   return (
     <>
       <div className={style.conteiner}>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={(e) => handleSubmit(e)}>
           <div className={style.Logo}></div>
           <h1>Create Account</h1>
           <input
-            onChange={handleChange}
+            onChange={(e) => handleChange(e)}
             className={style.input}
             type="text"
             placeholder="Full Name"
@@ -181,7 +180,7 @@ function Register(): JSX.Element {
             value={newUser.username}
           />
           <input
-            onChange={handleChange}
+            onChange={(e) => handleChange(e)}
             className={style.input}
             type="email"
             placeholder="Email address"
@@ -191,7 +190,7 @@ function Register(): JSX.Element {
           />
           <div className={style.password}>
             <input
-              onChange={handleChange}
+              onChange={(e) => handleChange(e)}
               className={style.input}
               type={passwordType}
               placeholder="Password"
@@ -237,15 +236,15 @@ function Register(): JSX.Element {
             <div className={style.redes}>
               <LoginSocialGoogle
                 client_id={import.meta.env.VITE_GG_APP_ID}
-                onResolve={onResolveGoogle}
-                onReject={onReject}
+                onResolve={handleOnResolveGoogle}
+                onReject={handleOnReject}
               >
                 <img src={google} alt="Google" style={{ cursor: "pointer" }} />
               </LoginSocialGoogle>
               <LoginSocialFacebook
                 appId={import.meta.env.VITE_FB_APP_ID}
-                onResolve={onResolveFacebook}
-                onReject={onReject}
+                onResolve={handleOnResolveFacebook}
+                onReject={handleOnReject}
                 fieldsProfile={
                   "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
                 }

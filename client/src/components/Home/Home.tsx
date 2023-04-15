@@ -1,125 +1,100 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import style from "../../styles/Home/Home.module.css";
 import imgProfile from "../../img/profileImage.png";
-import edit from "../../img/edit.png";
 import gallery from "../../img/gallery.png";
-import location from "../../img/location.png";
 import video from "../../img/video.png";
 import NavBar from "../NavBar/NavBar";
 import SectionDiscover from "../SectionDiscover/SectionDiscover";
 import SectionAccount from "../Section Account/SectionAccout";
 import Card from "../Card/Card";
-import stars1 from "../../img/stars1.png";
-import stars2 from "../../img/stars2.png";
-import stars3 from "../../img/stars3.png";
-
 import SectionChat from "../SectionChat/SectionChat";
 import Saved from "../Saved/Saved";
 import PlaceIVisited from "../PlaceIVisited/PlaceIVisited";
 import SectionSuggestions from "../SectionSuggestions/SectionSuggestions";
 import FooterTerm from "../Footers/FooterTerm";
 import FooterSocial from "../Footers/FooterSocial";
-import MiniFooter from "../MiniFooter/MiniFooter";
-import SlideShow from "../SlideShow/SlideShow";
 import ChatBubble from "../ChatBubble/ChatBubble";
 import ModalPost from "../ModalPost/ModalPost";
-import { useSelector } from "react-redux";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
-import { getAllPublications } from "../../redux/actions/Publications";
+import { getAllPublications, getTags } from "../../redux/actions/Publications";
 import Cookies from "universal-cookie";
-import { Profile } from "../../types";
+import { Profile, Tags, Chat } from "../../types";
 import { getProfileUser } from "../../redux/actions/Users";
 import { useNavigate } from "react-router-dom";
-
-interface lugaresType {
-  name: string;
-  time: string;
-  place: string;
-  photo: string[];
-  video: string[];
-  description: string;
-  stars: string;
-  attraction: string;
-  location: string;
-  likes: number;
-  comments: number;
-  tag: string;
-  save: string;
-}
-
-interface chat {
-  name: string;
-  avatar: string;
-}
+import Loading from "../Loading/Loading";
 
 function Home(): JSX.Element {
   const selector = useAppSelector;
   const dispatch = useAppDispatch();
   const nav = useNavigate();
-  let [hash, setHash] = useState("");
-  const allPublications = selector<any>((state) => state.publications);
-  const profile: Profile = selector((state) => state.profile);
+
+  //Cookies
   const cookies = new Cookies();
   const login = cookies.get("login");
   const visit = cookies.get("visit");
 
+  //States of Redux
+  const allPublications = selector<any>((state) => state.publications);
+  const profile: Profile = selector((state) => state.profile);
+  const tags = selector<any>((state) => state.tags);
+
+  //States of component
+  const [loading, setLoading] = useState(true);
+  const [loadingModal, setLoadingModal] = useState(true);
+  const [chat, setChat] = useState<Chat>({ id: "", name: "", avatar: "" });
+  let [publications, setPublications] = useState("");
+  const [visible, setVisible] = useState(false);
+
+  //Handles
+  const handleHash = (e: any) => {
+    e.preventDefault();
+    // setHash(e.target.value);
+  };
+  const handleHome = (e: any) => {};
+  const handleSaved = (e: any) => {
+    e.preventDefault();
+    // if (publicationsSaved === false) {
+    //   setPublicationSaved(true);
+    //   setPublicationsVisited(false);
+    //   setPublications(false);
+    // }
+  };
+  const handleVisited = (e: any) => {
+    e.preventDefault();
+    // if (publicationsVisited === false) {
+    //   setPublicationsVisited(true);
+    //   setPublicationSaved(false);
+    //   setPublications(false);
+    // }
+  };
+
+  const handleOpen = () => {
+    setVisible(true);
+    setLoadingModal(true);
+    setTimeout(() => {
+      setLoadingModal(false);
+    }, 1500);
+  };
+
+  //InitialState of component
   useEffect(() => {
     if (login === "true" || visit === "true") {
       dispatch(getAllPublications());
       dispatch(getProfileUser());
+      dispatch(getTags());
+      setTimeout(() => {
+        setLoading(false);
+      }, 3000);
     } else {
       nav("/");
     }
   }, [login, visit]);
 
-  const [visible, setVisible] = useState(false);
-
-  const handleHash = (e: any) => {
-    e.preventDefault();
-    setHash(e.target.value);
-  };
-
-  // const tagPlaces = places && places.filter((e) => e.tag.includes(hash));
-
-  // const tagPlacesSaved = saved && saved.filter((e) => e.tag.includes(hash));
-
-  // const tagPlacesVisited =
-  //   Visited && Visited.filter((e) => e.tag.includes(hash));
-
-  let [publications, setPublications] = useState(true);
-  let [publicationsSaved, setPublicationSaved] = useState(false);
-  let [publicationsVisited, setPublicationsVisited] = useState(false);
-
-  const handleHome = (e: any) => {
-    e.preventDefault();
-    if (publications === false) {
-      setPublications(true);
-      setPublicationSaved(false);
-      setPublicationsVisited(false);
-    }
-    setHash("");
-  };
-
-  const handleSaved = (e: any) => {
-    e.preventDefault();
-    if (publicationsSaved === false) {
-      setPublicationSaved(true);
-      setPublicationsVisited(false);
-      setPublications(false);
-    }
-  };
-
-  const handleVisited = (e: any) => {
-    e.preventDefault();
-    if (publicationsVisited === false) {
-      setPublicationsVisited(true);
-      setPublicationSaved(false);
-      setPublications(false);
-    }
-  };
-
-  // necesario para la implementacion del chat
-  const [chat, setChat] = useState<chat>({ name: "", avatar: "" });
+  const useTags =
+    publications === ""
+      ? allPublications.posts
+      : allPublications &&
+        allPublications.posts?.filter((e: any) => e.tag.includes(publications));
 
   return (
     <div className={style.homeContainer}>
@@ -149,8 +124,11 @@ function Home(): JSX.Element {
         <div className={style.feedCenter}>
           <ModalPost
             visible={visible}
+            login={login}
             setVisible={setVisible}
             profile={profile}
+            tags={tags.tags}
+            loadingModal={loadingModal}
           />
           <div className={style.postGenerator}>
             <img src={imgProfile} alt="Perfil" className={style.imgProfile} />
@@ -159,7 +137,7 @@ function Home(): JSX.Element {
                 type="text"
                 className={style.inputPost}
                 placeholder="Create a new post"
-                onClick={() => setVisible(true)}
+                onClick={handleOpen}
               />
               <section className={style.icons}>
                 <button className={style.iconsTitle}>
@@ -174,22 +152,22 @@ function Home(): JSX.Element {
             </div>
           </div>
           <div className={style.feedPublications}>
-            {allPublications &&
-              allPublications.posts?.map((e: any, i: number) => (
+            {loading ? (
+              <Loading />
+            ) : (
+              useTags &&
+              useTags?.map((e: any, i: number) => (
                 <Card places={e} login={login} profile={profile} key={i} />
-              ))}
+              ))
+            )}
           </div>
         </div>
         <div className={style.rigthcontainer}>
           <div className={style.feedRight}>
             <SectionDiscover
-              publications={publications}
-              publicationsSaved={publicationsSaved}
-              publicationsVisited={publicationsVisited}
-              handleHash={handleHash}
-              hashTag={undefined}
-              hashTagSaved={undefined}
-              hashTagVisited={undefined}
+              setLoading={setLoading}
+              tags={tags}
+              setPublications={setPublications}
             />
             <SectionSuggestions />
             <div className={style.footerrigth}>
