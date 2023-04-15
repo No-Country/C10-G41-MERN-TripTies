@@ -21,10 +21,8 @@ This database was developed with NodeJS v-18.13. The diagram was created using d
 - /users
     - get: Displays all users (option only for admins).
 
-    - /:userId
-        - get: Get user profile information
-        - delete: delete user // Deletes user, but not the profile.
-
+- /user-info
+        - get: Get actual user profile information
     - 
 - /profiles 
     - get: Show all profiles,
@@ -32,10 +30,10 @@ This database was developed with NodeJS v-18.13. The diagram was created using d
     - /:userId 
         - get: Get user by profile id
         - put: Edit profile info
+        - delete: delete user // Deletes user, but not the profile.
 
     - /:userId/following/:followingId
         post: Follow a user
- 
 
 - /conversations
     - get: Get all conversations
@@ -47,12 +45,11 @@ This database was developed with NodeJS v-18.13. The diagram was created using d
                 - /message
                     - post: Post new message 
 
-- /follow //FIX GET FOLLOWS
+- /follow 
     - /:userId/followers  
         - get: All my followers
     - /:userId/following
         - get: Everyone I follow 
-
 
 - /posts
     - post: Create new post
