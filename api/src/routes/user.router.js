@@ -4,7 +4,6 @@ const passport = require('passport')
 require('../middlewares/auth.middleware')(passport)
 
 const {
-  deleteUser,
   getUserById,
   getAllUsers,
 } = require('../controllers/user.controller')
@@ -14,7 +13,6 @@ router.get('/', passport.authenticate('jwt', { session: false }), isAdmin, getAl
 
 router.route('/:userId')
   .get(getUserById)
-  .delete(passport.authenticate('jwt', {session: false}), deleteUser)
 
 
 

@@ -2,11 +2,9 @@ const { default: mongoose } = require('mongoose')
 const Profile = require('../models/profiles.models')
 const User = require('../models/users.models')
 
-const PAGE_SIZE = 5
 
-const findAllUsersWithProfile = async (page) => {
-  const skip = (page - 1) * PAGE_SIZE
-  const limit = PAGE_SIZE
+const findAllUsersWithProfile = async ({ page = 1, limit = 10 }) => {
+  const skip = (page - 1) * limit
 
   const usersWithProfile = await User.aggregate([
     {
@@ -28,20 +26,20 @@ const findAllUsersWithProfile = async (page) => {
         birthday: { $arrayElemAt: ['$profile.birthday', 0] },
       },
     },
-    {
-      $skip: skip,
-    },
-    {
-      $limit: limit,
-    },
   ])
 
-  return usersWithProfile
+  const count = usersWithProfile.length
+  const totalPages = Math.ceil(count / limit)
+
+  const paginatedUsersWithProfile = usersWithProfile.slice(skip, skip + limit)
+
+  return { usersWithProfile: paginatedUsersWithProfile, totalPages }
 }
+
+
 const findProfile = async (userId) => {
   try {
     // Buscamos el perfil del usuario por su ID y lo retornamos
-
     const user = await User.findById(userId)
     const profile = await Profile.findOne({ user: userId })
     const userProfile = { profile, ...user }

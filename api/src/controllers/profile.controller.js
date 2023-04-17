@@ -75,8 +75,12 @@ const getProfile = async (req, res, next) => {
 const getAllUsersWithProfile = async (req, res, next) => {
   try {
     const page = parseInt(req.query.page) || 1
-    const users = await Profile.findAllUsersWithProfile(page)
-    res.status(200).json(users)
+    const limit = parseInt(req.query.limit) || 10
+    
+    const data = await Profile.findAllUsersWithProfile( page, limit )
+    res.status(200).json({
+      data
+    })
   } catch (error) {
     next(error)
   }

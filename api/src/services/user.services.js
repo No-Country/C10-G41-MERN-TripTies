@@ -4,6 +4,7 @@ const Profile = require('../models/profiles.models')
 
 const { hash } = require('../utils/crypto')
 
+
 const getAllUsers = () => {
   return new Promise((resolve, reject) => {
     User.find()
@@ -110,6 +111,7 @@ const updateUser = async (id, obj) => {
 const getUserInformation = async (userId) => {
   let user = await User.findOne({ _id: userId })
   return {
+    _id: user._id,
     username: user.username,
     first_name: user.first_name,
     last_name: user.last_name,

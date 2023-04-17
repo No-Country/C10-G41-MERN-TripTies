@@ -97,10 +97,19 @@ const deleteUser = (req, res) => {
     })
 }
 
+const getInfoUser = async (req, res) => {
+  let id = req.user._id
+  await User.getUserInformation(id)
+    .then(data => res.status(200).json(data))
+    .catch(err => res.status(400).json({ message: err.message }))
+}
+
+
 module.exports = {
   postUser,
   postUserSocialNetwork,
   getAllUsers,
   getUserById,
   deleteUser,
+  getInfoUser
 }
