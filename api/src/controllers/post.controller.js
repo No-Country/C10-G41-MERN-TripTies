@@ -1,5 +1,7 @@
+const { uploadFile } = require('../../s3')
 const Likes = require('../models/likes.models')
 const Post = require('../services/post.services')
+const { unlinkFile } = require('../utils/unlinkFile')
 
 const postNewPost = (req, res, next) => {
   const userId = req.user._id
@@ -82,20 +84,72 @@ const getPostById = async (req, res) => {
   }
 }
 
-const postLikeByPost = async (request, response) => {
-  const id = request.user._id
-  const { postId } = request.params
+//! --------------------POST IMAGES -------------------------
+
+const createImagePost = async (req, res, next) => {
+  const publicationId = req.params.id
+  const files = req.files
 
   try {
-    const existingLike = await Likes.findOne({ user: id, post: postId })
+    if (!files || files.length === 0) {
+      throw new Error('No images received', 400, 'Bad Request')
+    }
+
+    const newImages = await Promise.all(
+      files.map(async (file) => {
+        const openSpot = await Post.getAvailableImageOrders(publicationId)
+        const fileName = `uploads/posts/photos-${publicationId}-${openSpot}.${file.originalname.split('.').pop()}`
+        const bucketUrl = `${process.env.AWS_DOMAIN}/${fileName}`
+
+        console.log('bucketUrl:', bucketUrl)
+
+        await uploadFile(file, fileName)
+
+        const newImage = await Post.createImage(publicationId, bucketUrl, openSpot)
+
+        return newImage
+      })
+    )
+
+    return res.status(200).json({
+      results: {
+        message: `Count of uploaded images: ${newImages.length}`,
+        imagesUploaded: newImages.map((img) => img.url),
+      },
+    })
+  } catch (error) {
+    if (files) {
+      await Promise.all(
+        files.map(async (file) => {
+          try {
+            await unlinkFile(file.path)
+          } catch (error) {
+            //
+          }
+        })
+      )
+    }
+    return next(error)
+  }
+}
+
+
+//! ------------------------ LIKES ---------------------------- 
+
+const postLikeByPost = async (req, res) => {
+  const id = req.user._id
+  const { postId } = req.params
+
+  try {
+    const existingLike = await Likes.findOne({ profile: id, post: postId })
     if (existingLike) {
       throw new Error('User has already liked this post')
     }
 
     const like = await Post.addLikeByPost(id, postId)
-    response.status(201).json(like)
+    res.status(201).json(like)
   } catch (error) {
-    response.status(409).json({ message: error.message })
+    res.status(409).json({ message: error.message })
   }
 }
 
@@ -105,4 +159,5 @@ module.exports = {
   postNewPost,
   putPost,
   postLikeByPost,
-};
+  createImagePost
+}
