@@ -4,6 +4,7 @@ const Post = require('../models/post.models')
 const Profile = require('../models/profiles.models')
 const User = require('../models/users.models')
 const Tag = require('../services/tag.services')
+const PostsImages = require('../models/postsImages.models')
 
 const findAllPosts = async ({ page = 1, limit = 10 }) => {
   const skip = (page - 1) * limit
@@ -60,9 +61,87 @@ const updatePost = async (postId, userId, obj) => {
   return post
 }
 
+//!---------------POST IMAGES -------------------
 
-//! --------- LIKES --------------------
+async function getAvailableImageOrders(publication_id) {
+  let availableValues = [1, 2, 3]
 
+  const images = await PostsImages.find({ publication: publication_id }, { order: 1, _id: 0 })
+    .lean()
+    .exec()
+
+  if (!images || images.length === 0) {
+    return availableValues
+  }
+
+  if (images.length >= availableValues.length) {
+    throw new Error(
+      'No spots available for images for this publication. First, remove an image.',
+      409,
+      'No Spots Available'
+    )
+  }
+
+  const existedOrders = images.map((image) => image.order)
+
+  const availableSpots = availableValues.filter((spot) => !existedOrders.includes(spot))
+
+  return availableSpots
+}
+
+async function createImage(publication_id, image_url, order) {
+  const session = await PostsImages.startSession()
+
+  try {
+    await session.withTransaction(async () => {
+      const newImage = await PostsImages.create(
+        [{ publication: publication_id, url: image_url, order }],
+        { session }
+      )
+
+      return newImage
+    })
+  } catch (error) {
+    return error
+  } finally {
+    session.endSession()
+  }
+}
+
+async function getImageOr404(publication_id, order) {
+  const publicationImage = await PostsImages.findOne({
+    publication: publication_id,
+    order: parseInt(order),
+  }).exec()
+
+  if (!publicationImage) {
+    throw new Error('Not Found Publication Image with this order', 404, 'Not Found')
+  }
+
+  return publicationImage
+}
+
+async function removeImage(publication_id, order) {
+  const session = await PostsImages.startSession()
+
+  try {
+    const publicationImage = await getImageOr404(publication_id, order)
+
+    await session.withTransaction(async () => {
+      await publicationImage.remove({ session })
+    })
+
+    return publicationImage
+  } catch (error) {
+    return error
+  } finally {
+    session.endSession()
+  }
+}
+
+// module.exports = { getAvailableImageOrders, createImage, getImageOr404, removeImage }
+
+//! -------------- LIKES --------------------
 
 const addLikeByPost = async (id, postId) => {
   const session = await mongoose.startSession()
@@ -70,8 +149,8 @@ const addLikeByPost = async (id, postId) => {
   try {
     const profile = await Profile.findOne({ user: id })
     let like = await Likes.findOneAndUpdate(
-      { user: profile._id, post: postId },
-      { $setOnInsert: { user: profile._id, post: postId } },
+      { profile: profile._id, post: postId },
+      { $setOnInsert: { post: postId } },
       { upsert: true, new: true, session, setDefaultsOnInsert: true }
     )
     await session.commitTransaction()
@@ -91,4 +170,6 @@ module.exports = {
   createPost,
   updatePost,
   addLikeByPost,
+  getAvailableImageOrders,
+  createImage
 }

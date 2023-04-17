@@ -59,5 +59,10 @@ This database was developed with NodeJS v-18.13. The diagram was created using d
         - get: get a post by id
         - put: Edit a post by Id //FIX
         
+    - /postId/comments: 
+        - post: post new comment
+        - get: get all comments of post
+        - put: add or remove like from comment
+        
         - /like
             - post: Like a post
