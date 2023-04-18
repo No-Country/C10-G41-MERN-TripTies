@@ -9,15 +9,16 @@ const {
   putUserProfile,
 } = require('../controllers/profile.controller')
 const { followUser } = require('../controllers/follow.controller')
-const isOwner = require('../middlewares/isOwner.middleware')
+const { deleteUser } = require('../controllers/user.controller')
 
 router.get('/', getAllUsersWithProfile)
 
 router.route('/:userId')
   .get(getProfile) 
   .put(passport.authenticate('jwt', {session: false}), putUserProfile)
+  .delete(passport.authenticate('jwt', {session: false}), deleteUser)
   
-router.route('/:userId/follow/:followingId')
-  .post(isOwner, followUser)
+router.route('/:followingId/follow')
+  .post(passport.authenticate('jwt', {session: false}), followUser)
 
 module.exports = router

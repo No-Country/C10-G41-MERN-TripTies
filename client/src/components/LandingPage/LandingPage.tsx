@@ -3,9 +3,17 @@ import imgGuy from "../../img/guy.png";
 import style from "../../styles/LandingPage/LandingPage.module.css";
 import NavBarL from "./NavBarL";
 import MiniFooter from "../MiniFooter/MiniFooter";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
 
 const LandingPage = (): JSX.Element => {
+  const nav = useNavigate();
+  const cookies = new Cookies();
+
+  const handleVisit = () => {
+    cookies.set("visit", true);
+    nav("/home");
+  };
   return (
     <>
       <NavBarL />
@@ -20,9 +28,9 @@ const LandingPage = (): JSX.Element => {
             Explore the world like never before. Connect with other wanderers
             just like you and discover a new way of traveling.
           </p>
-        <button className={style.btnExp}>
-          <Link to="/home">Explore</Link>
-        </button>
+          <button onClick={handleVisit} className={style.btnExp}>
+            Explore
+          </button>
         </div>
 
         <div className={style.containerGuy}>

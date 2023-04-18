@@ -5,24 +5,24 @@ const User = require('../models/users.models')
 const followUser = async (followerId, followingId) => {
   const session = await mongoose.startSession()
   session.startTransaction()
-
+  
   try {
     const follower = await User.findById(followerId).session(session)
     const following = await User.findById(followingId).session(session)
-
+    
     if (!follower || !following) {
       throw new Error('Follower or following user not found')
     }
-
+    
     const existingFollow = await Follow.findOne({
       follower: followerId,
       following: followingId
     }).session(session)
-
+    
     if (existingFollow) {
       throw new Error('Already following this user')
     }
-
+    
     const newFollow = new Follow({
       follower: followerId,
       following: followingId
@@ -41,12 +41,12 @@ const followUser = async (followerId, followingId) => {
 }
 
 const findFollowers = async (userId) => {
-  const data = await Follow.find({ follower: userId }).populate('follower', '_id username first_name last_name').lean().exec()
+  const data = await Follow.find({ following: userId }).populate('follower', '_id username first_name last_name').lean().exec()
   return data.map(item => item.follower)
 }
 
 const findFollowings = async (userId) => {
-  const data = await Follow.find({ following: userId }).populate('following', '_id username first_name last_name').lean().exec()
+  const data = await Follow.find({ follower: userId }).populate('following', '_id username first_name last_name').lean().exec()
   return data.map(item => item.following)
 }
 

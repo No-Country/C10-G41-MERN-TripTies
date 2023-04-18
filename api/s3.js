@@ -7,7 +7,7 @@ require('dotenv').config()
 const bucketName = process.env.AWS_BUCKET_NAME
 const region = process.env.AWS_BUCKET_REGION
 const accessKeyId = process.env.AWS_ACCESS_KEY
-const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY
+const secretAccessKey = process.env.AWS_SECRET_KEY
 
 const s3Client = new S3Client({
   region,
@@ -19,8 +19,11 @@ const s3Client = new S3Client({
 
 //Returns a Promise
 const uploadFile = (fileMulterObject, fileName) => {
-  const fileStream = fs.createReadStream(fileMulterObject.path)
+  console.log(fileMulterObject)
+  console.log(fileName)
 
+  const fileStream = fs.createReadStream(fileMulterObject.path)
+  console.log('filestream: ', fileStream)
   const uploadParams = {
     Bucket: bucketName,
     Body: fileStream,

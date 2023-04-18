@@ -148,11 +148,14 @@
   background-color: var(--violetLight);
   margin-top: 2.1rem;
   border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .rigthcontainer {
   position: sticky;
-  top: -170px;
+  top: -200px;
 }
 
 .feedRight {
@@ -197,7 +200,7 @@
     max-width: 100%;
   }
 
-   /* .feedRight {
+  /* .feedRight {
     display:initial;
   } */
 

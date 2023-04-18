@@ -1,13 +1,13 @@
-import { useEffect, useRef, useState } from 'react'
-import styles from '../../styles/SectionDiscover/SectionChat.module.css'
-import avatar7 from '../../img/user_avatar_default.jpg'
-import add from '../../img/message-add.png'
-import setting from '../../img/setting.png'
-import connected from '../../img/connected.png'
-import { useNavigate } from 'react-router-dom'
-import { ChatProps } from '../../types'
-import { useAppDispatch, useAppSelector } from '../../redux/store/hooks'
-import { getAllUsers } from '../../redux/actions/Users'
+import { useEffect, useRef, useState } from "react";
+import styles from "../../styles/SectionDiscover/SectionChat.module.css";
+import avatar7 from "../../img/user_avatar_default.jpg";
+import add from "../../img/message-add.png";
+import setting from "../../img/setting.png";
+import connected from "../../img/connected.png";
+import { useNavigate } from "react-router-dom";
+import { ChatProps } from "../../types";
+import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
+import { getAllUsers } from "../../redux/actions/Users";
 
 interface User {
     _id: string;
@@ -33,23 +33,23 @@ export default function SectionChat(): JSX.Element {
 
     const [isOpen, setIsOpen] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
-    const dispatch = useAppDispatch()
-    const user = useAppSelector(state => state.users)
+    const dispatch = useAppDispatch();
+    const user = useAppSelector((state) => state.users);
     const nav = useNavigate();
 
     // Hook para manejar el click fuera del menú de configuración y cerrarlo
     useEffect(() => {
-        dispatch(getAllUsers())
+        dispatch(getAllUsers());
         const handleOutsideClick = (event: MouseEvent) => {
             if (ref.current && !ref.current.contains(event.target as Node)) {
                 setIsOpen(false);
             }
         };
 
-        document.addEventListener('mousedown', handleOutsideClick);
+        document.addEventListener("mousedown", handleOutsideClick);
 
         return () => {
-            document.removeEventListener('mousedown', handleOutsideClick);
+            document.removeEventListener("mousedown", handleOutsideClick);
         };
     }, [ref]);
 
@@ -73,30 +73,34 @@ export default function SectionChat(): JSX.Element {
                 {/* Sección de chats */}
                 <div className={styles.chats}>
                     {/* Campo de búsqueda */}
-                    <input type="text" placeholder='Search messages' id={styles['search']} />
+                    <input
+                        type="text"
+                        placeholder="Search messages"
+                        id={styles["search"]}
+                    />
                     {/* Lista de usuarios */}
                     <div className={styles.scroll}>
-                        {
-                            token &&
-
-                            user.map((e: User, index: number) => {
-
-                                return (
-                                    <div key={index} className={styles.avatar}>
-                                        <img src={e.photo && e.photo?.length > 10 ? e.photo : avatarDefault} alt={e.username} />
-                                        <a style={{ cursor: 'pointer' }} onClick={() => handleNewChat(e.username, e.photo, e._id)}>
-                                            <div className={styles.text}>
-                                                <h2>{e.username}</h2>
-                                            </div>
-                                        </a>
-                                        {
-                                            e.isOnline &&
-                                            <img src={connected} alt="connected" />
+                        {user.map((e: User, index: number) => {
+                            return (
+                                <div key={index} className={styles.avatar}>
+                                    <img
+                                        src={
+                                            e.photo && e.photo?.length > 10 ? e.photo : avatarDefault
                                         }
-                                    </div>
-                                )
-                            })
-                        }
+                                        alt={e.username}
+                                    />
+                                    <a
+                                        style={{ cursor: "pointer" }}
+                                        onClick={() => handleNewChat(e.username, e.photo, e._id)}
+                                    >
+                                        <div className={styles.text}>
+                                            <h2>{e.username}</h2>
+                                        </div>
+                                    </a>
+                                    {e.isOnline && <img src={connected} alt="connected" />}
+                                </div>
+                            );
+                        })}
                     </div>
                     {/* Seccion de botones del chat */}
                     <div className={styles.config}>
@@ -117,35 +121,33 @@ export default function SectionChat(): JSX.Element {
                                     onClick={() => setIsOpen(!isOpen)}
                                 />
                                 {/* Opciones del menú */}
-                                <ul className={`${styles.menu} ${isOpen ? styles.show : ""} ${isOpen ? styles.center : ''}`}>
+                                <ul
+                                    className={`${styles.menu} ${isOpen ? styles.show : ""} ${isOpen ? styles.center : ""
+                                        }`}
+                                >
                                     <li className={styles.space}></li>
-                                    <a href='/profile' onClick={() => setIsOpen(!isOpen)}>
-                                        <li>
-                                            View profile
-                                        </li>
+                                    <a href="/profile" onClick={() => setIsOpen(!isOpen)}>
+                                        <li>View profile</li>
                                     </a>
                                     <a href="#" onClick={() => setIsOpen(!isOpen)}>
-                                        <li>
-                                            Account settings
-                                        </li>
+                                        <li>Account settings</li>
                                     </a>
                                     {/* Opción para cerrar sesión */}
-                                    <a onClick={() => { setIsOpen(!isOpen); logOut(); }}>
-                                        <li
-                                            id={styles.Log}
-                                        >
-                                            Log out
-                                        </li>
+                                    <a
+                                        onClick={() => {
+                                            setIsOpen(!isOpen);
+                                            logOut();
+                                        }}
+                                    >
+                                        <li id={styles.Log}>Log out</li>
                                     </a>
                                     <li className={styles.space}></li>
                                 </ul>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
             </div>
         </>
-    )
-};
+    );
+}

@@ -2,11 +2,9 @@ const { default: mongoose } = require('mongoose')
 const Profile = require('../models/profiles.models')
 const User = require('../models/users.models')
 
-const PAGE_SIZE = 5
 
-const findAllUsersWithProfile = async (page) => {
-  const skip = (page - 1) * PAGE_SIZE
-  const limit = PAGE_SIZE
+const findAllUsersWithProfile = async ({ page = 1, limit = 10 }) => {
+  const skip = (page - 1) * limit
 
   const usersWithProfile = await User.aggregate([
     {
@@ -14,8 +12,8 @@ const findAllUsersWithProfile = async (page) => {
         from: 'profiles',
         localField: '_id',
         foreignField: 'user',
-        as: 'profile'
-      }
+        as: 'profile',
+      },
     },
     {
       $project: {
@@ -25,23 +23,23 @@ const findAllUsersWithProfile = async (page) => {
         last_name: 1,
         photo: { $arrayElemAt: ['$profile.portrait', 0] },
         description: { $arrayElemAt: ['$profile.description', 0] },
-        birthday: { $arrayElemAt: ['$profile.birthday', 0] }
-      }
+        birthday: { $arrayElemAt: ['$profile.birthday', 0] },
+      },
     },
-    {
-      $skip: skip
-    },
-    {
-      $limit: limit
-    }
   ])
 
-  return usersWithProfile
+  const count = usersWithProfile.length
+  const totalPages = Math.ceil(count / limit)
+
+  const paginatedUsersWithProfile = usersWithProfile.slice(skip, skip + limit)
+
+  return { usersWithProfile: paginatedUsersWithProfile, totalPages }
 }
+
+
 const findProfile = async (userId) => {
   try {
     // Buscamos el perfil del usuario por su ID y lo retornamos
-
     const user = await User.findById(userId)
     const profile = await Profile.findOne({ user: userId })
     const userProfile = { profile, ...user }
@@ -57,7 +55,7 @@ const editUserProfile = async (userId, userData) => {
   console.log(userId, userData)
   try {
     const user = await User.findById(userId).session(session)
-    const  profile  = await Profile.findOne({ user: userId }).session(session)
+    const profile = await Profile.findOne({ user: userId }).session(session)
 
     if (!user) {
       throw new Error('Not found user', 404, 'Not Found')
@@ -71,8 +69,8 @@ const editUserProfile = async (userId, userData) => {
         $set: {
           first_name: userData.first_name,
           last_name: userData.last_name,
-          photo: userData.photo
-        }
+          photo: userData.photo,
+        },
       },
       { new: true, session }
     )
@@ -82,8 +80,8 @@ const editUserProfile = async (userId, userData) => {
         $set: {
           description: userData.profile.description,
           birthday: userData.profile.birthday,
-          portrait: userData.profile.portrait
-        }
+          portrait: userData.profile.portrait,
+        },
       },
       { new: true, session }
     )
@@ -96,9 +94,9 @@ const editUserProfile = async (userId, userData) => {
     throw err
   }
 }
+
 module.exports = {
   findProfile,
-  // findAllProfiles,
   findAllUsersWithProfile,
-  editUserProfile
+  editUserProfile,
 }

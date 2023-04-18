@@ -1,8 +1,11 @@
 const initialState = {
   publications: [],
+  user: {},
   users: [],
+  profile: {},
   countries: [],
-  conversations: []
+  conversations: [],
+  tags: [],
 };
 
 interface Action {
@@ -17,21 +20,41 @@ const rootReducer = (state = initialState, action: Action) => {
         ...state,
         publications: action.payload,
       };
+    case "GET_PROFILE":
+      return {
+        ...state,
+        profile: action.payload,
+      };
+    case "CLEAN_PROFILE":
+      return {
+        ...state,
+        profile: {},
+      };
     case "GET_USER":
+      return {
+        ...state,
+        user: action.payload,
+      };
+    case "GET_USERS":
       return {
         ...state,
         users: action.payload,
       };
-      case "GET_COUNTRIES":
-          return {
-          ...state,
-          countries: action.payload,
-        };
-        case "GET_CONVERSATIONS":
-          return {
-            ...state,
-            conversations: action.payload
-          };
+    case "GET_TAGS":
+      return {
+        ...state,
+        tags: action.payload,
+      };
+    case "GET_COUNTRIES":
+      return {
+        ...state,
+        countries: action.payload,
+      };
+    case "GET_CONVERSATIONS":
+      return {
+        ...state,
+        conversations: action.payload,
+      };
     default:
       return { ...state };
   }

@@ -51,19 +51,15 @@ h1 {
 }
 
 button {
-  border-radius: 8px;
-  padding: 0.6em 1.2em;
   cursor: pointer;
-}
-button:hover {
-  border-color: #646cff;
 }
 
 /* Estilos de la scroll bar */
 
 /* width */
 ::-webkit-scrollbar {
-  width: 0.8rem;
+  width: 0.2rem;
+  height: 0.2rem;
 }
 
 /* Track */
@@ -78,22 +74,9 @@ button:hover {
   border-radius: 10px;
 }
 
-@media (max-width: 768px)  {
+@media (max-width: 768px) {
   body {
     display: flex;
     flex-direction: column;
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
   }
 }

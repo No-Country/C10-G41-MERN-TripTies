@@ -1,4 +1,5 @@
 const Conversation = require('../chatModels/conversation.models')
+const Message = require('../chatModels/message.models')
 const Participant = require('../chatModels/participants.models')
 
 const createConversation = async (obj) => {
@@ -40,11 +41,14 @@ const findConversationById = async (conversationId) => {
   try {
     const conversation = await Conversation.findById(conversationId)
     const participants = await Participant.find({ conversation: conversationId }).select('user')
+    const messages = await Message.find({conversation: conversationId})
 
     return {
       conversation: conversation,
       creator: conversation.user,
-      participants: participants.map(participant => participant.user)
+      participants: participants.map(participant => participant.user), 
+      messages: messages
+
     }
   } catch (error) {
     console.error(error)

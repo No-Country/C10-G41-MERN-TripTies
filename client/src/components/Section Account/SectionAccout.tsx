@@ -1,8 +1,10 @@
-import locationH from "../../img/locationH.png";
-import taskAcc from "../../img/taskAcc.png";
-import saved from "../../img/saved.png";
-import inbox from "../../img/inbox.png";
+import saved from "../../img/archiveTick.png";
+import inbox from "../../img/sms.png";
+import user from "../../img/userAccount.png";
+import home from "../../img/home-2.png";
+import homeBold from "../../img/homeBold.png";
 import style from "../../styles/SectionAccount/Account.module.css";
+import { useNavigate } from "react-router-dom";
 
 type props = {
   handleSaved: any;
@@ -10,19 +12,27 @@ type props = {
 };
 
 const SectionAccount = ({ handleSaved, handleVisited }: props) => {
+
+  const nav = useNavigate();
+  
+
   return (
     <>
       <h3 className={style.titleAccount}>Account</h3>
       <div className={style.containerAccount}>
-        <img src={locationH} alt="location" />
-        <button onClick={handleVisited} className={style.buttons}>
-          Places I visited
+        <img 
+        src={window.location.pathname === "/home"
+            ? homeBold
+            : home } 
+        alt="home" />
+        <button onClick={() => nav("/home")} className={style.buttons}>
+          Home
         </button>
       </div>
 
       <div className={style.containerAccount}>
-        <img src={taskAcc} alt="task" />
-        <button className={style.buttons}>Bucket list</button>
+        <img src={user} alt="user" />
+        <button onClick={() => nav("/profile")} className={style.buttons}>My Profile</button>
       </div>
 
       <div className={style.containerAccount}>

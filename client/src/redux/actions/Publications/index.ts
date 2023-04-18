@@ -1,5 +1,7 @@
 import axios from "axios";
 import { AppDispatch } from "../../store";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 
 export const getAllPublications = () => {
   return async function (dispatch: AppDispatch) {
@@ -15,6 +17,7 @@ export const getAllPublications = () => {
 export const postPublication = (newPublication: any) => {
   return async function () {
     try {
+      console.log("action", newPublication);
       const response = await axios.post(
         "/posts",
         {
@@ -26,10 +29,11 @@ export const postPublication = (newPublication: any) => {
           name: newPublication.name,
           clasification: newPublication.clasification,
           location: newPublication.location,
+          tag: newPublication.tag,
         },
         {
           headers: {
-            Authorization: `${document.cookie.split(";")[0]}`,
+            Authorization: `jwt ${cookies.get("token")}`,
           },
         }
       );
@@ -37,5 +41,33 @@ export const postPublication = (newPublication: any) => {
     } catch (error) {
       throw error;
     }
+  };
+};
+
+export const editProfile = (user: object) => {
+  return async function () {
+    const response = await axios.put(`/profiles/${cookies.get("id")}`, user, {
+      headers: { Authorization: `jwt ${cookies.get("token")}` },
+    });
+  };
+};
+
+// Tags
+
+export const getTags = () => {
+  return async function (dispatch: AppDispatch) {
+    const response = await axios.get("/tag").then((response) => {
+      dispatch({
+        type: "GET_TAGS",
+        payload: response.data,
+      });
+    });
+  };
+};
+
+export const createTag = (newTag: object) => {
+  return async function () {
+    const response = await axios.post("/tag/createTag", newTag);
+    return response;
   };
 };

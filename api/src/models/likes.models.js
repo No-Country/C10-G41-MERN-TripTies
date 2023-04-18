@@ -1,7 +1,7 @@
 const {Schema, model } = require('mongoose')
 
 const likesSchema = new Schema({
-  user: {
+  profile: {
     type: Schema.Types.ObjectId,
     ref: 'Profile',
     required: true

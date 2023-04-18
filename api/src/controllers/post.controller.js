@@ -1,26 +1,33 @@
-const Likes = require("../models/likes.models");
-const Post = require("../services/post.services");
+const { uploadFile } = require('../../s3')
+const Likes = require('../models/likes.models')
+const Post = require('../services/post.services')
+const { unlinkFile } = require('../utils/unlinkFile')
 
-const postNewPost = (req, res) => {
-
+const postNewPost = (req, res, next) => {
   const userId = req.user._id
   const image = req.files
-  const { content } = req.body
+  const content = req.body
 
-
-  Post.createPost(userId, { content }, image)
-    .then(data => {
+  Post.createPost(userId, content, image)
+    .then((data) => {
       res.status(201).json(data)
+      next()
     })
     .catch((err) => {
       res.status(400).json({
-        message: err.message, fields: {
-          content: 'String',
-          images: 'req.files',
-          location: 'point/coordinates',
-          reported: 'Number',
-          rating: 'Number'
-        }
+        message: err.message,
+        fields: {
+
+          user: 'any',
+          content: 'string',
+          privacity: 'Public' | 'Private',
+          photo: '[req.files]',
+          video: '[req.files]',
+          rate: 'number',
+          name: 'string',
+          clasification: 'string',
+          reported: 'number'
+        },
       })
     })
 }
@@ -30,88 +37,127 @@ const putPost = (req, res) => {
   const { postId } = req.params
   const userId = req.user._id
 
-  // console.log(content, location)
-  // console.log(postId)
-  // console.log(userId)
-
-
   Post.updatePost({ _id: postId, user: userId }, { content, location })
 
     .then((data) => {
       if (data.nModified > 0) {
         res.status(200).json({
           message: `Post with id: ${postId} edited successfully by the user with id: ${userId}`,
-        });
+        })
       } else {
-        res.status(400).json({ message: "Post not available" });
+        res.status(400).json({ message: 'Post not available' })
       }
     })
     .catch((err) => {
-      res.status(400).json({ message: err.message });
-    });
-};
+      res.status(400).json({ message: err.message })
+    })
+}
 
 const getAllPosts = async (req, res, next) => {
   try {
-    const page = parseInt(req.query.page);
-    const limit = parseInt(req.query.limit);
-    const { posts, totalPages } = await Post.findAllPosts({ page, limit });
+    const page = parseInt(req.query.page)
+    const limit = parseInt(req.query.limit)
+    const { posts, totalPages } = await Post.findAllPosts({ page, limit })
 
     res.status(200).json({
       posts,
       currentPage: page,
-      totalPages,
-    });
+      totalPages: totalPages,
+    })
+
   } catch (err) {
-    next(err);
+    next(err)
   }
-};
+}
 
 const getPostById = async (req, res) => {
-  const { postId } = req.params;
-  console.log(req);
+  const { postId } = req.params
+
   try {
-    const post = await Post.findPostById(postId);
+    const post = await Post.findPostById(postId)
     if (!post) {
-      return res.status(404).json({ message: "Post not found" });
+      return res.status(404).json({ message: 'Post not found' })
     }
-    return res.status(200).json(post);
+    return res.status(200).json(post)
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(400).json({ message: error.message })
   }
-};
+}
 
-// const postLikeByPost = (request, response) => {
-//   const id = request.user._id
-//   const { postId } = request.params
+//! --------------------POST IMAGES -------------------------
 
-//   Post.addLikeByPost(id, postId)
-//     .then(data => response.status(201).json(data))
-//     .catch(err => response.status(400).json({ message: err.message }))
-// }
-
-const postLikeByPost = async (request, response) => {
-  const id = request.user._id;
-  const { postId } = request.params;
+const createImagePost = async (req, res, next) => {
+  const publicationId = req.params.id
+  const files = req.files
 
   try {
-    const existingLike = await Likes.findOne({ user: id, post: postId });
-    if (existingLike) {
-      throw new Error("User has already liked this post");
+    if (!files || files.length === 0) {
+      throw new Error('No images received', 400, 'Bad Request')
     }
 
-    const like = await Post.addLikeByPost(id, postId);
-    response.status(201).json(like);
+    const newImages = await Promise.all(
+      files.map(async (file) => {
+        const openSpot = await Post.getAvailableImageOrders(publicationId)
+        const fileName = `uploads/posts/photos-${publicationId}-${openSpot}.${file.originalname.split('.').pop()}`
+        const bucketUrl = `${process.env.AWS_DOMAIN}/${fileName}`
+
+        console.log('bucketUrl:', bucketUrl)
+
+        await uploadFile(file, fileName)
+
+        const newImage = await Post.createImage(publicationId, bucketUrl, openSpot)
+
+        return newImage
+      })
+    )
+
+    return res.status(200).json({
+      results: {
+        message: `Count of uploaded images: ${newImages.length}`,
+        imagesUploaded: newImages.map((img) => img.url),
+      },
+    })
   } catch (error) {
-    response.status(409).json({ message: error.message });
+    if (files) {
+      await Promise.all(
+        files.map(async (file) => {
+          try {
+            await unlinkFile(file.path)
+          } catch (error) {
+            //
+          }
+        })
+      )
+    }
+    return next(error)
   }
-};
+}
+
+
+//! ------------------------ LIKES ---------------------------- 
+
+const postLikeByPost = async (req, res) => {
+  const id = req.user._id
+  const { postId } = req.params
+
+  try {
+    const existingLike = await Likes.findOne({ profile: id, post: postId })
+    if (existingLike) {
+      throw new Error('User has already liked this post')
+    }
+
+    const like = await Post.addLikeByPost(id, postId)
+    res.status(201).json(like)
+  } catch (error) {
+    res.status(409).json({ message: error.message })
+  }
+}
 
 module.exports = {
   getAllPosts,
   getPostById,
   postNewPost,
   putPost,
-  postLikeByPost
+  postLikeByPost,
+  createImagePost
 }
-
