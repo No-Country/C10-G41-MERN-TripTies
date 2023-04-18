@@ -16,8 +16,8 @@ const { multerPublicationsPhotos } = require('../utils/multer')
 const { postTag } = require('../controllers/tag.controller')
 
 router.route('/')
-
   .get(getAllPosts)
+  .post(passport.authenticate('jwt', { session: false }), postNewPost, postTag)
 
 router.route('/:postId')
   .get(passport.authenticate('jwt', { session: false }), getPostById)

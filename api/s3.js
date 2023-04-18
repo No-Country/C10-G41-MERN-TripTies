@@ -12,21 +12,19 @@ const secretAccessKey = process.env.AWS_SECRET_KEY
 const s3Client = new S3Client({
   region,
   credentials: {
-    accessKeyId,
-    secretAccessKey
+    accessKeyId: accessKeyId,
+    secretAccessKey: secretAccessKey
   }
 })
 
 //Returns a Promise
 const uploadFile = (fileMulterObject, fileName) => {
-  console.log(fileMulterObject)
-  console.log(fileName)
 
   const fileStream = fs.createReadStream(fileMulterObject.path)
-  console.log('filestream: ', fileStream)
+
   const uploadParams = {
     Bucket: bucketName,
-    Body: fileStream,
+    Body: fileStream.path,
     Key: fileName,
     ContentType: fileMulterObject.mimetype,
   }

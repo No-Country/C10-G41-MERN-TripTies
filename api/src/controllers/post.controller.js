@@ -5,10 +5,9 @@ const { unlinkFile } = require('../utils/unlinkFile')
 
 const postNewPost = (req, res, next) => {
   const userId = req.user._id
-  const image = req.files
   const content = req.body
 
-  Post.createPost(userId, content, image)
+  Post.createPost(userId, content )
     .then((data) => {
       res.status(201).json(data)
       next()
@@ -17,8 +16,6 @@ const postNewPost = (req, res, next) => {
       res.status(400).json({
         message: err.message,
         fields: {
-
-          user: 'any',
           content: 'string',
           privacity: 'Public' | 'Private',
           photo: '[req.files]',
@@ -87,7 +84,7 @@ const getPostById = async (req, res) => {
 //! --------------------POST IMAGES -------------------------
 
 const createImagePost = async (req, res, next) => {
-  const publicationId = req.params.id
+  const { postId } = req.params
   const files = req.files
 
   try {
@@ -97,16 +94,13 @@ const createImagePost = async (req, res, next) => {
 
     const newImages = await Promise.all(
       files.map(async (file) => {
-        const openSpot = await Post.getAvailableImageOrders(publicationId)
-        const fileName = `uploads/posts/photos-${publicationId}-${openSpot}.${file.originalname.split('.').pop()}`
+        const fileName = `uploads/posts/photos/${postId}.${file.originalname.split('.').pop()}`
         const bucketUrl = `${process.env.AWS_DOMAIN}/${fileName}`
-
-        console.log('bucketUrl:', bucketUrl)
 
         await uploadFile(file, fileName)
 
-        const newImage = await Post.createImage(publicationId, bucketUrl, openSpot)
-
+        const newImage = await Post.createImage(postId, bucketUrl)
+        console.log('newImage: ', newImage)
         return newImage
       })
     )
@@ -114,7 +108,7 @@ const createImagePost = async (req, res, next) => {
     return res.status(200).json({
       results: {
         message: `Count of uploaded images: ${newImages.length}`,
-        imagesUploaded: newImages.map((img) => img.url),
+        imagesUploaded: newImages,
       },
     })
   } catch (error) {
