@@ -21,7 +21,7 @@ const findAllUsersWithProfile = async ({ page = 1, limit = 10 }) => {
         username: 1,
         first_name: 1,
         last_name: 1,
-        photo: { $arrayElemAt: ['$profile.portrait', 0] },
+        photoUser: { $arrayElemAt: ['$profile.portrait', 0] },
         description: { $arrayElemAt: ['$profile.description', 0] },
         birthday: { $arrayElemAt: ['$profile.birthday', 0] },
       },
@@ -69,7 +69,7 @@ const editUserProfile = async (userId, userData) => {
         $set: {
           first_name: userData.first_name,
           last_name: userData.last_name,
-          photo: userData.photo,
+          photoUser: userData.photoUser,
         },
       },
       { new: true, session }

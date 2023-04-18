@@ -5,7 +5,7 @@ const postSchema = new Schema({
   user: { type: Object,  },
   content: { type: String,  },
   privacity: { type: String, enum: ['Public', 'Private'],   },
-  photo: [{ type: String }],
+  photoPost: [{ type: String }],
   video: { type: [Object],  },
   rate: { type: Number, min: 1, max: 5,  },
   name: { type: String,  },
