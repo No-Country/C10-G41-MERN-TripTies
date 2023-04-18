@@ -6,7 +6,7 @@ const User = require('../models/users.models')
 const Tag = require('../services/tag.services')
 const PostsImages = require('../models/postsImages.models')
 
-const findAllPosts = async ({ page = 1, limit = 10 }) => {
+const findAllPosts = async ({ page = 1, limit = 100 }) => {
   const skip = (page - 1) * limit
   const posts = await Post.find()
     .sort({ createdAt: -1 })
@@ -35,15 +35,15 @@ const createPost = async (id, obj) => {
     id: userId._id,
     firstName: userId.first_name,
     lastName: userId.last_name,
-    photo: userId.photo,
+    photoUser: userId.photo,
   }
 
   const data = await Post.create({
-    user: user,
+    user: user.id,
     content: obj.content,
     tag: obj.tag,
     privacity: obj.privacity,
-    photo: obj.photo,
+    photoPost: obj.photo,
     video: obj.video,
     rate: obj.rate,
     name: obj.name,
@@ -63,39 +63,45 @@ const updatePost = async (postId, userId, obj) => {
 
 //!---------------POST IMAGES -------------------
 
-async function getAvailableImageOrders(publication_id) {
-  let availableValues = [1, 2, 3]
+// async function getAvailableImageOrders(postId) {
+//   let availableValues = [1, 2, 3]
 
-  const images = await PostsImages.find({ publication: publication_id }, { order: 1, _id: 0 })
-    .lean()
-    .exec()
+//   console.log('POSTID: ', postId)
+//   const images = await PostsImages.find({ publication: postId })
+//     .lean()
+//     .exec()
 
-  if (!images || images.length === 0) {
-    return availableValues
-  }
+//   if (!images || images.length === 0) {
+//     return availableValues
+//   }
 
-  if (images.length >= availableValues.length) {
-    throw new Error(
-      'No spots available for images for this publication. First, remove an image.',
-      409,
-      'No Spots Available'
-    )
-  }
+//   if (images.length >= availableValues.length) {
+//     throw new Error(
+//       'No spots available for images for this publication. First, remove an image.',
+//       409,
+//       'No Spots Available'
+//     )
+//   }
 
-  const existedOrders = images.map((image) => image.order)
+//   const existedOrders = images.map((image) => image.order)
 
-  const availableSpots = availableValues.filter((spot) => !existedOrders.includes(spot))
+//   const availableSpots = availableValues.filter((spot) => !existedOrders.includes(spot))
 
-  return availableSpots
-}
+//   return availableSpots
+// }
 
-async function createImage(publication_id, image_url, order) {
+async function createImage(postId, bucketUrl) {
   const session = await PostsImages.startSession()
+  console.log('postId: ', postId)
+  console.log('bucketURL: ', bucketUrl)
 
   try {
     await session.withTransaction(async () => {
       const newImage = await PostsImages.create(
-        [{ publication: publication_id, url: image_url, order }],
+        { 
+          url: bucketUrl, 
+          publication: postId 
+        },
         { session }
       )
 
@@ -108,9 +114,9 @@ async function createImage(publication_id, image_url, order) {
   }
 }
 
-async function getImageOr404(publication_id, order) {
+async function getImageOr404(postId, order) {
   const publicationImage = await PostsImages.findOne({
-    publication: publication_id,
+    publication: postId,
     order: parseInt(order),
   }).exec()
 
@@ -121,11 +127,11 @@ async function getImageOr404(publication_id, order) {
   return publicationImage
 }
 
-async function removeImage(publication_id, order) {
+async function removeImage(postId, order) {
   const session = await PostsImages.startSession()
 
   try {
-    const publicationImage = await getImageOr404(publication_id, order)
+    const publicationImage = await getImageOr404(postId, order)
 
     await session.withTransaction(async () => {
       await publicationImage.remove({ session })
@@ -170,6 +176,6 @@ module.exports = {
   createPost,
   updatePost,
   addLikeByPost,
-  getAvailableImageOrders,
+  // getAvailableImageOrders,
   createImage
 }
