@@ -10,12 +10,13 @@ import { getCountries } from "../../redux/actions/VariablesActions";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import { Country, Profile, Tags } from "../../types";
 import { Rating } from "react-simple-star-rating";
-import { createTag, postPublication } from "../../redux/actions/Publications";
+import { postPublication } from "../../redux/actions/Publications";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import makeAnimated from "react-select/animated";
 import Creatable, { useCreatable } from "react-select/creatable";
+import Select from "react-select";
 import Loading from "../Loading/Loading";
 
 type props = {
@@ -85,6 +86,11 @@ function ModalPost({
 
   const [value, setValue] = useState("");
 
+  //Configuration of Select Countries
+  const optionsCountry = countries?.map((e: any) => {
+    return { value: e.name.common, label: e.name.common };
+  });
+
   //Configuration of Select Tags
   const options = tags?.map((e: any) => {
     return { value: e.tag, label: e.tag };
@@ -145,12 +151,8 @@ function ModalPost({
   };
 
   const handleSubmit = (e: any) => {
-    e.preventDefault();
-    dispatch(postPublication(post)).then(() => dispatch(createTag(post)));
-    // .then(() => nav("/home"));
+    dispatch(postPublication(post)).then(() => nav("/home"));
   };
-
-  console.log(loadingModal);
 
   return (
     <div className={style.modalContainer}>
@@ -171,7 +173,7 @@ function ModalPost({
               </aside>
               <aside className={style.modalInfoUser}>
                 <img
-                  src={profile.photo === "" ? user : profile.photo}
+                  src={profile.photo}
                   alt=""
                   width="72"
                   height="72"
@@ -207,7 +209,7 @@ function ModalPost({
                 value={post.text}
               ></textarea>
               <aside className={style.tags}>
-                <div className={style.selectTag}>
+                <div className={style.reactSelectContainer}>
                   <Creatable
                     isClearable
                     onCreateOption={handleCreate}
@@ -218,15 +220,30 @@ function ModalPost({
                     placeholder="Select 3 tags!"
                     onChange={handleTag}
                     styles={{
+                      placeholder: (state) => ({
+                        ...state,
+                        color: "#6c5206",
+                      }),
                       control: (state) => ({
                         ...state,
                         fontSize: 16,
-                        color: "brown",
-                        minWidth: 200,
+                        color: "#6c5206",
+                        minWidth: 150,
                         initialLetter: "#",
+                        background: "none",
+                        border: "none",
+                      }),
+                      indicatorSeparator: (state) => ({
+                        ...state,
+                        display: "none",
+                      }),
+                      indicatorsContainer: (state) => ({
+                        ...state,
+                        display: "none",
                       }),
                     }}
                   ></Creatable>
+                  <img src={dropDownArrow} alt="" />
                 </div>
 
                 <div className={style.previewTag}>
@@ -297,22 +314,34 @@ function ModalPost({
                   <img src={dropDownArrow} alt="" />
                 </div>
 
-                <div className={style.selectContainer}>
-                  <select
-                    onChange={handleSelect}
-                    className={style.location}
-                    name="location"
-                  >
-                    <option value="" disabled selected hidden>
-                      Add location!
-                    </option>
-                    {filterCountry &&
-                      filterCountry.map((e, i) => (
-                        <option key={i} value={e}>
-                          {e}
-                        </option>
-                      ))}
-                  </select>
+                <div className={style.reactSelectContainer}>
+                  <Select
+                    options={optionsCountry}
+                    maxMenuHeight={120}
+                    placeholder="Add location!"
+                    styles={{
+                      placeholder: (state) => ({
+                        ...state,
+                        color: "#6c5206",
+                      }),
+                      control: (base, state) => ({
+                        ...base,
+                        color: "#6c5206",
+                        minWidth: 150,
+                        initialLetter: "#",
+                        background: "none",
+                        border: "none",
+                      }),
+                      indicatorSeparator: (state) => ({
+                        ...state,
+                        display: "none",
+                      }),
+                      indicatorsContainer: (state) => ({
+                        ...state,
+                        display: "none",
+                      }),
+                    }}
+                  ></Select>
                   <img src={dropDownArrow} alt="" />
                 </div>
                 <div className={style.selectContainer}>
@@ -327,12 +356,12 @@ function ModalPost({
               </aside>
               <aside className={style.buttonPost}>
                 <button
-                  disabled={
-                    post.text === "" ||
-                    post.clasification === "" ||
-                    post.location === "" ||
-                    post.name === ""
-                  }
+                  // disabled={
+                  //   post.text === "" ||
+                  //   post.clasification === "" ||
+                  //   post.location === "" ||
+                  //   post.name === ""
+                  // }
                   type="submit"
                 >
                   Post

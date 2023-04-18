@@ -8,7 +8,6 @@ import {
   loginSocialNetworks,
   getProfileUser,
 } from "../../redux/actions/Users";
-import swal from "sweetalert";
 import { Profile, Users } from "../../types";
 import {
   IResolveParams,
@@ -18,6 +17,7 @@ import {
 import google from "../../img/google.png";
 import facebook from "../../img/facebook.png";
 import Cookies from "universal-cookie";
+import Swal from "sweetalert2";
 
 function Log(): JSX.Element {
   const cookies = new Cookies();
@@ -47,34 +47,20 @@ function Log(): JSX.Element {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (user.email === "" && user.password === "") {
-      swal({
-        title: "All the fields are required",
-        className: `${style.alert}`,
-        icon: "warning",
-      });
+      Swal.fire({ title: "All the fields are required", icon: "warning" });
     } else if (user.email === "") {
-      swal({
-        title: "Email is required",
-        className: `${style.alert}`,
-        icon: "warning",
-      });
+      Swal.fire({ title: "Email is required", icon: "warning" });
     } else if (user.password === "") {
-      swal({
-        title: "Password is required",
-        className: `${style.alert}`,
-        icon: "warning",
-      });
+      Swal.fire({ title: "Password is required", icon: "warning" });
     } else {
       try {
         await dispatch(loginUser(user));
         cookies.set("login", true);
+        cookies.set("visit", false);
+        cookies.set("fisrtLoading", true);
         nav("/home");
       } catch (error) {
-        swal({
-          title: `Error: ${error}`,
-          className: `${style.alert}`,
-          icon: "error",
-        });
+        Swal.fire({ title: `Error ${error}`, icon: "error" });
       }
     }
   };
@@ -112,7 +98,7 @@ function Log(): JSX.Element {
     if (user.username !== "") {
       dispatch(loginSocialNetworks(user)).then(() => {
         cookies.set("login", true);
-        cookies.remove("visit");
+        cookies.set("visit", false);
         nav("/home");
       });
     } else if (userFacebook.username !== "") {

@@ -64,10 +64,3 @@ export const getTags = () => {
     });
   };
 };
-
-export const createTag = (newTag: object) => {
-  return async function () {
-    const response = await axios.post("/tag/createTag", newTag);
-    return response;
-  };
-};

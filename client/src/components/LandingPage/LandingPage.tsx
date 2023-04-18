@@ -5,15 +5,21 @@ import NavBarL from "./NavBarL";
 import MiniFooter from "../MiniFooter/MiniFooter";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
+import { useEffect } from "react";
 
 const LandingPage = (): JSX.Element => {
   const nav = useNavigate();
   const cookies = new Cookies();
 
   const handleVisit = () => {
-    cookies.set("visit", true);
     nav("/home");
   };
+
+  useEffect(() => {
+    cookies.set("visit", true);
+    cookies.set("login", false);
+  }, []);
+
   return (
     <>
       <NavBarL />

@@ -66,7 +66,7 @@ function Card({ places, login, profile }: props) {
     <>
       <section className={style.container}>
         <img
-          src={places.user.photo === "" ? user : places.user.photo}
+          src={places.user.photo}
           alt="avatar"
           width={50}
           height={50}
@@ -97,7 +97,7 @@ function Card({ places, login, profile }: props) {
           </div>
           <article>
             <p className={style.description}>
-              {places.content}. {places.tag.join(" ")}
+              {places.content}. {places.tag}
             </p>
           </article>
           <div className={style.publicationInfo}>

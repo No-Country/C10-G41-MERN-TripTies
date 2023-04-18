@@ -4,6 +4,7 @@ import visible from "../../img/visible.png";
 import google from "../../img/google.png";
 import facebook from "../../img/facebook.png";
 import Cross from "../../img/cross.png";
+import user from "../../img/user_avatar_default.jpg";
 import { useState, useEffect } from "react";
 import MiniFooter from "../MiniFooter/MiniFooter";
 import {
@@ -14,7 +15,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../redux/store/hooks";
 import { FormState, Users } from "../../types";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 import {
   IResolveParams,
   LoginSocialGoogle,
@@ -43,7 +44,7 @@ function Register(): JSX.Element {
     password: "",
     firstName: "",
     lastName: "",
-    photo: "",
+    photo: user,
   });
   const [userGoogle, setUserGoogle] = useState<Users>({
     password: "",
@@ -88,11 +89,7 @@ function Register(): JSX.Element {
         newUser.email.length === 0 ||
         newUser.password.length === 0
       ) {
-        swal({
-          title: "All the fields are required",
-          className: `${style.alert}`,
-          icon: "warning",
-        });
+        Swal.fire({ title: "All the fields are required", icon: "warning" });
       } else {
         dispatch(createUser(newUser));
         setInput({
@@ -105,16 +102,17 @@ function Register(): JSX.Element {
         });
 
         if (newUser.firstName === "" && newUser.lastName === "") {
-          swal({
+          Swal.fire({
             title: "You will be redirected to complete data for your profile",
-            className: `${style.alert}`,
             icon: "warning",
           })
             .then(() => {
               dispatch(loginUser(newUser));
-              cookies.set("login", true);
             })
-            .then(() => nav("/completeProfile"));
+            .then(() => {
+              cookies.set("login", true);
+              nav("/completeProfile");
+            });
         }
       }
     } catch (error) {

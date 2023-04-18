@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
-import { editProfile } from "../../redux/actions/Publications";
 import {
   getProfileUser,
   getUserById,
+  editProfile,
   loginUser,
 } from "../../redux/actions/Users";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
@@ -29,6 +29,8 @@ function CompleteProfile(): JSX.Element {
     }
   }, []);
 
+  console.log(userData);
+
   const [data, setData] = useState({
     first_name: "",
     last_name: "",
@@ -51,6 +53,9 @@ function CompleteProfile(): JSX.Element {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     dispatch(editProfile(data)).then(() => {
+      cookies.set("login", true);
+      cookies.set("visit", false);
+      cookies.set("fisrtLoading", true);
       nav("/home");
     });
   };
