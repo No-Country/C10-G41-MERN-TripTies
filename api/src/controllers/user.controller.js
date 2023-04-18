@@ -6,17 +6,18 @@ const postUser = async (req, res) => {
       req.body;
     const userExist = await User.getUserByUsername(username);
     if (!userExist) {
-      // const user = await User.createUser({
-      //   username,
-      //   firstName,
-      //   lastName,
-      //   email,
-      //   password,
-      //   photo,
-      //   role,
-      // })
+      const user = await User.createUser({
+        username,
+        firstName,
+        lastName,
+        email,
+        password,
+        photo,
+        role,
+      })
       res.status(201).json(user);
     } else {
+      res.status(400).json("User has already exist")
     }
   } catch (error) {
     res.status(400).json({
@@ -33,35 +34,6 @@ const postUser = async (req, res) => {
   }
 };
 
-const postUserSocialNetwork = async (req, res) => {
-  try {
-    const { username, email, password, firstName, lastName, photo, role } =
-      req.body;
-
-    const user = await User.createUser({
-      username,
-      firstName,
-      lastName,
-      email,
-      password,
-      photo,
-      role,
-    });
-    res.status(201).json(user);
-  } catch (error) {
-    res.status(400).json({
-      message: error.message,
-      fields: {
-        username: "String",
-        first_name: "String",
-        last_name: "String",
-        email: "example@example.com",
-        password: "String",
-        photo: "URL",
-      },
-    });
-  }
-};
 
 const getAllUsers = (req, res, next) => {
   User.getAllUsers()
@@ -108,7 +80,6 @@ const getInfoUser = async (req, res) => {
 
 module.exports = {
   postUser,
-  postUserSocialNetwork,
   getAllUsers,
   getUserById,
   deleteUser,
