@@ -142,7 +142,7 @@ function Home(): JSX.Element {
                 handleSaved={handleSaved}
                 handleVisited={handleVisited}
               />
-              <SectionChat chat={chat} setChat={setChat} />
+              <SectionChat />
             </div>
           </div>
           <div className={style.footerLeft}>
@@ -205,7 +205,7 @@ function Home(): JSX.Element {
           </div>
         </div>
       </div>
-      <ChatBubble chat={chat} setChat={setChat} />
+      <ChatBubble />
     </div>
   );
 }

@@ -75,7 +75,6 @@ const getUserById = async (req, res, next) => {
 
   try {
     const user = await User.findUserById(userId, 'profile')
-
     if (!user) {
       throw new Error(404, 'User not found')
     }
