@@ -14,7 +14,7 @@ interface Conversation {
 }
 
 // NO CAMBIAR NADA AUN ESTA EN DESARROLLO
-export default function ChatBubble({ chat, setChat }: ChatProps) {
+export default function ChatBubble() {
 
     const avatarDefault = avatar7
 

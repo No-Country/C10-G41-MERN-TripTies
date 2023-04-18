@@ -24,7 +24,7 @@ interface User {
     isOnline: boolean;
 }
 
-export default function SectionChat({ setChat }: ChatProps): JSX.Element {
+export default function SectionChat(): JSX.Element {
 
     const avatarDefault = avatar7
 
@@ -61,10 +61,7 @@ export default function SectionChat({ setChat }: ChatProps): JSX.Element {
     }
 
     function handleNewChat(name: string, avatar: string, id: string) {
-
         localStorage.setItem("UserChat", JSON.stringify({ name: name, avatar: avatar, id }))
-
-        setChat({ name, avatar })
     }
 
     return (
