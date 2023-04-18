@@ -2,7 +2,7 @@ const User = require('../services/user.services')
 
 const postUser = async (req, res) => {
   try {
-    const { username, email, password, firstName, lastName, photo, role } =
+    const { username, email, password, firstName, lastName, photoUser, role } =
       req.body
 
     const user = await User.createUser({
@@ -11,7 +11,7 @@ const postUser = async (req, res) => {
       lastName,
       email,
       password,
-      photo,
+      photoUser,
       role,
     })
     res.status(201).json(user)
@@ -24,7 +24,7 @@ const postUser = async (req, res) => {
         last_name: 'String',
         email: 'example@example.com',
         password: 'String',
-        photo: 'URL',
+        photoUser: 'URL',
       },
     })
   }
@@ -32,7 +32,7 @@ const postUser = async (req, res) => {
 
 const postUserSocialNetwork = async (req, res) => {
   try {
-    const { username, email, password, firstName, lastName, photo, role } =
+    const { username, email, password, firstName, lastName, photoUser, role } =
       req.body
 
     const user = await User.createUser({
@@ -41,7 +41,7 @@ const postUserSocialNetwork = async (req, res) => {
       lastName,
       email,
       password,
-      photo,
+      photoUser,
       role,
     })
     res.status(201).json(user)
@@ -54,7 +54,7 @@ const postUserSocialNetwork = async (req, res) => {
         last_name: 'String',
         email: 'example@example.com',
         password: 'String',
-        photo: 'URL',
+        photoUser: 'URL',
       },
     })
   }

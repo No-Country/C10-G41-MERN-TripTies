@@ -58,7 +58,7 @@ const createUser = async (userData) => {
       last_name: userData.last_name || '',
       email: userData.email,
       password: hash(userData.password),
-      photo: userData.photo || '',
+      photoUser: userData.photoUser || '',
       role: userData.role,
     })
     // Guardar usuario en la base de datos
