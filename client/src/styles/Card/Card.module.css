@@ -26,6 +26,7 @@
 .userInfo > aside {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 
 .userInfo > div {
@@ -98,12 +99,12 @@
   justify-content: space-between;
 }
 
-.actions > aside > img {
+.actions > label {
   cursor: pointer;
 }
 
-.actions > img {
-  cursor: pointer;
+.actions input {
+  display: none;
 }
 
 .buttonSave {

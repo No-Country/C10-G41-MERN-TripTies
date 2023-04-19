@@ -99,6 +99,7 @@ function Log(): JSX.Element {
       dispatch(loginSocialNetworks(user)).then(() => {
         cookies.set("login", true);
         cookies.set("visit", false);
+        cookies.set("fisrtLoading", true);
         nav("/home");
       });
     } else if (userFacebook.username !== "") {

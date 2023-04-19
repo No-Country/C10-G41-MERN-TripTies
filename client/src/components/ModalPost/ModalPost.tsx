@@ -58,20 +58,7 @@ function ModalPost({
     privacity: "Public",
     text: "",
     tag: [],
-    photo: [
-      {
-        url: "https://res.cloudinary.com/dtioqvhiz/image/upload/v1681420019/506659-eiffel-tower_uruuy6.webp",
-        type: "image",
-      },
-      {
-        url: "https://res.cloudinary.com/dtioqvhiz/image/upload/v1681420007/paris_37bc088a_1280x720_zyikii.jpg",
-        type: "image",
-      },
-      {
-        url: "https://res.cloudinary.com/dtioqvhiz/image/upload/v1681420007/230324090551-01-visiting-france-during-protests-what-to-know-top_od59li.jpg",
-        type: "image",
-      },
-    ],
+    photo: [],
     video: [
       {
         url: "https://res.cloudinary.com/dtioqvhiz/video/upload/v1681420038/y2mate.com_-_Par%C3%ADs_Francia_una_ciudad_hermosa_y_tur%C3%ADstica_v240P_jbn2rr.mp4",
@@ -89,6 +76,11 @@ function ModalPost({
   //Configuration of Select Countries
   const optionsCountry = countries?.map((e: any) => {
     return { value: e.name.common, label: e.name.common };
+  });
+
+  //Configuration of Select Clasifications
+  const optionClasification = clasification?.map((e: any) => {
+    return { value: e, label: e };
   });
 
   //Configuration of Select Tags
@@ -165,12 +157,34 @@ function ModalPost({
   };
 
   const handleSubmit = (e: any) => {
-    dispatch(postPublication(post)).then(() => nav("/home"));
+    e.preventDefault();
+    dispatch(postPublication(post));
+    // .then(() => nav("/home"));
   };
 
-  const handleUpdatePhotos = (e: any) => {
-    e.preventDefault();
+  const handleUpdatePhotos = (file: any) => {
+    const image = file[0];
+
+    if (image) {
+      setPost({
+        ...post,
+        photo: [...post.photo, image.name],
+      });
+      // const reader = new FileReader();
+      // reader.onload = (e) => {
+      //   console.log(e);
+      //   setPost({
+      //     ...post,
+      //     photo: [...post.photo, e.target?.result],
+      //   });
+      // };
+      // reader.readAsArrayBuffer(image);
+    }
+
+    console.log(image);
   };
+
+  console.log(post);
 
   return (
     <div className={style.modalContainer}>
@@ -280,7 +294,11 @@ function ModalPost({
               <aside className={style.buttons}>
                 <label htmlFor="photo" className={style.media}>
                   <img src={addPhoto} alt="" width="98" height="98" />
-                  <input type="file" id="photo" />
+                  <input
+                    type="file"
+                    id="photo"
+                    onChange={(e) => handleUpdatePhotos(e.target.files)}
+                  />
                 </label>
 
                 <button>
@@ -310,21 +328,34 @@ function ModalPost({
                   />
                 </div>
                 <div className={style.selectContainer}>
-                  <select
+                  <Select
+                    options={optionClasification}
                     onChange={handleSelectClasification}
-                    className={style.clasification}
-                    name="clasification"
-                  >
-                    <option value="" disabled selected hidden>
-                      Add clasification!
-                    </option>
-                    {clasification &&
-                      clasification.map((e, i) => (
-                        <option key={i} value={e}>
-                          {e}
-                        </option>
-                      ))}
-                  </select>
+                    maxMenuHeight={120}
+                    placeholder="Add Clasification!"
+                    styles={{
+                      placeholder: (state) => ({
+                        ...state,
+                        color: "#6c5206",
+                      }),
+                      control: (base, state) => ({
+                        ...base,
+                        color: "#6c5206",
+                        minWidth: 150,
+                        initialLetter: "#",
+                        background: "none",
+                        border: "none",
+                      }),
+                      indicatorSeparator: (state) => ({
+                        ...state,
+                        display: "none",
+                      }),
+                      indicatorsContainer: (state) => ({
+                        ...state,
+                        display: "none",
+                      }),
+                    }}
+                  ></Select>
                   <img src={dropDownArrow} alt="" />
                 </div>
 

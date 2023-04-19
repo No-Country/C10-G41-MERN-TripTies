@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const User = require("../models/users.models");
 const Profile = require("../models/profiles.models");
+const Post = require("../models/post.models");
 
 const { hash } = require("../utils/crypto");
 
@@ -17,7 +18,6 @@ const getAllUsers = () => {
 };
 
 const findUserById = async (userId) => {
-  console.log(userId);
   let user = await User.findById({ _id: userId });
   return user;
 };
@@ -117,8 +117,24 @@ const getUserInformation = async (userId) => {
     last_name: user.last_name,
     email: user.email,
     role: user.role,
+    saved: user.saved,
   };
 };
+
+const savePublications = async (postId, userId) => {
+  let user = await User.findOne({ _id: userId });
+  if (user.saved.includes(postId)) {
+    user.saved = user.saved.filter((e) => e !== postId);
+    await user.save();
+    return user;
+  } else {
+    user.saved.push(postId);
+    await user.save();
+    return user;
+  }
+};
+
+const getPulicationsSave = async (posts) => {};
 
 module.exports = {
   getAllUsers,
@@ -129,4 +145,6 @@ module.exports = {
   updateUser,
   getUserInformation,
   getUserByUsername,
+  savePublications,
+  getPulicationsSave,
 };

@@ -18,8 +18,8 @@ import ModalPost from "../ModalPost/ModalPost";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import { getAllPublications, getTags } from "../../redux/actions/Publications";
 import Cookies from "universal-cookie";
-import { Profile, Tags, Chat } from "../../types";
-import { getProfileUser } from "../../redux/actions/Users";
+import { Profile, Tags, Chat, Users } from "../../types";
+import { getProfileUser, getUserById } from "../../redux/actions/Users";
 import { useNavigate } from "react-router-dom";
 import Loading from "../Loading/Loading";
 import PageLoading from "../Page Loading/PageLoading";
@@ -36,13 +36,12 @@ function Home(): JSX.Element {
   const visit = cookies.get("visit");
   const firstLoading = cookies.get("fisrtLoading");
 
-  console.log("first", firstLoading);
-
   //States of Redux
   const allPublications = selector<any>((state) => state.publications);
   const profile: Profile = selector((state) => state.profile);
   const tags = selector<any>((state) => state.tags);
 
+  console.log(profile);
   //States of component
   const [loadingHome, setLoadingHome] = useState(true);
   const [loadingPublication, setLoadingPublications] = useState(false);
@@ -186,7 +185,13 @@ function Home(): JSX.Element {
             ) : (
               useTags &&
               useTags?.map((e: any, i: number) => (
-                <Card places={e} login={login} profile={profile} key={i} />
+                <Card
+                  places={e}
+                  login={login}
+                  profile={profile}
+                  cookies={cookies}
+                  key={i}
+                />
               ))
             )}
           </div>

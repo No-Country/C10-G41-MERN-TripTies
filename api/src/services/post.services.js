@@ -5,7 +5,7 @@ const Profile = require("../models/profiles.models");
 const User = require("../models/users.models");
 const Tag = require("../services/tag.services");
 const PostsImages = require("../models/postsImages.models");
-const { post } = require("../routes/comment.router");
+const { uploadFile } = require("../../s3");
 
 const findAllPosts = async ({ page = 1, limit = 100 }) => {
   const skip = (page - 1) * limit;
@@ -14,7 +14,7 @@ const findAllPosts = async ({ page = 1, limit = 100 }) => {
     .skip(skip)
     .limit(limit)
     .select(
-      "content photoPost video privacity rate name clasification reported tag user liked comments media.location"
+      "content photoPost video privacity rate name clasification reported tag user liked comments media.location createdAt"
     )
     .lean();
 
@@ -36,17 +36,15 @@ const createPost = async (id, obj) => {
     id: userId._id,
     firstName: userId.first_name,
     lastName: userId.last_name,
-    photoUser: userId.photoUser,
+    photoUser: userId.photo,
   };
-
-  const photoPost = await PostsImages.findOne({ publication: id });
 
   const data = await Post.create({
     user: user.id,
     content: obj.content,
     tag: obj.tag,
     privacity: obj.privacity,
-    photoPost: photoPost.url,
+    photoPost: obj.url,
     video: obj.video,
     rate: obj.rate,
     name: obj.name,

@@ -1,33 +1,82 @@
 const { uploadFile } = require("../../s3");
 const Likes = require("../models/likes.models");
+const postModels = require("../models/post.models");
 const Post = require("../services/post.services");
 const { unlinkFile } = require("../utils/unlinkFile");
 
-const postNewPost = (req, res, next) => {
+const postNewPost = async (req, res, next) => {
   const userId = req.user._id;
   const content = req.body;
 
-  Post.createPost(userId, content)
-    .then((data) => {
-      res.status(201).json(data);
-      next();
-    })
-    .catch((err) => {
-      res.status(400).json({
-        message: err.message,
-        fields: {
-          content: "string",
-          privacity: "Public" | "Private",
-          photoPost: "[req.files]",
-          video: "[req.files]",
-          rate: "number",
-          name: "string",
-          clasification: "string",
-          reported: "number",
-        },
-      });
+  try {
+    const data = await Post.createPost(userId, content);
+    const files = req.files;
+    console.log(data);
+    console.log(files);
+
+    if (files && files.length > 0) {
+      const newImages = await Promise.all(
+        files.map(async (file) => {
+          const fileName = `uploads/posts/photos/${data._id}.${file.originalname
+            .split(".")
+            .pop()}`;
+          const bucketUrl = `${process.env.AWS_DOMAIN}/${fileName}`;
+
+          await uploadFile(file, fileName);
+
+          const newImage = await Post.createImage(data._id, bucketUrl);
+          return newImage;
+        })
+      );
+
+      // Actualizar el campo photoPost con la URL de la imagen
+      const urls = newImages.map((image) => image.url);
+      await postModels.updateOne({ _id: data._id }, { photoPost: urls });
+    }
+
+    res.status(201).json(data);
+  } catch (err) {
+    res.status(400).json({
+      message: err.message,
+      fields: {
+        content: "string",
+        privacity: "Public" | "Private",
+        photoPost: "[req.files]",
+        video: "[req.files]",
+        rate: "number",
+        name: "string",
+        clasification: "string",
+        reported: "number",
+      },
     });
+  }
 };
+
+// const postNewPost = (req, res, next) => {
+//   const userId = req.user._id
+//   const content = req.body
+
+//   Post.createPost(userId, content )
+//     .then((data) => {
+//       res.status(201).json(data)
+//       next()
+//     })
+//     .catch((err) => {
+//       res.status(400).json({
+//         message: err.message,
+//         fields: {
+//           content: 'string',
+//           privacity: 'Public' | 'Private',
+//           photoPost: '[req.files]',
+//           video: '[req.files]',
+//           rate: 'number',
+//           name: 'string',
+//           clasification: 'string',
+//           reported: 'number'
+//         },
+//       })
+//     })
+// }
 
 const putPost = (req, res) => {
   const { content, location } = req.body;

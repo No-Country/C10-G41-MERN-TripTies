@@ -117,7 +117,11 @@ function CompleteProfile(): JSX.Element {
           placeholder="Birthday"
         />
 
-        <button className={style.button} type="submit">
+        <button
+          className={style.button}
+          type="submit"
+          disabled={user.first_name === "" || user.last_name === ""}
+        >
           Continue
         </button>
       </form>

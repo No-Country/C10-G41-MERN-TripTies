@@ -100,7 +100,6 @@ function Register(): JSX.Element {
           lastName: "",
           photoUser: "",
         });
-
         if (newUser.firstName === "" && newUser.lastName === "") {
           Swal.fire({
             title: "You will be redirected to complete data for your profile",
@@ -108,11 +107,15 @@ function Register(): JSX.Element {
           })
             .then(() => {
               dispatch(loginUser(newUser));
+              cookies.set("fisrtLoading", true);
             })
             .then(() => {
               cookies.set("login", true);
               nav("/completeProfile");
             });
+        } else {
+          dispatch(loginUser(newUser));
+          cookies.set("fisrtLoading", true);
         }
       }
     } catch (error) {
@@ -147,13 +150,12 @@ function Register(): JSX.Element {
     throw err;
   };
 
-  //InitialState of component
+  //Submit register with social network
   useEffect(() => {
-    console.log(userGoogle);
     if (userGoogle.email !== "") {
       console.log("lo q va", userGoogle);
       dispatch(createUser(userGoogle)).then((data: any) => {
-        if (data.response.data !== "User has already exist") {
+        if (data.response?.data !== "User has already exist") {
           dispatch(loginSocialNetworks(userGoogle));
           cookies.set("login", true);
           setTimeout(() => {

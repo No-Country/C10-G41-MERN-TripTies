@@ -5,11 +5,12 @@ const postUser = async (req, res) => {
     const { username, email, password, firstName, lastName, photoUser, role } =
       req.body;
     const userExist = await User.getUserByUsername(username);
+
     if (!userExist) {
       const user = await User.createUser({
         username,
-        firstName,
-        lastName,
+        first_name: firstName,
+        last_name: lastName,
         email,
         password,
         photoUser,
@@ -47,10 +48,8 @@ const getAllUsers = (req, res, next) => {
 const getUserById = async (req, res, next) => {
   const { userId } = req.params;
 
-  console.log(userId);
-
   try {
-    const user = await User.findUserById(userId, "profile");
+    const user = await User.findUserById(userId);
     if (!user) {
       throw new Error(404, "User not found");
     }
@@ -79,10 +78,20 @@ const getInfoUser = async (req, res) => {
     .catch((err) => res.status(400).json({ message: err.message }));
 };
 
+const save = async (req, res) => {
+  const { postId, userId } = req.body;
+  User.savePublications(postId, userId)
+    .then((data) => res.status(200).json(data))
+    .catch((err) => res.status(400).json({ message: err.message }));
+};
+
+const getAllSave = async (req, res) => {};
+
 module.exports = {
   postUser,
   getAllUsers,
   getUserById,
   deleteUser,
   getInfoUser,
+  save,
 };
