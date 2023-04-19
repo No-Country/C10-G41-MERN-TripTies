@@ -72,7 +72,7 @@ function Log(): JSX.Element {
     email: "",
     firstName: "",
     lastName: "",
-    photo: "",
+    photoUser: "",
   });
   const [userFacebook, setUserFacebook] = useState({ username: "" });
 

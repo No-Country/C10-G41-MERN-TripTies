@@ -76,7 +76,7 @@ function NavBar({ handleHome, places, profile, visit }: any): JSX.Element {
             <DropdownUser display={display} />
           </section>
           <img
-            src={profile.photo}
+            src={profile.photoUser}
             alt=""
             width="50"
             height="50"

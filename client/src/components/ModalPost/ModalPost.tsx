@@ -134,12 +134,12 @@ function ModalPost({
     });
   };
 
-  const handleSelect = (e: any) =>{
+  const handleSelect = (e: any) => {
     setPost({
       ...post,
-      [e.target?.name]: e.target?.value
-    })
-  }
+      [e.target?.name]: e.target?.value,
+    });
+  };
 
   const handleSelectCountry = (e: any) => {
     setPost({
@@ -164,10 +164,12 @@ function ModalPost({
     }
   };
 
-  console.log(post)
-
   const handleSubmit = (e: any) => {
     dispatch(postPublication(post)).then(() => nav("/home"));
+  };
+
+  const handleUpdatePhotos = (e: any) => {
+    e.preventDefault();
   };
 
   return (
@@ -189,7 +191,7 @@ function ModalPost({
               </aside>
               <aside className={style.modalInfoUser}>
                 <img
-                  src={profile.photo}
+                  src={profile.photoUser}
                   alt=""
                   width="72"
                   height="72"
@@ -276,15 +278,11 @@ function ModalPost({
               </aside>
 
               <aside className={style.buttons}>
-                <button>
-                  <img
-                    src={addPhoto}
-                    alt=""
-                    width="98"
-                    height="98"
-                    className={style.media}
-                  />
-                </button>
+                <label htmlFor="photo" className={style.media}>
+                  <img src={addPhoto} alt="" width="98" height="98" />
+                  <input type="file" id="photo" />
+                </label>
+
                 <button>
                   <img
                     src={addVideo}

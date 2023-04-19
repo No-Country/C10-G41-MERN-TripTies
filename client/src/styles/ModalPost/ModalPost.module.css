@@ -226,6 +226,10 @@
   filter: saturate(300%) contrast(90%) brightness(100%);
 }
 
+.media input {
+  display: none;
+}
+
 .infoPost {
   width: 90%;
   display: flex;

@@ -66,7 +66,7 @@ function Card({ places, login, profile }: props) {
     <>
       <section className={style.container}>
         <img
-          src={places.user.photo}
+          src={places.user.photoUser}
           alt="avatar"
           width={50}
           height={50}
@@ -129,7 +129,7 @@ function Card({ places, login, profile }: props) {
               <span>{places.name}</span>
             </aside>
           </div>
-          <SlideShow media={[places.photo, places.video]} />
+          {/* <SlideShow media={[places.photo, places.video]} /> */}
           <div className={style.likesAndComments}>
             <aside>
               <img src={boldHeart} alt="bold heart" />

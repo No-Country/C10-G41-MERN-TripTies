@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import {
@@ -29,34 +29,55 @@ function CompleteProfile(): JSX.Element {
     }
   }, []);
 
-
-  const [data, setData] = useState({
+  const [user, setUser] = useState({
     first_name: "",
     last_name: "",
     username: "",
-    photo: "",
-    profile: {
-      description: "",
-      birthday: "",
-      portrait: "",
-    },
+    photoUser: "",
   });
 
+  const [profile, setProfile] = useState({
+    description: "",
+    birthday: "",
+    portrait: "",
+  });
+
+  const data = { user, profile };
+
   const handleChange = (e: any) => {
-    setData({
-      ...data,
+    setUser({
+      ...user,
+      [e.target.name]: e.target.value,
+    });
+    setProfile({
+      ...profile,
       [e.target.name]: e.target.value,
     });
   };
 
+  const handlePortrait = (files: FileList | null) => {
+    if (files) {
+      const image = files[0] || "";
+      setUser({
+        ...user,
+        photoUser: image.name,
+      });
+    }
+  };
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    dispatch(editProfile(data)).then(() => {
-      cookies.set("login", true);
-      cookies.set("visit", false);
-      cookies.set("fisrtLoading", true);
-
-    }).then(()=> { setTimeout(()=>{nav("/home");},500) })
+    dispatch(editProfile(data))
+      .then(() => {
+        cookies.set("login", true);
+        cookies.set("visit", false);
+        cookies.set("fisrtLoading", true);
+      })
+      .then(() => {
+        setTimeout(() => {
+          nav("/home");
+        }, 500);
+      });
   };
 
   return (
@@ -65,7 +86,7 @@ function CompleteProfile(): JSX.Element {
         <h1>Complete Profile</h1>
         <input
           type="text"
-          value={data.first_name}
+          value={user.first_name}
           onChange={handleChange}
           name="first_name"
           className={style.input}
@@ -73,25 +94,28 @@ function CompleteProfile(): JSX.Element {
         />
         <input
           type="text"
-          value={data.last_name}
+          value={user.last_name}
           onChange={handleChange}
           name="last_name"
           className={style.input}
           placeholder="Last name"
         />
-        {/* <label htmlFor="">Description</label>
+        <input type="file" onChange={(e) => handlePortrait(e.target.files)} />
         <textarea
-          value={data.profile.description}
+          value={profile.description}
           onChange={handleChange}
           name="description"
+          className={style.input}
+          placeholder="Description"
         />
-        <label htmlFor="">Birthday</label>
         <input
           type="text"
-          value={data.profile.description}
+          value={profile.birthday}
           onChange={handleChange}
           name="birthday"
-        /> */}
+          className={style.input}
+          placeholder="Birthday"
+        />
 
         <button className={style.button} type="submit">
           Continue
