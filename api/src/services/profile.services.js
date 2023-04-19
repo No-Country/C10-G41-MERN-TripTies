@@ -64,9 +64,9 @@ const editUserProfile = async (userId, userData) => {
       userId,
       {
         $set: {
-          first_name: userData.first_name,
-          last_name: userData.last_name,
-          photoUser: userData.photoUser,
+          first_name: userData.user.first_name,
+          last_name: userData.user.last_name,
+          photoUser: userData.user.photoUser,
         },
       },
       { new: true, session }

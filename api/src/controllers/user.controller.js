@@ -12,7 +12,7 @@ const postUser = async (req, res) => {
         lastName,
         email,
         password,
-        photo,
+        photoUser,
         role,
       });
       res.status(201).json(user);
@@ -46,6 +46,8 @@ const getAllUsers = (req, res, next) => {
 
 const getUserById = async (req, res, next) => {
   const { userId } = req.params;
+
+  console.log(userId);
 
   try {
     const user = await User.findUserById(userId, "profile");
