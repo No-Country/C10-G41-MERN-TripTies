@@ -4,7 +4,7 @@ export interface Users {
   password: string;
   firstName: string;
   lastName: string;
-  photo: string;
+  photoUser: string;
 }
 
 // useState Interface of Register Component
@@ -20,7 +20,7 @@ export interface UserLogin {
   password?: string;
   firstName?: string;
   lastName?: string;
-  photo?: string;
+  photoUser?: string;
 }
 
 export interface Chat {
@@ -60,7 +60,7 @@ export interface Profile {
   first_name?: string;
   last_name?: string;
   email?: string;
-  photo?: string;
+  photoUser?: string;
   portrait?: string;
   birthday?: string;
   profile?: object;

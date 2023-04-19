@@ -1,6 +1,6 @@
 import style from "../../styles/NavBar/NavBar.module.css";
 import logo from "../../img/Logo.png";
-import user from "../../img/user.png";
+import user from "../../img/user_avatar_default.jpg";
 import bell from "../../img/bell.png";
 import drop from "../../img/drop.png";
 import arrowDown from "../../img/dropDownArrow.png";
@@ -76,7 +76,7 @@ function NavBar({ handleHome, places, profile, visit }: any): JSX.Element {
             <DropdownUser display={display} />
           </section>
           <img
-            src={profile.photo !== "" ? profile.photo : user}
+            src={profile.photoUser}
             alt=""
             width="50"
             height="50"

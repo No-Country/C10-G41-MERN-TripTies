@@ -12,39 +12,52 @@ import message from "../../img/message-text.png";
 import messageBig from "../../img/bigMessageText.png";
 import share from "../../img/send-2.png";
 import heart from "../../img/heart-circle.png";
-import unsaved from "../../img/archive-tick-none.png";
-import saved from "../../img/archive-tick.png";
+import postUnsaved from "../../img/archive-tick-none.png";
+import postSaved from "../../img/archive-tick.png";
 import stars from "../../img/stars.png";
 import Dropdown from "./Dropdown";
 import SlideShow from "../SlideShow/SlideShow";
 import { Rating } from "react-simple-star-rating";
 import Comments from "../Comments/Comments";
+import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
+import { getUserById, savePublications } from "../../redux/actions/Users";
+import { Cookie } from "universal-cookie";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 type props = {
   places: any;
   login: string;
   profile: object;
+  cookies: Cookie;
 };
-function Card({ places, login, profile }: props) {
+function Card({ places, login, profile, cookies }: props) {
+  const dispatch = useAppDispatch();
+  const selector = useAppSelector;
+  const nav = useNavigate();
   const [display, setDisplay] = useState("none");
   const [displayComments, setDisplayComments] = useState("none");
   const ref = useRef<HTMLDivElement>(null);
 
   const tags = places.tag?.map((e: string) => e);
 
+  const user = selector<any>((state) => state.user);
+
+  //Save publications
+  let saved = user.user?.saved.includes(places._id);
+
+  //Format date
+  let dateOfPublications = new Date(places.createdAt);
+  let dayMonthYear = dateOfPublications.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  let minutesSeconds = dateOfPublications.toLocaleTimeString("en-GB");
+
   useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent) => {
-      if (ref.current && !ref.current.contains(event.target as Node)) {
-        setDisplay("none");
-      }
-    };
-
-    document.addEventListener("mousedown", handleOutsideClick);
-
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, [ref]);
+    dispatch(getUserById());
+  }, []);
 
   const handleAppear = () => {
     if (display === "none" && login === "true") {
@@ -62,11 +75,39 @@ function Card({ places, login, profile }: props) {
     }
   };
 
+  const handleSave = (e: any) => {
+    if (saved === false) {
+      Swal.fire({
+        title: "Publications saved!",
+        icon: "success",
+      }).then(() => {
+        dispatch(
+          savePublications({
+            postId: e.target.value,
+            userId: cookies.get("id"),
+          })
+        ).then(() => dispatch(getUserById()));
+      });
+    } else {
+      Swal.fire({
+        title: "Publications unsaved!",
+        icon: "error",
+      }).then(() => {
+        dispatch(
+          savePublications({
+            postId: e.target.value,
+            userId: cookies.get("id"),
+          })
+        ).then(() => dispatch(getUserById()));
+      });
+    }
+  };
+
   return (
     <>
       <section className={style.container}>
         <img
-          src={places.user.photo === "" ? user : places.user.photo}
+          src={user.user?.photoUser}
           alt="avatar"
           width={50}
           height={50}
@@ -76,9 +117,11 @@ function Card({ places, login, profile }: props) {
           <div className={style.userInfo}>
             <aside>
               <h4 className={style.name}>
-                {places.user.firstName} {places.user.lastName}
+                {user.user?.first_name} {user.user?.last_name}
               </h4>
-              <span>{places.time}</span>
+              <span>
+                {dayMonthYear} at {minutesSeconds}
+              </span>
             </aside>
             <div ref={ref}>
               <img
@@ -97,7 +140,7 @@ function Card({ places, login, profile }: props) {
           </div>
           <article>
             <p className={style.description}>
-              {places.content}. {places.tag.join(" ")}
+              {places.content}. {places.tag}
             </p>
           </article>
           <div className={style.publicationInfo}>
@@ -129,7 +172,7 @@ function Card({ places, login, profile }: props) {
               <span>{places.name}</span>
             </aside>
           </div>
-          <SlideShow media={[places.photo, places.video]} />
+          {/* <SlideShow media={[places.photo, places.video]} /> */}
           <div className={style.likesAndComments}>
             <aside>
               <img src={boldHeart} alt="bold heart" />
@@ -151,10 +194,26 @@ function Card({ places, login, profile }: props) {
               <img src={share} alt="share" />
             </aside>
 
-            {places.save === "Unsaved" ? (
-              <img src={unsaved} alt="" />
+            {saved === true ? (
+              <label htmlFor={places._id}>
+                <img src={postSaved} alt="" />
+                <input
+                  type="button"
+                  id={places._id}
+                  value={places._id}
+                  onClick={handleSave}
+                />
+              </label>
             ) : (
-              <img src={saved} alt="" />
+              <label htmlFor={places._id}>
+                <img src={postUnsaved} alt="" />
+                <input
+                  type="button"
+                  id={places._id}
+                  value={places._id}
+                  onClick={handleSave}
+                />
+              </label>
             )}
           </div>
         </section>

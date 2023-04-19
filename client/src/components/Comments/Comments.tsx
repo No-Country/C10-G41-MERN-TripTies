@@ -29,7 +29,7 @@ function Comments({ goingToComment, profile }: string | any) {
             <article key={index} className={style.commentCont}>
               <p className={style.comment}>{comment}</p>
               <img
-                src={profile.photo === "" ? user : profile.photo}
+                src={profile.photoUser === "" ? user : profile.photoUser}
                 alt="avatar"
               />
               <button value={comment} onClick={(event) => handleDelete(event)}>
