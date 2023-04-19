@@ -17,12 +17,12 @@ const { postTag } = require('../controllers/tag.controller')
 
 router.route('/')
   .get(getAllPosts)
-  .post(passport.authenticate('jwt', { session: false }), postNewPost, postTag)
+  .post(passport.authenticate('jwt', { session: false }), multerPublicationsPhotos.array('image', 3), postNewPost, postTag)
 
 router.route('/:postId')
   .get(passport.authenticate('jwt', { session: false }), getPostById)
   .put(passport.authenticate('jwt', { session: false }), putPost)
-  .post(passport.authenticate('jwt', { session: false }), multerPublicationsPhotos.array('image', 3), createImagePost)
+  // .post(passport.authenticate('jwt', { session: false }), multerPublicationsPhotos.array('image', 3), createImagePost)
 
 
 router.use('/:postId/comments', routesComments)
