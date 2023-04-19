@@ -20,6 +20,8 @@ const s3Client = new S3Client({
 //Returns a Promise
 const uploadFile = (fileMulterObject, fileName) => {
 
+  console.log('MULTER', fileMulterObject)
+  console.log('FILENAME: ', fileName)
   const fileStream = fs.createReadStream(fileMulterObject.path)
 
   const uploadParams = {
