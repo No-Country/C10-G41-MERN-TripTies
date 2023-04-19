@@ -14,7 +14,7 @@ export const createUser = (newUser: Users) => {
       return response;
     } catch (error) {
       console.log(error);
-      throw error;
+      return error
     }
   };
 };
@@ -84,7 +84,7 @@ export const editProfile = (data: object) => {
     const response = await axios.put(`/profiles/${idUser}`, data, {
       headers: { Authorization: `jwt ${token}` },
     });
-    console.log(response);
+    return response
   };
 };
 

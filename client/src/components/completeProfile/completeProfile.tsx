@@ -29,7 +29,6 @@ function CompleteProfile(): JSX.Element {
     }
   }, []);
 
-  console.log(userData);
 
   const [data, setData] = useState({
     first_name: "",
@@ -56,8 +55,8 @@ function CompleteProfile(): JSX.Element {
       cookies.set("login", true);
       cookies.set("visit", false);
       cookies.set("fisrtLoading", true);
-      nav("/home");
-    });
+
+    }).then(()=> { setTimeout(()=>{nav("/home");},500) })
   };
 
   return (

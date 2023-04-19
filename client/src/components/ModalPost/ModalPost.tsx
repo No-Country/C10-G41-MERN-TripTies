@@ -134,10 +134,24 @@ function ModalPost({
     });
   };
 
-  const handleSelect = (e: any) => {
+  const handleSelect = (e: any) =>{
     setPost({
       ...post,
-      [e.target.name]: e.target.value,
+      [e.target?.name]: e.target?.value
+    })
+  }
+
+  const handleSelectCountry = (e: any) => {
+    setPost({
+      ...post,
+      location: e.value,
+    });
+  };
+
+  const handleSelectClasification = (e: any) => {
+    setPost({
+      ...post,
+      clasification: e.value,
     });
   };
 
@@ -149,6 +163,8 @@ function ModalPost({
       });
     }
   };
+
+  console.log(post)
 
   const handleSubmit = (e: any) => {
     dispatch(postPublication(post)).then(() => nav("/home"));
@@ -297,7 +313,7 @@ function ModalPost({
                 </div>
                 <div className={style.selectContainer}>
                   <select
-                    onChange={handleSelect}
+                    onChange={handleSelectClasification}
                     className={style.clasification}
                     name="clasification"
                   >
@@ -317,6 +333,7 @@ function ModalPost({
                 <div className={style.reactSelectContainer}>
                   <Select
                     options={optionsCountry}
+                    onChange={handleSelectCountry}
                     maxMenuHeight={120}
                     placeholder="Add location!"
                     styles={{

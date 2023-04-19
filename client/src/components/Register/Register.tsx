@@ -121,6 +121,7 @@ function Register(): JSX.Element {
   };
 
   const handleOnResolveGoogle = ({ data, provider }: IResolveParams) => {
+    console.log("datos", data)
     setUserGoogle({
       username: data && data.name,
       email: data && data.email,
@@ -128,7 +129,7 @@ function Register(): JSX.Element {
       lastName: data && data.family_name,
       photo: data && data.picture,
       password: `${Math.random().toString(36).substring(2, 7)}`,
-    });
+    })
   };
 
   const handleOnResolveFacebook = ({ data }: IResolveParams) => {
@@ -146,19 +147,31 @@ function Register(): JSX.Element {
     throw err;
   };
 
+
+
+ 
+
   //InitialState of component
   useEffect(() => {
+    console.log(userGoogle)
     if (userGoogle.email !== "") {
+      console.log("lo q va", userGoogle)
       dispatch(createUser(userGoogle))
-        .then(() => {
-          dispatch(loginSocialNetworks(userGoogle));
-          cookies.set("login", true);
+        .then((data: any) => {
+          if(data.response.data !== "User has already exist"){
+            console.log("entre")
+            dispatch(loginSocialNetworks(userGoogle));
+            cookies.set("login", true);
+            setTimeout(() => {
+              // nav("/home");
+            }, 1000);
+          }else{
+            Swal.fire({
+              title: "User has already exist, you will be redirected to login",
+              icon: "warning",
+            }).then(() => nav("/login"))
+          }
         })
-        .then(() => {
-          setTimeout(() => {
-            nav("/home");
-          }, 1000);
-        });
     }
   }, [userGoogle]);
 
