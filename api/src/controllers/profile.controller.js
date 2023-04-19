@@ -56,13 +56,13 @@ const getProfile = async (req, res, next) => {
     if (!profile) {
       return res.status(404).json({ message: 'Profile not found' })
     }
-    const { username, first_name, last_name, photo } = profile._doc
+    const { username, first_name, last_name, photoUser } = profile._doc
     const { description, birthday, portrait } = profile.profile
     return res.status(200).json({
       username,
       first_name,
       last_name,
-      photo,
+      photoUser,
       description,
       birthday,
       portrait,

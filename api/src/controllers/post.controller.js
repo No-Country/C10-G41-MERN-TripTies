@@ -18,7 +18,7 @@ const postNewPost = (req, res, next) => {
         fields: {
           content: "string",
           privacity: "Public" | "Private",
-          photo: "[req.files]",
+          photoPost: "[req.files]",
           video: "[req.files]",
           rate: "number",
           name: "string",
