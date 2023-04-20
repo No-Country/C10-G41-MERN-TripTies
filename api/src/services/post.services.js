@@ -25,9 +25,10 @@ const findAllPosts = async ({ page = 1, limit = 100 }) => {
 };
 
 const findPostById = async (postId) => {
-  const post = await Post.findById(postId);
-  return post;
-};
+
+  const post = await Post.findById(postId)
+  return post
+}
 
 const createPost = async (id, obj) => {
   let userId = await User.findOne({ _id: id });
@@ -50,10 +51,10 @@ const createPost = async (id, obj) => {
     name: obj.name,
     clasification: obj.clasification,
     location: obj.location,
-  });
-  await Tag.createTag(data._id.valueOf(), data.tag);
-  return data;
-};
+  })
+  await Tag.createTag(data._id.valueOf(), data.tag)
+  return data
+}
 
 const updatePost = async (postId, userId, obj) => {
   const post = await Post.findOneAndUpdate({ _id: postId, user: userId }, obj, {
@@ -91,9 +92,8 @@ const updatePost = async (postId, userId, obj) => {
 //   return availableSpots
 // }
 
-async function createImage(postId, bucketUrl) {
-  const session = await PostsImages.startSession();
-  console.log("postId: ", postId);
+async function createImage(bucketUrl) {
+  const session = await PostsImages.startSession()
   console.log("bucketURL: ", bucketUrl);
 
   try {
@@ -101,7 +101,6 @@ async function createImage(postId, bucketUrl) {
       const newImage = await PostsImages.create(
         {
           url: bucketUrl,
-          publication: postId,
         },
         { session }
       );
@@ -123,10 +122,10 @@ async function getImageOr404(postId, order) {
 
   if (!publicationImage) {
     throw new Error(
-      "Not Found Publication Image with this order",
+      'Not Found Publication Image with this order',
       404,
-      "Not Found"
-    );
+      'Not Found'
+    )
   }
 
   return publicationImage;
@@ -172,7 +171,8 @@ const addLikeByPost = async (id, postId) => {
     session.endSession();
     throw new Error(error.message);
   }
-};
+
+}
 
 module.exports = {
   findAllPosts,
@@ -181,5 +181,6 @@ module.exports = {
   updatePost,
   addLikeByPost,
   // getAvailableImageOrders,
-  createImage,
-};
+  createImage
+}
+

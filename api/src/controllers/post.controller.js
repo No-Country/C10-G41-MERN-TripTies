@@ -5,8 +5,9 @@ const Post = require("../services/post.services");
 const { unlinkFile } = require("../utils/unlinkFile");
 
 const postNewPost = async (req, res, next) => {
-  const userId = req.user._id;
-  const content = req.body;
+
+  const userId = req.user._id
+  const { content } = req.body
 
   try {
     const data = await Post.createPost(userId, content);
@@ -132,8 +133,8 @@ const getPostById = async (req, res) => {
 //! --------------------POST IMAGES -------------------------
 
 const createImagePost = async (req, res, next) => {
-  const { postId } = req.params;
-  const files = req.files;
+
+  const files = req.files
 
   try {
     if (!files || files.length === 0) {
@@ -149,9 +150,9 @@ const createImagePost = async (req, res, next) => {
 
         await uploadFile(file, fileName);
 
-        const newImage = await Post.createImage(postId, bucketUrl);
-        console.log("newImage: ", newImage);
-        return newImage;
+        const newImage = await Post.createImage( bucketUrl)
+        console.log('newImage: ', newImage)
+        return newImage
       })
     );
 
