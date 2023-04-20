@@ -12,6 +12,9 @@ function DropdownUser({ display }: string | any) {
   const handleLogOut = () => {
     dispatch(cleanProfile());
     cookies.remove("login");
+    cookies.remove("idUser");
+    cookies.remove("token");
+    cookies.set("visit", false);
     nav("/");
   };
 

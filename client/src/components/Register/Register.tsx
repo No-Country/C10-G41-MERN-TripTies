@@ -4,6 +4,7 @@ import visible from "../../img/visible.png";
 import google from "../../img/google.png";
 import facebook from "../../img/facebook.png";
 import Cross from "../../img/cross.png";
+import user from "../../img/user_avatar_default.jpg";
 import { useState, useEffect } from "react";
 import MiniFooter from "../MiniFooter/MiniFooter";
 import {
@@ -14,7 +15,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../redux/store/hooks";
 import { FormState, Users } from "../../types";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 import {
   IResolveParams,
   LoginSocialGoogle,
@@ -43,7 +44,7 @@ function Register(): JSX.Element {
     password: "",
     firstName: "",
     lastName: "",
-    photo: "",
+    photoUser: user,
   });
   const [userGoogle, setUserGoogle] = useState<Users>({
     password: "",
@@ -51,7 +52,7 @@ function Register(): JSX.Element {
     email: "",
     firstName: "",
     lastName: "",
-    photo: "",
+    photoUser: "",
   });
   const [userFacebook, setUserFacebook] = useState<Users>({
     password: "",
@@ -59,7 +60,7 @@ function Register(): JSX.Element {
     email: "",
     firstName: "",
     lastName: "",
-    photo: "",
+    photoUser: "",
   });
 
   //Handles
@@ -88,11 +89,7 @@ function Register(): JSX.Element {
         newUser.email.length === 0 ||
         newUser.password.length === 0
       ) {
-        swal({
-          title: "All the fields are required",
-          className: `${style.alert}`,
-          icon: "warning",
-        });
+        Swal.fire({ title: "All the fields are required", icon: "warning" });
       } else {
         dispatch(createUser(newUser));
         setInput({
@@ -101,20 +98,24 @@ function Register(): JSX.Element {
           password: "",
           firstName: "",
           lastName: "",
-          photo: "",
+          photoUser: "",
         });
-
         if (newUser.firstName === "" && newUser.lastName === "") {
-          swal({
+          Swal.fire({
             title: "You will be redirected to complete data for your profile",
-            className: `${style.alert}`,
             icon: "warning",
           })
             .then(() => {
               dispatch(loginUser(newUser));
-              cookies.set("login", true);
+              cookies.set("fisrtLoading", true);
             })
-            .then(() => nav("/completeProfile"));
+            .then(() => {
+              cookies.set("login", true);
+              nav("/completeProfile");
+            });
+        } else {
+          dispatch(loginUser(newUser));
+          cookies.set("fisrtLoading", true);
         }
       }
     } catch (error) {
@@ -123,12 +124,13 @@ function Register(): JSX.Element {
   };
 
   const handleOnResolveGoogle = ({ data, provider }: IResolveParams) => {
+    console.log("datos", data);
     setUserGoogle({
       username: data && data.name,
       email: data && data.email,
       firstName: data && data.given_name,
       lastName: data && data.family_name,
-      photo: data && data.picture,
+      photoUser: data && data.picture,
       password: `${Math.random().toString(36).substring(2, 7)}`,
     });
   };
@@ -139,7 +141,7 @@ function Register(): JSX.Element {
       email: data && data.email,
       firstName: data && data.first_name,
       lastName: data && data.last_name,
-      photo: data && data.picture.data.url,
+      photoUser: data && data.picture.data.url,
       password: `${Math.random().toString(36).substring(2, 7)}`,
     });
   };
@@ -148,19 +150,24 @@ function Register(): JSX.Element {
     throw err;
   };
 
-  //InitialState of component
+  //Submit register with social network
   useEffect(() => {
     if (userGoogle.email !== "") {
-      dispatch(createUser(userGoogle))
-        .then(() => {
+      console.log("lo q va", userGoogle);
+      dispatch(createUser(userGoogle)).then((data: any) => {
+        if (data.response?.data !== "User has already exist") {
           dispatch(loginSocialNetworks(userGoogle));
           cookies.set("login", true);
-        })
-        .then(() => {
           setTimeout(() => {
             nav("/home");
           }, 1000);
-        });
+        } else {
+          Swal.fire({
+            title: "User has already exist, you will be redirected to login",
+            icon: "warning",
+          }).then(() => nav("/login"));
+        }
+      });
     }
   }, [userGoogle]);
 

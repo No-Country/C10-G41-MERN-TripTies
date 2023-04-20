@@ -16,7 +16,7 @@ interface User {
   password: string;
   first_name: string;
   last_name: string;
-  photo: string;
+  photoUser: string;
   role: string;
   createdAt: string;
   updatedAt: string;
@@ -24,7 +24,7 @@ interface User {
   isOnline: boolean;
 }
 
-export default function SectionChat({ setChat }: ChatProps): JSX.Element {
+export default function SectionChat(): JSX.Element {
   const avatarDefault = avatar7;
 
   // Obtener token del almacenamiento local
@@ -64,8 +64,6 @@ export default function SectionChat({ setChat }: ChatProps): JSX.Element {
       "UserChat",
       JSON.stringify({ name: name, avatar: avatar, id })
     );
-
-    setChat({ name, avatar });
   }
 
   return (
@@ -89,13 +87,17 @@ export default function SectionChat({ setChat }: ChatProps): JSX.Element {
                 <div key={index} className={styles.avatar}>
                   <img
                     src={
-                      e.photo && e.photo?.length > 10 ? e.photo : avatarDefault
+                      e.photoUser && e.photoUser?.length > 10
+                        ? e.photoUser
+                        : avatarDefault
                     }
                     alt={e.username}
                   />
                   <a
                     style={{ cursor: "pointer" }}
-                    onClick={() => handleNewChat(e.username, e.photo, e._id)}
+                    onClick={() =>
+                      handleNewChat(e.username, e.photoUser, e._id)
+                    }
                   >
                     <div className={styles.text}>
                       <h2>{e.username}</h2>

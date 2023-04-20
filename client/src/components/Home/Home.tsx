@@ -18,10 +18,12 @@ import ModalPost from "../ModalPost/ModalPost";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import { getAllPublications, getTags } from "../../redux/actions/Publications";
 import Cookies from "universal-cookie";
-import { Profile, Tags, Chat } from "../../types";
-import { getProfileUser } from "../../redux/actions/Users";
+import { Profile, Tags, Chat, Users } from "../../types";
+import { getProfileUser, getUserById } from "../../redux/actions/Users";
 import { useNavigate } from "react-router-dom";
 import Loading from "../Loading/Loading";
+import PageLoading from "../Page Loading/PageLoading";
+import Swal from "sweetalert2";
 
 function Home(): JSX.Element {
   const selector = useAppSelector;
@@ -32,14 +34,17 @@ function Home(): JSX.Element {
   const cookies = new Cookies();
   const login = cookies.get("login");
   const visit = cookies.get("visit");
+  const firstLoading = cookies.get("fisrtLoading");
 
   //States of Redux
   const allPublications = selector<any>((state) => state.publications);
   const profile: Profile = selector((state) => state.profile);
   const tags = selector<any>((state) => state.tags);
 
+  console.log(profile);
   //States of component
-  const [loading, setLoading] = useState(true);
+  const [loadingHome, setLoadingHome] = useState(true);
+  const [loadingPublication, setLoadingPublications] = useState(false);
   const [loadingModal, setLoadingModal] = useState(true);
   const [chat, setChat] = useState<Chat>({ id: "", name: "", avatar: "" });
   let [publications, setPublications] = useState("");
@@ -69,11 +74,29 @@ function Home(): JSX.Element {
   };
 
   const handleOpen = () => {
-    setVisible(true);
-    setLoadingModal(true);
-    setTimeout(() => {
-      setLoadingModal(false);
-    }, 1500);
+    if (login === "true") {
+      cookies.set("visit", false);
+      setVisible(true);
+      setLoadingModal(true);
+      setTimeout(() => {
+        setLoadingModal(false);
+      }, 1500);
+    } else {
+      Swal.fire({
+        title: "For write a publications, you should login to page",
+        text: "You will be redirected to the login page, do you agree?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, come on!",
+        cancelButtonText: "Continue how visitor!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          nav("/register");
+        }
+      });
+    }
   };
 
   //InitialState of component
@@ -83,7 +106,8 @@ function Home(): JSX.Element {
       dispatch(getProfileUser());
       dispatch(getTags());
       setTimeout(() => {
-        setLoading(false);
+        cookies.remove("fisrtLoading");
+        setLoadingHome(false);
       }, 3000);
     } else {
       nav("/");
@@ -94,9 +118,13 @@ function Home(): JSX.Element {
     publications === ""
       ? allPublications.posts
       : allPublications &&
-        allPublications.posts?.filter((e: any) => e.tag.includes(publications));
+        allPublications.posts?.filter((e: any) =>
+          e.tag?.includes(publications)
+        );
 
-  return (
+  return firstLoading === "true" ? (
+    <PageLoading />
+  ) : (
     <div className={style.homeContainer}>
       <NavBar
         handleHome={handleHome}
@@ -113,7 +141,7 @@ function Home(): JSX.Element {
                 handleSaved={handleSaved}
                 handleVisited={handleVisited}
               />
-              <SectionChat chat={chat} setChat={setChat} />
+              <SectionChat />
             </div>
           </div>
           <div className={style.footerLeft}>
@@ -152,12 +180,18 @@ function Home(): JSX.Element {
             </div>
           </div>
           <div className={style.feedPublications}>
-            {loading ? (
+            {loadingPublication ? (
               <Loading />
             ) : (
               useTags &&
               useTags?.map((e: any, i: number) => (
-                <Card places={e} login={login} profile={profile} key={i} />
+                <Card
+                  places={e}
+                  login={login}
+                  profile={profile}
+                  cookies={cookies}
+                  key={i}
+                />
               ))
             )}
           </div>
@@ -165,7 +199,7 @@ function Home(): JSX.Element {
         <div className={style.rigthcontainer}>
           <div className={style.feedRight}>
             <SectionDiscover
-              setLoading={setLoading}
+              setLoading={setLoadingPublications}
               tags={tags}
               setPublications={setPublications}
             />
@@ -176,7 +210,7 @@ function Home(): JSX.Element {
           </div>
         </div>
       </div>
-      <ChatBubble chat={chat} setChat={setChat} />
+      <ChatBubble />
     </div>
   );
 }

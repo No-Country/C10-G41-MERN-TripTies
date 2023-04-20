@@ -26,7 +26,7 @@ function SocialNetworks({ setInput, newUser }: props): JSX.Element {
     email: "",
     firstName: "",
     lastName: "",
-    photo: "",
+    photoUser: "",
   });
 
   const [userFacebook, setUserFacebook] = useState<Users>({
@@ -35,7 +35,7 @@ function SocialNetworks({ setInput, newUser }: props): JSX.Element {
     email: "",
     firstName: "",
     lastName: "",
-    photo: "",
+    photoUser: "",
   });
 
   // ESTO NO FUNCIONA TODAVIA
@@ -46,7 +46,7 @@ function SocialNetworks({ setInput, newUser }: props): JSX.Element {
       email: data && data.email,
       firstName: data && data.first_name,
       lastName: data && data.last_name,
-      photo: data && data.picture,
+      photoUser: data && data.picture,
       password: `${Math.random().toString(36).substring(2, 7)}`,
     });
   };
@@ -57,7 +57,7 @@ function SocialNetworks({ setInput, newUser }: props): JSX.Element {
       email: data && data.email,
       firstName: data && data.first_name,
       lastName: data && data.last_name,
-      photo: data && data.picture.data.url,
+      photoUser: data && data.picture.data.url,
       password: `${Math.random().toString(36).substring(2, 7)}`,
     });
   };

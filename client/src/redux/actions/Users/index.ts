@@ -9,22 +9,23 @@ export const createUser = (newUser: Users) => {
   return async function () {
     try {
       const response = await axios.post("auth/sign-up", newUser);
-      console.log(response);
+      cookies.set("idUser", response.data._id);
       return response;
     } catch (error) {
       console.log(error);
-      throw error;
+      return error;
     }
   };
 };
 
 //Action para logear a un usuario
-export const loginUser = (user: object) => {
+export const loginUser = (user: any) => {
   return async function () {
     try {
       const response = await axios.post("/auth/login", user);
-      cookies.set("id", response.data.id);
+      cookies.set("idUser", response.data.id);
       cookies.set("token", response.data.token);
+      console.log(response);
       return response;
     } catch (error) {
       throw error;
@@ -37,7 +38,7 @@ export const loginSocialNetworks = (user: object) => {
   return async function () {
     try {
       const response = await axios.post("/auth/loginSocial", user);
-      cookies.set("id", response.data.id);
+      cookies.set("idUser", response.data.id);
       cookies.set("token", response.data.token);
       return response;
     } catch (error) {
@@ -47,7 +48,7 @@ export const loginSocialNetworks = (user: object) => {
 };
 
 export const getUserById = () => {
-  const id = cookies.get("id");
+  const id = cookies.get("idUser");
   const token = cookies.get("token");
 
   return async function (dispatch: AppDispatch) {
@@ -62,7 +63,7 @@ export const getUserById = () => {
 };
 
 export const getProfileUser = () => {
-  const id = cookies.get("id");
+  const id = cookies.get("idUser");
   const token = cookies.get("token");
   return async function (dispatch: AppDispatch) {
     const response = await axios
@@ -72,6 +73,20 @@ export const getProfileUser = () => {
       .then((response) =>
         dispatch({ type: "GET_PROFILE", payload: response.data })
       );
+    console.log(response);
+    return response;
+  };
+};
+
+export const editProfile = (data: object) => {
+  const idUser = cookies.get("idUser");
+  const token = cookies.get("token");
+  return async function () {
+    const response = await axios.put(`/profiles/${idUser}`, data, {
+      headers: { Authorization: `jwt ${token}` },
+    });
+    console.log(response);
+    return response;
   };
 };
 
@@ -157,6 +172,19 @@ export const createConversation = (newConversation: Conversation) => {
       return response;
     } catch (error) {
       console.log(error);
+      throw error;
+    }
+  };
+};
+
+// Save publications
+export const savePublications = (newSave: object) => {
+  return async function () {
+    try {
+      const response = await axios.post("/user/save", newSave);
+      console.log(response);
+      return response;
+    } catch (error) {
       throw error;
     }
   };

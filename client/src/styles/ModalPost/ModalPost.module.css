@@ -226,6 +226,10 @@
   filter: saturate(300%) contrast(90%) brightness(100%);
 }
 
+.media input {
+  display: none;
+}
+
 .infoPost {
   width: 90%;
   display: flex;
@@ -245,6 +249,27 @@
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+}
+
+.reactSelectContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-width: 100px;
+  height: 40px;
+  outline: none;
+}
+
+.reactSelectContainer img {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
 }
 
 .selectContainer {

@@ -10,12 +10,13 @@ import { getCountries } from "../../redux/actions/VariablesActions";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import { Country, Profile, Tags } from "../../types";
 import { Rating } from "react-simple-star-rating";
-import { createTag, postPublication } from "../../redux/actions/Publications";
+import { postPublication } from "../../redux/actions/Publications";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import makeAnimated from "react-select/animated";
 import Creatable, { useCreatable } from "react-select/creatable";
+import Select from "react-select";
 import Loading from "../Loading/Loading";
 
 type props = {
@@ -57,20 +58,7 @@ function ModalPost({
     privacity: "Public",
     text: "",
     tag: [],
-    photo: [
-      {
-        url: "https://res.cloudinary.com/dtioqvhiz/image/upload/v1681420019/506659-eiffel-tower_uruuy6.webp",
-        type: "image",
-      },
-      {
-        url: "https://res.cloudinary.com/dtioqvhiz/image/upload/v1681420007/paris_37bc088a_1280x720_zyikii.jpg",
-        type: "image",
-      },
-      {
-        url: "https://res.cloudinary.com/dtioqvhiz/image/upload/v1681420007/230324090551-01-visiting-france-during-protests-what-to-know-top_od59li.jpg",
-        type: "image",
-      },
-    ],
+    photo: [],
     video: [
       {
         url: "https://res.cloudinary.com/dtioqvhiz/video/upload/v1681420038/y2mate.com_-_Par%C3%ADs_Francia_una_ciudad_hermosa_y_tur%C3%ADstica_v240P_jbn2rr.mp4",
@@ -84,6 +72,16 @@ function ModalPost({
   });
 
   const [value, setValue] = useState("");
+
+  //Configuration of Select Countries
+  const optionsCountry = countries?.map((e: any) => {
+    return { value: e.name.common, label: e.name.common };
+  });
+
+  //Configuration of Select Clasifications
+  const optionClasification = clasification?.map((e: any) => {
+    return { value: e, label: e };
+  });
 
   //Configuration of Select Tags
   const options = tags?.map((e: any) => {
@@ -131,7 +129,21 @@ function ModalPost({
   const handleSelect = (e: any) => {
     setPost({
       ...post,
-      [e.target.name]: e.target.value,
+      [e.target?.name]: e.target?.value,
+    });
+  };
+
+  const handleSelectCountry = (e: any) => {
+    setPost({
+      ...post,
+      location: e.value,
+    });
+  };
+
+  const handleSelectClasification = (e: any) => {
+    setPost({
+      ...post,
+      clasification: e.value,
     });
   };
 
@@ -146,11 +158,33 @@ function ModalPost({
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    dispatch(postPublication(post)).then(() => dispatch(createTag(post)));
+    dispatch(postPublication(post));
     // .then(() => nav("/home"));
   };
 
-  console.log(loadingModal);
+  const handleUpdatePhotos = (file: any) => {
+    const image = file[0];
+
+    if (image) {
+      setPost({
+        ...post,
+        photo: [...post.photo, image.name],
+      });
+      // const reader = new FileReader();
+      // reader.onload = (e) => {
+      //   console.log(e);
+      //   setPost({
+      //     ...post,
+      //     photo: [...post.photo, e.target?.result],
+      //   });
+      // };
+      // reader.readAsArrayBuffer(image);
+    }
+
+    console.log(image);
+  };
+
+  console.log(post);
 
   return (
     <div className={style.modalContainer}>
@@ -171,7 +205,7 @@ function ModalPost({
               </aside>
               <aside className={style.modalInfoUser}>
                 <img
-                  src={profile.photo === "" ? user : profile.photo}
+                  src={profile.photoUser}
                   alt=""
                   width="72"
                   height="72"
@@ -207,7 +241,7 @@ function ModalPost({
                 value={post.text}
               ></textarea>
               <aside className={style.tags}>
-                <div className={style.selectTag}>
+                <div className={style.reactSelectContainer}>
                   <Creatable
                     isClearable
                     onCreateOption={handleCreate}
@@ -218,15 +252,30 @@ function ModalPost({
                     placeholder="Select 3 tags!"
                     onChange={handleTag}
                     styles={{
+                      placeholder: (state) => ({
+                        ...state,
+                        color: "#6c5206",
+                      }),
                       control: (state) => ({
                         ...state,
                         fontSize: 16,
-                        color: "brown",
-                        minWidth: 200,
+                        color: "#6c5206",
+                        minWidth: 150,
                         initialLetter: "#",
+                        background: "none",
+                        border: "none",
+                      }),
+                      indicatorSeparator: (state) => ({
+                        ...state,
+                        display: "none",
+                      }),
+                      indicatorsContainer: (state) => ({
+                        ...state,
+                        display: "none",
                       }),
                     }}
                   ></Creatable>
+                  <img src={dropDownArrow} alt="" />
                 </div>
 
                 <div className={style.previewTag}>
@@ -243,15 +292,15 @@ function ModalPost({
               </aside>
 
               <aside className={style.buttons}>
-                <button>
-                  <img
-                    src={addPhoto}
-                    alt=""
-                    width="98"
-                    height="98"
-                    className={style.media}
+                <label htmlFor="photo" className={style.media}>
+                  <img src={addPhoto} alt="" width="98" height="98" />
+                  <input
+                    type="file"
+                    id="photo"
+                    onChange={(e) => handleUpdatePhotos(e.target.files)}
                   />
-                </button>
+                </label>
+
                 <button>
                   <img
                     src={addVideo}
@@ -279,40 +328,66 @@ function ModalPost({
                   />
                 </div>
                 <div className={style.selectContainer}>
-                  <select
-                    onChange={handleSelect}
-                    className={style.clasification}
-                    name="clasification"
-                  >
-                    <option value="" disabled selected hidden>
-                      Add clasification!
-                    </option>
-                    {clasification &&
-                      clasification.map((e, i) => (
-                        <option key={i} value={e}>
-                          {e}
-                        </option>
-                      ))}
-                  </select>
+                  <Select
+                    options={optionClasification}
+                    onChange={handleSelectClasification}
+                    maxMenuHeight={120}
+                    placeholder="Add Clasification!"
+                    styles={{
+                      placeholder: (state) => ({
+                        ...state,
+                        color: "#6c5206",
+                      }),
+                      control: (base, state) => ({
+                        ...base,
+                        color: "#6c5206",
+                        minWidth: 150,
+                        initialLetter: "#",
+                        background: "none",
+                        border: "none",
+                      }),
+                      indicatorSeparator: (state) => ({
+                        ...state,
+                        display: "none",
+                      }),
+                      indicatorsContainer: (state) => ({
+                        ...state,
+                        display: "none",
+                      }),
+                    }}
+                  ></Select>
                   <img src={dropDownArrow} alt="" />
                 </div>
 
-                <div className={style.selectContainer}>
-                  <select
-                    onChange={handleSelect}
-                    className={style.location}
-                    name="location"
-                  >
-                    <option value="" disabled selected hidden>
-                      Add location!
-                    </option>
-                    {filterCountry &&
-                      filterCountry.map((e, i) => (
-                        <option key={i} value={e}>
-                          {e}
-                        </option>
-                      ))}
-                  </select>
+                <div className={style.reactSelectContainer}>
+                  <Select
+                    options={optionsCountry}
+                    onChange={handleSelectCountry}
+                    maxMenuHeight={120}
+                    placeholder="Add location!"
+                    styles={{
+                      placeholder: (state) => ({
+                        ...state,
+                        color: "#6c5206",
+                      }),
+                      control: (base, state) => ({
+                        ...base,
+                        color: "#6c5206",
+                        minWidth: 150,
+                        initialLetter: "#",
+                        background: "none",
+                        border: "none",
+                      }),
+                      indicatorSeparator: (state) => ({
+                        ...state,
+                        display: "none",
+                      }),
+                      indicatorsContainer: (state) => ({
+                        ...state,
+                        display: "none",
+                      }),
+                    }}
+                  ></Select>
                   <img src={dropDownArrow} alt="" />
                 </div>
                 <div className={style.selectContainer}>
@@ -327,12 +402,12 @@ function ModalPost({
               </aside>
               <aside className={style.buttonPost}>
                 <button
-                  disabled={
-                    post.text === "" ||
-                    post.clasification === "" ||
-                    post.location === "" ||
-                    post.name === ""
-                  }
+                  // disabled={
+                  //   post.text === "" ||
+                  //   post.clasification === "" ||
+                  //   post.location === "" ||
+                  //   post.name === ""
+                  // }
                   type="submit"
                 >
                   Post
