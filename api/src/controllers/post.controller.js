@@ -6,7 +6,7 @@ const { unlinkFile } = require('../utils/unlinkFile')
 
 const postNewPost = async (req, res, next) => {
   const userId = req.user._id
-  const content = req.body
+  const { content } = req.body
 
   try {
     const data = await Post.createPost(userId, content)
@@ -131,7 +131,6 @@ const getPostById = async (req, res) => {
 //! --------------------POST IMAGES -------------------------
 
 const createImagePost = async (req, res, next) => {
-  const { postId } = req.params
   const files = req.files
 
   try {
@@ -141,12 +140,12 @@ const createImagePost = async (req, res, next) => {
 
     const newImages = await Promise.all(
       files.map(async (file) => {
-        const fileName = `uploads/posts/photos/${postId}.${file.originalname.split('.').pop()}`
+        const fileName = `uploads/posts/photos/${file.originalname.split('.').pop()}`
         const bucketUrl = `${process.env.AWS_DOMAIN}/${fileName}`
 
         await uploadFile(file, fileName)
 
-        const newImage = await Post.createImage(postId, bucketUrl)
+        const newImage = await Post.createImage( bucketUrl)
         console.log('newImage: ', newImage)
         return newImage
       })

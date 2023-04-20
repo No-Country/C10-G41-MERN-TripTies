@@ -29,7 +29,6 @@ const findPostById = async (postId) => {
   return post
 }
 
-
 const createPost = async (id, obj) => {
   let userId = await User.findOne({ _id: id })
 
@@ -40,7 +39,7 @@ const createPost = async (id, obj) => {
     photoUser: userId.photo,
   }
 
-  const data = await Post.create({  
+  const data = await Post.create({
     user: user.id,
     content: obj.content,
     tag: obj.tag,
@@ -53,6 +52,7 @@ const createPost = async (id, obj) => {
     location: obj.location,
   })
   await Tag.createTag(data._id.valueOf(), data.tag)
+
   return data
 }
 
@@ -92,17 +92,15 @@ const updatePost = async (postId, userId, obj) => {
 //   return availableSpots
 // }
 
-async function createImage(postId, bucketUrl) {
+async function createImage(bucketUrl) {
   const session = await PostsImages.startSession()
-  console.log('postId: ', postId)
-  console.log('bucketURL: ', bucketUrl)
+  // console.log('postId: ', postId)
 
   try {
     await session.withTransaction(async () => {
       const newImage = await PostsImages.create(
-        { 
-          url: bucketUrl, 
-          publication: postId 
+        {
+          url: bucketUrl,
         },
         { session }
       )
@@ -123,7 +121,11 @@ async function getImageOr404(postId, order) {
   }).exec()
 
   if (!publicationImage) {
-    throw new Error('Not Found Publication Image with this order', 404, 'Not Found')
+    throw new Error(
+      'Not Found Publication Image with this order',
+      404,
+      'Not Found'
+    )
   }
 
   return publicationImage
@@ -171,7 +173,6 @@ const addLikeByPost = async (id, postId) => {
   }
 }
 
-
 module.exports = {
   findAllPosts,
   findPostById,
@@ -179,5 +180,5 @@ module.exports = {
   updatePost,
   addLikeByPost,
   // getAvailableImageOrders,
-  createImage
+  createImage,
 }
