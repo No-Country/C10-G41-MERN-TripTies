@@ -70,9 +70,10 @@ export const getProfileUser = () => {
       .get(`/profiles/${id}`, {
         headers: { Authorization: `jwt ${token}` },
       })
-      .then((response) =>
+      .then((response) =>{
+      console.log(response)
         dispatch({ type: "GET_PROFILE", payload: response.data })
-      );
+}      );
     console.log(response);
     return response;
   };
@@ -107,6 +108,7 @@ export const getAllUsers = () => {
           Authorization: `jwt ${cookies.get("token")}`,
         },
       });
+      console.log(response.data)
       dispatch({ type: "GET_USERS", payload: response.data });
       return response.data;
     } catch (error) {
@@ -139,12 +141,13 @@ export const getAllConversations = () => {
 export const newMessage = (id: string, newMessage: Message) => {
   return async function () {
     try {
+      const token = cookies.get("token");
       const response = await axios.post(
         `conversations/${id}/message`,
         newMessage,
         {
           headers: {
-            Authorization: `jwt ${localStorage.getItem("token")}`,
+            Authorization: `jwt ${token}`,
             Accept: "application/json",
             "Content-Type": "application/json",
           },
@@ -162,9 +165,10 @@ export const newMessage = (id: string, newMessage: Message) => {
 export const createConversation = (newConversation: Conversation) => {
   return async function () {
     try {
+      const token = cookies.get("token");
       const response = await axios.post(`/conversations`, newConversation, {
         headers: {
-          Authorization: `jwt ${localStorage.getItem("token")}`,
+          Authorization: `jwt ${token}`,
           Accept: "application/json",
           "Content-Type": "application/json",
         },

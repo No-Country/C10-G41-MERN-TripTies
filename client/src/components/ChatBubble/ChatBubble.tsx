@@ -122,9 +122,11 @@ export default function ChatBubble() {
                 title: `${user.id}`,
                 participantId: `${user.id}`,
             };
+            console.log('NO EXISTE')
             const response = await dispatch(createConversation(newConversation));
             setConversationID(response.data.participant1.conversation);
         } else {
+            console.log('EXISTE')
         }
     }
 
