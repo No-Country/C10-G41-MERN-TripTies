@@ -84,7 +84,7 @@ function Card({ places, login, profile, cookies }: props) {
         dispatch(
           savePublications({
             postId: e.target.value,
-            userId: cookies.get("id"),
+            userId: cookies.get("idUser"),
           })
         ).then(() => dispatch(getUserById()));
       });
@@ -96,7 +96,7 @@ function Card({ places, login, profile, cookies }: props) {
         dispatch(
           savePublications({
             postId: e.target.value,
-            userId: cookies.get("id"),
+            userId: cookies.get("idUser"),
           })
         ).then(() => dispatch(getUserById()));
       });
@@ -107,7 +107,7 @@ function Card({ places, login, profile, cookies }: props) {
     <>
       <section className={style.container}>
         <img
-          src={user.user?.photoUser}
+          src={places.user?.photoUser}
           alt="avatar"
           width={50}
           height={50}
@@ -117,7 +117,7 @@ function Card({ places, login, profile, cookies }: props) {
           <div className={style.userInfo}>
             <aside>
               <h4 className={style.name}>
-                {user.user?.first_name} {user.user?.last_name}
+                {places.user?.firstName} {places.user?.lastName}
               </h4>
               <span>
                 {dayMonthYear} at {minutesSeconds}
@@ -172,7 +172,7 @@ function Card({ places, login, profile, cookies }: props) {
               <span>{places.name}</span>
             </aside>
           </div>
-          {/* <SlideShow media={[places.photo, places.video]} /> */}
+          <SlideShow media={[places.photoPost, places.video]} />
           <div className={style.likesAndComments}>
             <aside>
               <img src={boldHeart} alt="bold heart" />

@@ -8,23 +8,19 @@ import { useNavigate } from "react-router-dom";
 
 type props = {
   handleSaved: any;
-  handleVisited: any;
 };
 
-const SectionAccount = ({ handleSaved, handleVisited }: props) => {
-
+const SectionAccount = ({ handleSaved }: props) => {
   const nav = useNavigate();
-  
 
   return (
     <>
       <h3 className={style.titleAccount}>Account</h3>
       <div className={style.containerAccount}>
-        <img 
-        src={window.location.pathname === "/home"
-            ? homeBold
-            : home } 
-        alt="home" />
+        <img
+          src={window.location.pathname === "/home" ? homeBold : home}
+          alt="home"
+        />
         <button onClick={() => nav("/home")} className={style.buttons}>
           Home
         </button>
@@ -32,7 +28,9 @@ const SectionAccount = ({ handleSaved, handleVisited }: props) => {
 
       <div className={style.containerAccount}>
         <img src={user} alt="user" />
-        <button onClick={() => nav("/profile")} className={style.buttons}>My Profile</button>
+        <button onClick={() => nav("/profile")} className={style.buttons}>
+          My Profile
+        </button>
       </div>
 
       <div className={style.containerAccount}>

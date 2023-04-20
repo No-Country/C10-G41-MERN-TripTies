@@ -36,21 +36,26 @@ const createPost = async (id, obj) => {
     id: userId._id,
     firstName: userId.first_name,
     lastName: userId.last_name,
-    photoUser: userId.photo,
+    photoUser: userId.photoUser,
   };
 
+  console.log("obj", obj.tag);
+
   const data = await Post.create({
-    user: user.id,
+    user: user,
     content: obj.content,
     tag: obj.tag,
     privacity: obj.privacity,
-    photoPost: obj.url,
+    photoPost: obj.photo,
     video: obj.video,
     rate: obj.rate,
     name: obj.name,
     clasification: obj.clasification,
     location: obj.location,
   });
+
+  console.log("data", data);
+
   await Tag.createTag(data._id.valueOf(), data.tag);
   return data;
 };

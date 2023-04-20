@@ -8,31 +8,35 @@ const postNewPost = async (req, res, next) => {
   const userId = req.user._id;
   const content = req.body;
 
+  const files = req.files;
+
+  console.log("CONTENIDO", content);
+  console.log("FILE", files);
+
   try {
     const data = await Post.createPost(userId, content);
-    const files = req.files;
-    console.log(data);
-    console.log(files);
+    //   const files = req;
+    //   console.log("data", data);
+    //   console.log("files", files);
 
-    if (files && files.length > 0) {
-      const newImages = await Promise.all(
-        files.map(async (file) => {
-          const fileName = `uploads/posts/photos/${data._id}.${file.originalname
-            .split(".")
-            .pop()}`;
-          const bucketUrl = `${process.env.AWS_DOMAIN}/${fileName}`;
+    //   if (files && files.length > 0) {
+    //     const newImages = await Promise.all(
+    //       files.map(async (file) => {
+    //         const fileName = `uploads/posts/photos/${data._id}.${file.name}`;
+    //         const bucketUrl = `${process.env.AWS_DOMAIN}/${fileName}`;
 
-          await uploadFile(file, fileName);
+    //         console.log("url", bucketUrl);
 
-          const newImage = await Post.createImage(data._id, bucketUrl);
-          return newImage;
-        })
-      );
+    //         await uploadFile(file, fileName);
+    //         const newImage = await Post.createImage(data._id, bucketUrl);
+    //         return newImage;
+    //       })
+    //     );
 
-      // Actualizar el campo photoPost con la URL de la imagen
-      const urls = newImages.map((image) => image.url);
-      await postModels.updateOne({ _id: data._id }, { photoPost: urls });
-    }
+    //     // // Actualizar el campo photoPost con la URL de la imagen
+    //     const urls = newImages.map((image) => image.url);
+    //     await postModels.updateOne({ _id: data._id }, { photoPost: urls });
+    //   }
 
     res.status(201).json(data);
   } catch (err) {

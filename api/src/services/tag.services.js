@@ -9,8 +9,10 @@ const findAllTags = async () => {
 
 const createTag = async (postId, tags) => {
   let postID = await Post.findOne({ _id: postId });
-  await tags.map(async (element) => {
+  await tags?.map(async (element) => {
     let tagID = await Tag.findOne({ tag: element });
+
+    console.log("soy el tag", tagID);
 
     if (!tagID) {
       const data = await Tag.create({

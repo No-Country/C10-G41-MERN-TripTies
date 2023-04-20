@@ -7,6 +7,7 @@ const {
   getUserById,
   getAllUsers,
   save,
+  getAllSave,
 } = require("../controllers/user.controller");
 const isAdmin = require("../middlewares/isAdmin.middleware");
 
@@ -18,6 +19,8 @@ router.get(
 ); //Only admins
 
 router.route("/:userId").get(getUserById);
+
+router.get("/save/:userId", getAllSave);
 
 router.post("/save", save);
 

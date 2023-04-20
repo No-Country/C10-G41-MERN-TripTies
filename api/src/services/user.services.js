@@ -4,6 +4,8 @@ const Profile = require("../models/profiles.models");
 const Post = require("../models/post.models");
 
 const { hash } = require("../utils/crypto");
+const { response } = require("express");
+const { findPostById } = require("./post.services");
 
 const getAllUsers = () => {
   return new Promise((resolve, reject) => {
@@ -134,7 +136,16 @@ const savePublications = async (postId, userId) => {
   }
 };
 
-const getPulicationsSave = async (posts) => {};
+const getPulicationsSave = async (userId) => {
+  let user = await User.findById({ _id: userId });
+  const saved = user.saved;
+  let mapeo = saved?.map(async (e) => {
+    await findPostById(e).then((response) => {
+      return response;
+    });
+  });
+  return mapeo;
+};
 
 module.exports = {
   getAllUsers,

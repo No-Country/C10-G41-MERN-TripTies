@@ -20,7 +20,7 @@ router
   .get(getAllPosts)
   .post(
     passport.authenticate("jwt", { session: false }),
-    multerPublicationsPhotos.array("image", 3),
+    multerPublicationsPhotos.single("image"),
     postNewPost,
     postTag
   );

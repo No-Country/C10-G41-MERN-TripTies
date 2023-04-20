@@ -6,6 +6,7 @@ const initialState = {
   countries: [],
   conversations: [],
   tags: [],
+  save: [],
 };
 
 interface Action {
@@ -54,6 +55,11 @@ const rootReducer = (state = initialState, action: Action) => {
       return {
         ...state,
         conversations: action.payload,
+      };
+    case "GET_SAVE":
+      return {
+        ...state,
+        save: action.payload,
       };
     default:
       return { ...state };

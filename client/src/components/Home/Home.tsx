@@ -19,7 +19,11 @@ import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import { getAllPublications, getTags } from "../../redux/actions/Publications";
 import Cookies from "universal-cookie";
 import { Profile, Tags, Chat, Users } from "../../types";
-import { getProfileUser, getUserById } from "../../redux/actions/Users";
+import {
+  getProfileUser,
+  getPublicationsSave,
+  getUserById,
+} from "../../redux/actions/Users";
 import { useNavigate } from "react-router-dom";
 import Loading from "../Loading/Loading";
 import PageLoading from "../Page Loading/PageLoading";
@@ -39,15 +43,18 @@ function Home(): JSX.Element {
   //States of Redux
   const allPublications = selector<any>((state) => state.publications);
   const profile: Profile = selector((state) => state.profile);
+  const user = selector((state) => state.user);
   const tags = selector<any>((state) => state.tags);
+  const saveState = selector((state) => state.save);
 
-  console.log(profile);
   //States of component
   const [loadingHome, setLoadingHome] = useState(true);
   const [loadingPublication, setLoadingPublications] = useState(false);
   const [loadingModal, setLoadingModal] = useState(true);
   const [chat, setChat] = useState<Chat>({ id: "", name: "", avatar: "" });
+  const [render, setRender] = useState("all");
   let [publications, setPublications] = useState("");
+  const [publicationsSaved, setPublicationSaved] = useState(false);
   const [visible, setVisible] = useState(false);
 
   //Handles
@@ -55,22 +62,12 @@ function Home(): JSX.Element {
     e.preventDefault();
     // setHash(e.target.value);
   };
-  const handleHome = (e: any) => {};
-  const handleSaved = (e: any) => {
-    e.preventDefault();
-    // if (publicationsSaved === false) {
-    //   setPublicationSaved(true);
-    //   setPublicationsVisited(false);
-    //   setPublications(false);
-    // }
+  const handleHome = (e: any) => {
+    setRender("all");
   };
-  const handleVisited = (e: any) => {
-    e.preventDefault();
-    // if (publicationsVisited === false) {
-    //   setPublicationsVisited(true);
-    //   setPublicationSaved(false);
-    //   setPublications(false);
-    // }
+  const handleSaved = (e: any) => {
+    setRender("save");
+    dispatch(getPublicationsSave());
   };
 
   const handleOpen = () => {
@@ -103,6 +100,7 @@ function Home(): JSX.Element {
   useEffect(() => {
     if (login === "true" || visit === "true") {
       dispatch(getAllPublications());
+      dispatch(getUserById());
       dispatch(getProfileUser());
       dispatch(getTags());
       setTimeout(() => {
@@ -115,12 +113,15 @@ function Home(): JSX.Element {
   }, [login, visit]);
 
   const useTags =
-    publications === ""
-      ? allPublications.posts
-      : allPublications &&
-        allPublications.posts?.filter((e: any) =>
-          e.tag?.includes(publications)
-        );
+    (render === "all" && allPublications.posts) ||
+    (render === "tag" &&
+      allPublications &&
+      allPublications.posts?.filter((e: any) =>
+        e.tag?.includes(publications)
+      )) ||
+    (render === "save" && null);
+
+  console.log(saveState);
 
   return firstLoading === "true" ? (
     <PageLoading />
@@ -132,15 +133,13 @@ function Home(): JSX.Element {
         profile={profile}
         login={login}
         visit={visit}
+        setRender={setRender}
       />
       <div className={style.feedContainer}>
         <div className={style.leftContainer}>
           <div>
             <div className={style.feedLeft}>
-              <SectionAccount
-                handleSaved={handleSaved}
-                handleVisited={handleVisited}
-              />
+              <SectionAccount handleSaved={handleSaved} />
               <SectionChat />
             </div>
           </div>
@@ -202,6 +201,7 @@ function Home(): JSX.Element {
               setLoading={setLoadingPublications}
               tags={tags}
               setPublications={setPublications}
+              setRender={setRender}
             />
             <SectionSuggestions />
             <div className={style.footerrigth}>

@@ -18,6 +18,7 @@ import makeAnimated from "react-select/animated";
 import Creatable, { useCreatable } from "react-select/creatable";
 import Select from "react-select";
 import Loading from "../Loading/Loading";
+import axios from "axios";
 
 type props = {
   visible: boolean;
@@ -59,12 +60,7 @@ function ModalPost({
     text: "",
     tag: [],
     photo: [],
-    video: [
-      {
-        url: "https://res.cloudinary.com/dtioqvhiz/video/upload/v1681420038/y2mate.com_-_Par%C3%ADs_Francia_una_ciudad_hermosa_y_tur%C3%ADstica_v240P_jbn2rr.mp4",
-        type: "video",
-      },
-    ],
+    video: [],
     rate: 0,
     clasification: "",
     location: "",
@@ -158,33 +154,42 @@ function ModalPost({
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    dispatch(postPublication(post));
-    // .then(() => nav("/home"));
+    dispatch(postPublication(post)).then(() => nav("/home"));
   };
 
-  const handleUpdatePhotos = (file: any) => {
-    const image = file[0];
+  const handleUpdatePhotos = async (e: any) => {
+    const files = e.target.files[0];
+    const data = new FormData();
+    data.append("file", files);
+    data.append("upload_preset", "tripties");
 
-    if (image) {
-      setPost({
-        ...post,
-        photo: [...post.photo, image.name],
+    const response = await axios
+      .post("https://api.cloudinary.com/v1_1/dtpsfvnfo/image/upload", data)
+      .then((res) => {
+        console.log(res);
+        setPost({
+          ...post,
+          photo: [...post.photo, { url: res.data.url, type: "image" }],
+        });
       });
-      // const reader = new FileReader();
-      // reader.onload = (e) => {
-      //   console.log(e);
-      //   setPost({
-      //     ...post,
-      //     photo: [...post.photo, e.target?.result],
-      //   });
-      // };
-      // reader.readAsArrayBuffer(image);
-    }
-
-    console.log(image);
   };
 
-  console.log(post);
+  const handleUpdateVideos = async (e: any) => {
+    const files = e.target.files[0];
+    const data = new FormData();
+    data.append("file", files);
+    data.append("upload_preset", "tripties");
+
+    const response = await axios
+      .post("https://api.cloudinary.com/v1_1/dtpsfvnfo/video/upload", data)
+      .then((res) => {
+        console.log(res);
+        setPost({
+          ...post,
+          video: [...post.video, { url: res.data.url, type: "video" }],
+        });
+      });
+  };
 
   return (
     <div className={style.modalContainer}>
@@ -294,14 +299,10 @@ function ModalPost({
               <aside className={style.buttons}>
                 <label htmlFor="photo" className={style.media}>
                   <img src={addPhoto} alt="" width="98" height="98" />
-                  <input
-                    type="file"
-                    id="photo"
-                    onChange={(e) => handleUpdatePhotos(e.target.files)}
-                  />
+                  <input type="file" id="photo" onChange={handleUpdatePhotos} />
                 </label>
 
-                <button>
+                <label htmlFor="video" className={style.media}>
                   <img
                     src={addVideo}
                     alt=""
@@ -309,7 +310,8 @@ function ModalPost({
                     height="98"
                     className={style.media}
                   />
-                </button>
+                  <input type="file" id="video" onChange={handleUpdateVideos} />
+                </label>
               </aside>
               <aside className={style.infoPost}>
                 <div className={style.rate}>

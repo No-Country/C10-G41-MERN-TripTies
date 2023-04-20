@@ -189,3 +189,19 @@ export const savePublications = (newSave: object) => {
     }
   };
 };
+
+export const getPublicationsSave = () => {
+  const id = cookies.get("idUser");
+  return async function (dispatch: AppDispatch) {
+    try {
+      const response = await axios
+        .get(`/user/save/${id}`)
+        .then((response) =>
+          dispatch({ type: "GET_SAVE", payload: response.data })
+        );
+      console.log(response);
+    } catch (error) {
+      throw error;
+    }
+  };
+};

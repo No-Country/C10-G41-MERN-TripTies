@@ -85,7 +85,19 @@ const save = async (req, res) => {
     .catch((err) => res.status(400).json({ message: err.message }));
 };
 
-const getAllSave = async (req, res) => {};
+const getAllSave = async (req, res, next) => {
+  const { userId } = req.params;
+  try {
+    const user = await User.getPulicationsSave(userId);
+    if (!user) {
+      throw new Error(404, "User not found");
+    }
+
+    res.status(200).json({ user });
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
   postUser,
@@ -94,4 +106,5 @@ module.exports = {
   deleteUser,
   getInfoUser,
   save,
+  getAllSave,
 };

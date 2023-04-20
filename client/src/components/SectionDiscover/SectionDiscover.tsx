@@ -7,11 +7,13 @@ type props = {
   tags: any;
   setPublications: any;
   setLoading: any;
+  setRender: any;
 };
 function SectionDiscover({
   tags,
   setPublications,
   setLoading,
+  setRender,
 }: props): JSX.Element {
   let tagsRender = tags.tags
     ?.sort((a: any, b: any) => {
@@ -23,6 +25,7 @@ function SectionDiscover({
 
   const handleTag = (e: any) => {
     setPublications(e.target.value);
+    setRender("tag");
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
