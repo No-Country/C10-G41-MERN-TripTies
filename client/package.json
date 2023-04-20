@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build --base=https://tripties.onrender.com/api/v1",
     "preview": "vite preview"
   },
   "dependencies": {
