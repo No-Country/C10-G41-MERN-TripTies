@@ -7,7 +7,7 @@ type props = {
 function PlaceIVisited({ visited }: props): JSX.Element {
   return (
     <div>
-      {visited && visited.map((e: any, i: number) => <Card places={e} />)}
+      {/* {visited && visited.map((e: any, i: number) => <Card places={e} />)} */}
     </div>
   );
 }

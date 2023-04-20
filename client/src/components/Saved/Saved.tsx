@@ -6,7 +6,8 @@ type props = {
 
 function Saved({ place }: props): JSX.Element {
   return (
-    <div>{place && place.map((e: any, i: number) => <Card places={e} />)}</div>
+    <div></div>
+    // <div>{place && place.map((e: any, i: number) => <Card places={e} />)}</div>
   );
 }
 

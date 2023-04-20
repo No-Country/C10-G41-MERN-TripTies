@@ -27,7 +27,7 @@ export default function Profile() {
 
                 <div className={styles.leftContainerFeed}>
                     <div className={styles.feedLeft}>
-                        <SectionAccount />
+                        {/* <SectionAccount /> */}
                         <SectionChat />
                     </div>
                     <div className={styles.footerSocial}>
