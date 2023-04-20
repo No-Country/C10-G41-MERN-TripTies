@@ -12,7 +12,7 @@ import { useAppDispatch } from "../../redux/store/hooks";
 import { cleanProfile } from "../../redux/actions/Users";
 import Cookies from "universal-cookie";
 
-function NavBar({ handleHome, places, profile, visit }: any): JSX.Element {
+function NavBar({ handleHome, places, user, visit }: any): JSX.Element {
   const [display, setDisplay] = useState("none");
   const ref = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
@@ -20,7 +20,7 @@ function NavBar({ handleHome, places, profile, visit }: any): JSX.Element {
   const cookies = new Cookies();
 
   useEffect(() => {
-    if (profile.first_name === "" && profile.last_name === "") {
+    if (user.user?.first_name === "" && user.user?.last_name === "") {
       nav("/completeProfile");
     }
     const handleOutsideClick = (event: MouseEvent) => {
@@ -66,7 +66,7 @@ function NavBar({ handleHome, places, profile, visit }: any): JSX.Element {
           <section ref={ref} className={style.dropDownArrow}>
             <h2
               className={style.navButtonsh2}
-            >{`${profile.first_name} ${profile.last_name}`}</h2>
+            >{`${user.user?.first_name} ${user.user?.last_name}`}</h2>
             <img
               onClick={handleAppear}
               src={arrowDown}
@@ -76,7 +76,7 @@ function NavBar({ handleHome, places, profile, visit }: any): JSX.Element {
             <DropdownUser display={display} />
           </section>
           <img
-            src={profile.photoUser}
+            src={user.user?.photoUser}
             alt=""
             width="50"
             height="50"

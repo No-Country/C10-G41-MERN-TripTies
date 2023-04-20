@@ -152,12 +152,14 @@ function ModalPost({
     }
   };
 
+  console.log(post);
+
   const handleSubmit = (e: any) => {
-    e.preventDefault();
     dispatch(postPublication(post)).then(() => nav("/home"));
   };
 
   const handleUpdatePhotos = async (e: any) => {
+    e.preventDefault();
     const files = e.target.files[0];
     const data = new FormData();
     data.append("file", files);
@@ -175,6 +177,7 @@ function ModalPost({
   };
 
   const handleUpdateVideos = async (e: any) => {
+    e.preventDefault();
     const files = e.target.files[0];
     const data = new FormData();
     data.append("file", files);

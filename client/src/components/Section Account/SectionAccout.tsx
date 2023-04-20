@@ -5,6 +5,7 @@ import home from "../../img/home-2.png";
 import homeBold from "../../img/homeBold.png";
 import style from "../../styles/SectionAccount/Account.module.css";
 import { useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
 
 type props = {
   handleSaved: any;
@@ -12,6 +13,8 @@ type props = {
 
 const SectionAccount = ({ handleSaved }: props) => {
   const nav = useNavigate();
+  const cookies = new Cookies();
+  const id = cookies.get("idUser");
 
   return (
     <>
@@ -28,7 +31,7 @@ const SectionAccount = ({ handleSaved }: props) => {
 
       <div className={style.containerAccount}>
         <img src={user} alt="user" />
-        <button onClick={() => nav("/profile")} className={style.buttons}>
+        <button onClick={() => nav(`/profile/${id}`)} className={style.buttons}>
           My Profile
         </button>
       </div>

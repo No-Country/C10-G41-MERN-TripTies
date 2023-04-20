@@ -37,7 +37,7 @@ const postNewPost = async (req, res, next) => {
     //     const urls = newImages.map((image) => image.url);
     //     await postModels.updateOne({ _id: data._id }, { photoPost: urls });
     //   }
-
+    console.log(data);
     res.status(201).json(data);
   } catch (err) {
     res.status(400).json({
@@ -136,7 +136,6 @@ const getPostById = async (req, res) => {
 //! --------------------POST IMAGES -------------------------
 
 const createImagePost = async (req, res, next) => {
-  const { postId } = req.params;
   const files = req.files;
 
   try {
@@ -153,7 +152,7 @@ const createImagePost = async (req, res, next) => {
 
         await uploadFile(file, fileName);
 
-        const newImage = await Post.createImage(postId, bucketUrl);
+        const newImage = await Post.createImage(bucketUrl);
         console.log("newImage: ", newImage);
         return newImage;
       })

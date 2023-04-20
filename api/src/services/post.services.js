@@ -39,8 +39,6 @@ const createPost = async (id, obj) => {
     photoUser: userId.photoUser,
   };
 
-  console.log("obj", obj.tag);
-
   const data = await Post.create({
     user: user,
     content: obj.content,
@@ -53,9 +51,6 @@ const createPost = async (id, obj) => {
     clasification: obj.clasification,
     location: obj.location,
   });
-
-  console.log("data", data);
-
   await Tag.createTag(data._id.valueOf(), data.tag);
   return data;
 };
@@ -96,9 +91,8 @@ const updatePost = async (postId, userId, obj) => {
 //   return availableSpots
 // }
 
-async function createImage(postId, bucketUrl) {
+async function createImage(bucketUrl) {
   const session = await PostsImages.startSession();
-  console.log("postId: ", postId);
   console.log("bucketURL: ", bucketUrl);
 
   try {
@@ -106,7 +100,6 @@ async function createImage(postId, bucketUrl) {
       const newImage = await PostsImages.create(
         {
           url: bucketUrl,
-          publication: postId,
         },
         { session }
       );

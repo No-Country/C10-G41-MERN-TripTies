@@ -217,6 +217,10 @@
   justify-content: flex-start;
 }
 
+.buttons label {
+  width: 20%;
+}
+
 .buttons button {
   background: none;
   border: none;

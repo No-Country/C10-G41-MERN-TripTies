@@ -121,16 +121,13 @@ function Home(): JSX.Element {
       )) ||
     (render === "save" && null);
 
-  console.log(saveState);
-
   return firstLoading === "true" ? (
     <PageLoading />
   ) : (
     <div className={style.homeContainer}>
       <NavBar
         handleHome={handleHome}
-        user={allPublications}
-        profile={profile}
+        user={user}
         login={login}
         visit={visit}
         setRender={setRender}

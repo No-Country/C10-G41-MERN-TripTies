@@ -20,10 +20,15 @@ import SlideShow from "../SlideShow/SlideShow";
 import { Rating } from "react-simple-star-rating";
 import Comments from "../Comments/Comments";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
-import { getUserById, savePublications } from "../../redux/actions/Users";
+import {
+  getProfileUser,
+  getUserById,
+  savePublications,
+} from "../../redux/actions/Users";
 import { Cookie } from "universal-cookie";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 type props = {
   places: any;
@@ -116,9 +121,12 @@ function Card({ places, login, profile, cookies }: props) {
         <section className={style.content}>
           <div className={style.userInfo}>
             <aside>
-              <h4 className={style.name}>
-                {places.user?.firstName} {places.user?.lastName}
-              </h4>
+              <Link to={`/profile/${places.user.id}`}>
+                <h4 className={style.name}>
+                  {places.user?.firstName} {places.user?.lastName}
+                </h4>
+              </Link>
+
               <span>
                 {dayMonthYear} at {minutesSeconds}
               </span>
