@@ -115,16 +115,19 @@
 
 @media (max-width: 768px) {
   .container {
-    display: flex;
-    flex-direction: column;
+    max-width: 70vw;
   }
-
-  .description {
-    max-width: 80vw;
-    word-wrap: break-word;
+  .container .userPhoto {
+    display: none;
   }
-
   .publicationInfo {
-    gap: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+  }
+  .actions > aside {
+    width: 40%;
   }
 }

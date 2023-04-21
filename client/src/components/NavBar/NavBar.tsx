@@ -61,7 +61,6 @@ function NavBar({ handleHome, places, user, visit }: any): JSX.Element {
         </div>
       ) : (
         <div className={style.navButtons}>
-          <img className={style.navBell} src={bell} alt="bell" />
           <section ref={ref} className={style.dropDownArrow}>
             <h2
               className={style.navButtonsh2}

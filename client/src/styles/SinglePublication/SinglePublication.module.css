@@ -184,3 +184,20 @@
   background-position: 0px center;
   background-position-x: 20px;
 }
+
+@media screen and (max-width: 768px) {
+  .container {
+    width: 90%;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .containerLeft {
+    width: 90%;
+    margin-top: 2rem;
+  }
+  .containerRight {
+    margin-top: 2rem;
+    width: 90%;
+  }
+}

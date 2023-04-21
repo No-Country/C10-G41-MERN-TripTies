@@ -98,6 +98,7 @@ function Card({ places, login, profile, cookies }: props) {
       />
       <section className={style.container}>
         <img
+          className={style.userPhoto}
           src={places.user?.photoUser}
           alt="avatar"
           width={50}
