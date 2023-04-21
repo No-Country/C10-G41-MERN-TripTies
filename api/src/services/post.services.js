@@ -25,10 +25,9 @@ const findAllPosts = async ({ page = 1, limit = 100 }) => {
 };
 
 const findPostById = async (postId) => {
-
-  const post = await Post.findById(postId)
-  return post
-}
+  const post = await Post.findById(postId);
+  return post;
+};
 
 const createPost = async (id, obj) => {
   let userId = await User.findOne({ _id: id });
@@ -37,24 +36,24 @@ const createPost = async (id, obj) => {
     id: userId._id,
     firstName: userId.first_name,
     lastName: userId.last_name,
-    photoUser: userId.photo,
+    photoUser: userId.photoUser,
   };
 
   const data = await Post.create({
-    user: user.id,
+    user: user,
     content: obj.content,
     tag: obj.tag,
     privacity: obj.privacity,
-    photoPost: obj.url,
+    photoPost: obj.photo,
     video: obj.video,
     rate: obj.rate,
     name: obj.name,
     clasification: obj.clasification,
     location: obj.location,
-  })
-  await Tag.createTag(data._id.valueOf(), data.tag)
-  return data
-}
+  });
+  await Tag.createTag(data._id.valueOf(), data.tag);
+  return data;
+};
 
 const updatePost = async (postId, userId, obj) => {
   const post = await Post.findOneAndUpdate({ _id: postId, user: userId }, obj, {
@@ -93,7 +92,7 @@ const updatePost = async (postId, userId, obj) => {
 // }
 
 async function createImage(bucketUrl) {
-  const session = await PostsImages.startSession()
+  const session = await PostsImages.startSession();
   console.log("bucketURL: ", bucketUrl);
 
   try {
@@ -122,10 +121,10 @@ async function getImageOr404(postId, order) {
 
   if (!publicationImage) {
     throw new Error(
-      'Not Found Publication Image with this order',
+      "Not Found Publication Image with this order",
       404,
-      'Not Found'
-    )
+      "Not Found"
+    );
   }
 
   return publicationImage;
@@ -171,8 +170,7 @@ const addLikeByPost = async (id, postId) => {
     session.endSession();
     throw new Error(error.message);
   }
-
-}
+};
 
 module.exports = {
   findAllPosts,
@@ -181,6 +179,5 @@ module.exports = {
   updatePost,
   addLikeByPost,
   // getAvailableImageOrders,
-  createImage
-}
-
+  createImage,
+};

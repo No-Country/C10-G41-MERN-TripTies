@@ -78,20 +78,10 @@ const getInfoUser = async (req, res) => {
     .catch((err) => res.status(400).json({ message: err.message }));
 };
 
-const save = async (req, res) => {
-  const { postId, userId } = req.body;
-  User.savePublications(postId, userId)
-    .then((data) => res.status(200).json(data))
-    .catch((err) => res.status(400).json({ message: err.message }));
-};
-
-const getAllSave = async (req, res) => {};
-
 module.exports = {
   postUser,
   getAllUsers,
   getUserById,
   deleteUser,
   getInfoUser,
-  save,
 };

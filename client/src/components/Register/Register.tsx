@@ -44,7 +44,7 @@ function Register(): JSX.Element {
     password: "",
     firstName: "",
     lastName: "",
-    photoUser: user,
+    photoUser: "",
   });
   const [userGoogle, setUserGoogle] = useState<Users>({
     password: "",
@@ -85,9 +85,9 @@ function Register(): JSX.Element {
     e.preventDefault();
     try {
       if (
-        newUser.username.length === 0 ||
-        newUser.email.length === 0 ||
-        newUser.password.length === 0
+        newUser.username?.length === 0 ||
+        newUser.email?.length === 0 ||
+        newUser.password?.length === 0
       ) {
         Swal.fire({ title: "All the fields are required", icon: "warning" });
       } else {

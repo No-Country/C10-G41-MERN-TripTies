@@ -5,36 +5,35 @@ const Post = require("../services/post.services");
 const { unlinkFile } = require("../utils/unlinkFile");
 
 const postNewPost = async (req, res, next) => {
+  const userId = req.user._id;
+  const content = req.body;
 
-  const userId = req.user._id
-  const { content } = req.body
+  const files = req.files;
 
   try {
     const data = await Post.createPost(userId, content);
-    const files = req.files;
-    console.log(data);
-    console.log(files);
+    //   const files = req;
+    //   console.log("data", data);
+    //   console.log("files", files);
 
-    if (files && files.length > 0) {
-      const newImages = await Promise.all(
-        files.map(async (file) => {
-          const fileName = `uploads/posts/photos/${data._id}.${file.originalname
-            .split(".")
-            .pop()}`;
-          const bucketUrl = `${process.env.AWS_DOMAIN}/${fileName}`;
+    //   if (files && files.length > 0) {
+    //     const newImages = await Promise.all(
+    //       files.map(async (file) => {
+    //         const fileName = `uploads/posts/photos/${data._id}.${file.name}`;
+    //         const bucketUrl = `${process.env.AWS_DOMAIN}/${fileName}`;
 
-          await uploadFile(file, fileName);
+    //         console.log("url", bucketUrl);
 
-          const newImage = await Post.createImage(data._id, bucketUrl);
-          return newImage;
-        })
-      );
+    //         await uploadFile(file, fileName);
+    //         const newImage = await Post.createImage(data._id, bucketUrl);
+    //         return newImage;
+    //       })
+    //     );
 
-      // Actualizar el campo photoPost con la URL de la imagen
-      const urls = newImages.map((image) => image.url);
-      await postModels.updateOne({ _id: data._id }, { photoPost: urls });
-    }
-
+    //     // // Actualizar el campo photoPost con la URL de la imagen
+    //     const urls = newImages.map((image) => image.url);
+    //     await postModels.updateOne({ _id: data._id }, { photoPost: urls });
+    //   }
     res.status(201).json(data);
   } catch (err) {
     res.status(400).json({
@@ -133,8 +132,7 @@ const getPostById = async (req, res) => {
 //! --------------------POST IMAGES -------------------------
 
 const createImagePost = async (req, res, next) => {
-
-  const files = req.files
+  const files = req.files;
 
   try {
     if (!files || files.length === 0) {
@@ -150,9 +148,9 @@ const createImagePost = async (req, res, next) => {
 
         await uploadFile(file, fileName);
 
-        const newImage = await Post.createImage( bucketUrl)
-        console.log('newImage: ', newImage)
-        return newImage
+        const newImage = await Post.createImage(bucketUrl);
+        console.log("newImage: ", newImage);
+        return newImage;
       })
     );
 

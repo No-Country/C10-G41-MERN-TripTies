@@ -37,6 +37,7 @@ export const postPublication = (newPublication: any) => {
           },
         }
       );
+      console.log(response);
       return response;
     } catch (error) {
       throw error;

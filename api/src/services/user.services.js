@@ -4,6 +4,8 @@ const Profile = require("../models/profiles.models");
 const Post = require("../models/post.models");
 
 const { hash } = require("../utils/crypto");
+const { response } = require("express");
+const { findPostById } = require("./post.services");
 
 const getAllUsers = () => {
   return new Promise((resolve, reject) => {
@@ -121,21 +123,6 @@ const getUserInformation = async (userId) => {
   };
 };
 
-const savePublications = async (postId, userId) => {
-  let user = await User.findOne({ _id: userId });
-  if (user.saved.includes(postId)) {
-    user.saved = user.saved.filter((e) => e !== postId);
-    await user.save();
-    return user;
-  } else {
-    user.saved.push(postId);
-    await user.save();
-    return user;
-  }
-};
-
-const getPulicationsSave = async (posts) => {};
-
 module.exports = {
   getAllUsers,
   getUserByEmail,
@@ -145,6 +132,4 @@ module.exports = {
   updateUser,
   getUserInformation,
   getUserByUsername,
-  savePublications,
-  getPulicationsSave,
 };
