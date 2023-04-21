@@ -26,8 +26,15 @@ import {
 import { useParams } from "react-router-dom";
 import PageLoading from "../Page Loading/PageLoading";
 import Swal from "sweetalert2";
+import axios from "axios";
+import { getAllPublications } from "../../redux/actions/Publications";
+import { Rating } from "react-simple-star-rating";
+
+import img from "../../img/coffeLondon.png";
 
 export default function Profile() {
+  const selector = useAppSelector;
+  const dispatch = useAppDispatch();
   const [selected, setSelected] = useState(0);
   const [putSelect, setPutSelect] = useState("");
   const [putUser, setPutUser] = useState<putUser>({
@@ -35,6 +42,7 @@ export default function Profile() {
       first_name: "",
       last_name: "",
       email: "",
+      photoUser: "",
     },
     profile: {
       description: "",
@@ -44,25 +52,27 @@ export default function Profile() {
   });
 
   let { id } = useParams();
+  useEffect(() => {
+    dispatch(getAllPublications());
+    dispatch(getUserById());
+    dispatch(getProfileUser(id));
+    dispatch(getFollowing());
+    dispatch(getFollowers());
+  }, [id]);
+
+  const publications = selector<any>((state) => state.publications);
+  const profile: Profile = selector((state) => state.profile);
+  const user = selector((state) => state.user);
+  const following = selector((state) => state.following);
+  const followers = selector((state) => state.followers);
 
   console.log("SOY EL DE PARAMS", id);
 
-  const selector = useAppSelector;
-  const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   const cookies = new Cookies();
   const idUser = cookies.get("idUser");
-  console.log(idUser);
-
-  useEffect(() => {
-    dispatch(getUserById());
-    dispatch(getProfileUser(id));
-    dispatch(getFollowing());
-    dispatch(getFollowers());
-    id = undefined;
-  }, []);
 
   // Hook para manejar el click fuera del menú de configuración y cerrarlo
   useEffect(() => {
@@ -79,13 +89,6 @@ export default function Profile() {
     };
   }, [ref]);
 
-  const profile: Profile = selector((state) => state.profile);
-  const user = selector((state) => state.user);
-  const following = selector((state) => state.following);
-  const followers = selector((state) => state.following);
-
-  console.log("FOLLOWING", following);
-  console.log("FOllowers", followers);
   const handleSelect = (index: number) => {
     setSelected(index);
   };
@@ -115,9 +118,12 @@ export default function Profile() {
   const handleFollow = (e: any) => {
     setIsOpen(!isOpen);
     dispatch(followUser(e.target.value));
-    window.location.reload(true);
+    window.location.reload();
   };
 
+  const myPublications =
+    publications && publications.posts.filter((e: any) => e.user.id === id);
+  console.log(myPublications);
   return (
     <div className={styles.container}>
       <NavBar profile={profile} user={user} />
@@ -155,14 +161,7 @@ export default function Profile() {
             </div>
             <div className={styles.infoUser}>
               <div className={styles.profileAvatar}>
-                <img
-                  src={
-                    profile.photoUser?.length === 0
-                      ? perfilAvatar
-                      : profile.photoUser
-                  }
-                  alt="perfilAvatar"
-                />
+                <img src={profile.photoUser} alt="perfilAvatar" />
                 {putSelect === "Change_profile_picture" ||
                 putSelect === "Edit_profile" ? (
                   <div className={styles.changeAvatar}>
@@ -209,7 +208,6 @@ export default function Profile() {
                   <div className={styles.followins}>
                     <strong>{followers.length} FOLLOWERS</strong>
                     <strong>{following.length} FOLLOWINS</strong>
-                    <strong>6 REVIEWS</strong>
                   </div>
                 </div>
 
@@ -305,24 +303,31 @@ export default function Profile() {
                 <img src={pin} alt="star" width="24px" height="24px" />
                 Places I've been
               </div>
-              <div
-                className={`${
-                  selected === 2 ? styles.selected : styles.bucket
-                }`}
-                onClick={() => handleSelect(2)}
-              >
-                <img src={book} alt="star" width="24px" height="24px" />
-                Bucket list
-              </div>
-              <div
-                className={`${selected === 3 ? styles.selected : styles.saved}`}
-                onClick={() => handleSelect(3)}
-              >
-                <img src={saved} alt="star" width="24px" height="24px" />
-                Saved
-              </div>
             </div>
             <hr />
+            <div className={styles.cardReviewContainer}>
+              {selected === 0 &&
+                myPublications.map((e: any) => (
+                  <div className={styles.cardReview}>
+                    <img src={img} alt="" />
+                    <h5>{e.clasification}</h5>
+                    <Rating
+                      initialValue={e.rate}
+                      readonly
+                      fillColorArray={[
+                        "#31135e",
+                        "#31135e",
+                        "#31135e",
+                        "#31135e",
+                        "#31135e",
+                        "#31135e",
+                      ]}
+                      size={20}
+                      style={{ marginLeft: "0.5rem" }}
+                    />
+                  </div>
+                ))}
+            </div>
           </div>
           <div className={styles.footerTerm}>
             <FooterTerm />

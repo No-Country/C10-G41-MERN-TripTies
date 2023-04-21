@@ -50,7 +50,6 @@ function NavBar({ handleHome, places, user, visit }: any): JSX.Element {
         <img src={logo} alt="" />
         <h1 className={style.navTitleh1}>TripTies</h1>
       </Link>
-      <Search places={places} />
       {visit === "true" ? (
         <div className={style.navButtons}>
           <button
@@ -82,20 +81,6 @@ function NavBar({ handleHome, places, user, visit }: any): JSX.Element {
             height="50"
             style={{ borderRadius: "50%" }}
           />
-          <div className={style.navSelectContainer}>
-            <select
-              defaultValue={"en"}
-              name=""
-              id=""
-              className={style.navSelectBox}
-            >
-              <option value="en">EN</option>
-              <option value="es">ES</option>
-            </select>
-            <div className={style.navIcon}>
-              <img src={drop} alt="" width="20" height="20" />
-            </div>
-          </div>
         </div>
       )}
     </nav>

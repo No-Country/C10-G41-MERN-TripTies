@@ -10,9 +10,6 @@ const postNewPost = async (req, res, next) => {
 
   const files = req.files;
 
-  console.log("CONTENIDO", content);
-  console.log("FILE", files);
-
   try {
     const data = await Post.createPost(userId, content);
     //   const files = req;
@@ -37,7 +34,6 @@ const postNewPost = async (req, res, next) => {
     //     const urls = newImages.map((image) => image.url);
     //     await postModels.updateOne({ _id: data._id }, { photoPost: urls });
     //   }
-    console.log(data);
     res.status(201).json(data);
   } catch (err) {
     res.status(400).json({

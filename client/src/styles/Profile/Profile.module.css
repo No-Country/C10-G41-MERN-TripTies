@@ -40,7 +40,7 @@
   background-color: var(--white);
   border-radius: 20px;
   width: 70vw;
-  height: 75vh;
+  min-height: 75vh;
 }
 
 .footerTerm {
@@ -70,6 +70,13 @@
   width: 10rem;
   height: 10rem;
   transform: translate(30%, -40%);
+  background-color: red;
+}
+
+.profileAvatar img {
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
 }
 
 .username h2 {
@@ -124,9 +131,7 @@
 }
 
 .sections .review,
-.sections .places,
-.sections .bucket,
-.sections .saved {
+.sections .places {
   display: flex;
   justify-content: center;
   opacity: 0.5;
@@ -136,9 +141,7 @@
 }
 
 .sections .review:hover,
-.sections .places:hover,
-.sections .bucket:hover,
-.sections .saved:hover {
+.sections .places:hover {
   cursor: pointer;
   opacity: 1;
   border-bottom: 5px solid var(--yellowPale);
@@ -313,4 +316,32 @@ input[type="file"] {
   font-weight: 400;
   size: 20px;
   line-height: 20px;
+}
+
+.cardReviewContainer {
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 1fr;
+}
+
+.cardReview {
+  width: 202px;
+  height: 160px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.cardReview img {
+  width: 202px;
+  height: 117px;
+}
+
+.cardReview h5 {
+  margin: 0;
+  font-size: 16px;
+  margin-left: 0.5rem;
 }

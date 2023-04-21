@@ -3,12 +3,7 @@ const router = express.Router();
 const passport = require("passport");
 require("../middlewares/auth.middleware")(passport);
 
-const {
-  getUserById,
-  getAllUsers,
-  save,
-  getAllSave,
-} = require("../controllers/user.controller");
+const { getUserById, getAllUsers } = require("../controllers/user.controller");
 const isAdmin = require("../middlewares/isAdmin.middleware");
 
 router.get(
@@ -19,9 +14,5 @@ router.get(
 ); //Only admins
 
 router.route("/:userId").get(getUserById);
-
-router.get("/save/:userId", getAllSave);
-
-router.post("/save", save);
 
 module.exports = router;

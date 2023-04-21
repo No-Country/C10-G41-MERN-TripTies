@@ -6,6 +6,7 @@ import { Message, Users, Conversation } from "../../../types";
 
 // Action para la creacion de un usuario
 export const createUser = (newUser: Users) => {
+  console.log(newUser);
   return async function () {
     try {
       const response = await axios.post("auth/sign-up", newUser);
@@ -241,6 +242,7 @@ export const getFollowing = () => {
           headers: { Authorization: `jwt ${token}` },
         })
         .then((response) => {
+          console.log("action following", response);
           dispatch({
             type: "GET_FOLLOWING",
             payload: response.data,
@@ -263,6 +265,8 @@ export const getFollowers = () => {
           headers: { Authorization: `jwt ${token}` },
         })
         .then((response) => {
+          console.log("action followers", response);
+
           dispatch({
             type: "GET_FOLLOWERS",
             payload: response.data,

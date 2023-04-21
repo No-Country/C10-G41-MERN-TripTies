@@ -123,30 +123,6 @@ const getUserInformation = async (userId) => {
   };
 };
 
-const savePublications = async (postId, userId) => {
-  let user = await User.findOne({ _id: userId });
-  if (user.saved.includes(postId)) {
-    user.saved = user.saved.filter((e) => e !== postId);
-    await user.save();
-    return user;
-  } else {
-    user.saved.push(postId);
-    await user.save();
-    return user;
-  }
-};
-
-const getPulicationsSave = async (userId) => {
-  let user = await User.findById({ _id: userId });
-  const saved = user.saved;
-  let mapeo = saved?.map(async (e) => {
-    await findPostById(e).then((response) => {
-      return response;
-    });
-  });
-  return mapeo;
-};
-
 module.exports = {
   getAllUsers,
   getUserByEmail,
@@ -156,6 +132,4 @@ module.exports = {
   updateUser,
   getUserInformation,
   getUserByUsername,
-  savePublications,
-  getPulicationsSave,
 };

@@ -28,6 +28,7 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../Loading/Loading";
 import PageLoading from "../Page Loading/PageLoading";
 import Swal from "sweetalert2";
+import SinglePublication from "../SinglePublication/SinglePublication";
 
 function Home(): JSX.Element {
   const selector = useAppSelector;

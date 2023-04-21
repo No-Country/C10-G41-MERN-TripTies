@@ -35,17 +35,6 @@ const SectionAccount = ({ handleSaved }: props) => {
           My Profile
         </button>
       </div>
-
-      <div className={style.containerAccount}>
-        <img src={saved} alt="saved" />
-        <button onClick={handleSaved} className={style.buttons}>
-          Saved
-        </button>
-      </div>
-      <div className={style.containerAccount}>
-        <img src={inbox} alt="inbox" />
-        <button className={style.buttons}>Inbox</button>
-      </div>
     </>
   );
 };
