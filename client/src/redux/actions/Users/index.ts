@@ -139,22 +139,40 @@ export const getAllConversations = () => {
   };
 };
 
+//Action para obtener todas las conversaciones
+export const getConversationsID = (id) => {
+  return async function () {
+    try {
+      const response = await axios.get(`/conversations/${id}`, {
+        headers: {
+          Authorization: `jwt ${cookies.get("token")}`,
+        },
+      });
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+};
+
 // Action para la creacion de un nuevo mensaje
 export const newMessage = (id: string, newMessage: Message) => {
   return async function () {
     try {
       const token = cookies.get("token");
+      console.log(token)
       const response = await axios.post(
         `conversations/${id}/message`,
         newMessage,
         {
           headers: {
             Authorization: `jwt ${token}`,
-            Accept: "application/json",
-            "Content-Type": "application/json",
           },
         }
       );
+      console.log(response)
       return response;
     } catch (error) {
       console.log(error);

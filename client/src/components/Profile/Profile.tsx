@@ -20,8 +20,6 @@ import {
   followUser,
   getFollowers,
   getFollowing,
-  getProfileUser,
-  getUserById,
 } from "../../redux/actions/Users";
 import { useParams } from "react-router-dom";
 import PageLoading from "../Page Loading/PageLoading";
@@ -31,6 +29,8 @@ import { getAllPublications } from "../../redux/actions/Publications";
 import { Rating } from "react-simple-star-rating";
 
 import img from "../../img/coffeLondon.png";
+import { getProfileUser, getUserById } from "../../redux/actions/Users";
+import ChatBubble from "../ChatBubble/ChatBubble";
 
 export default function Profile() {
   const selector = useAppSelector;
@@ -121,6 +121,9 @@ export default function Profile() {
     window.location.reload();
   };
 
+  const [UserChatActual, setUserChatActual] = useState({});
+  console.log(putSelect);
+
   const myPublications =
     publications && publications.posts.filter((e: any) => e.user.id === id);
   console.log(myPublications);
@@ -131,7 +134,7 @@ export default function Profile() {
         <div className={styles.leftContainerFeed}>
           <div className={styles.feedLeft}>
             <SectionAccount handleSaved={undefined} />
-            <SectionChat />
+            <SectionChat setUserChatActual={setUserChatActual} />
           </div>
           <div className={styles.footerSocial}>
             <FooterSocial />

@@ -122,6 +122,8 @@ function Home(): JSX.Element {
       )) ||
     (render === "save" && null);
 
+  const [UserChatActual, setUserChatActual] = useState({});
+
   return firstLoading === "true" ? (
     <PageLoading />
   ) : (
@@ -138,7 +140,7 @@ function Home(): JSX.Element {
           <div>
             <div className={style.feedLeft}>
               <SectionAccount handleSaved={handleSaved} />
-              <SectionChat />
+              <SectionChat setUserChatActual={setUserChatActual} />
             </div>
           </div>
           <div className={style.footerLeft}>
@@ -208,7 +210,7 @@ function Home(): JSX.Element {
           </div>
         </div>
       </div>
-      <ChatBubble />
+      <ChatBubble UserChatActual={UserChatActual} />
     </div>
   );
 }
