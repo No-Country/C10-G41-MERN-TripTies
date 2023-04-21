@@ -17,6 +17,7 @@ import { Profile, putUser } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../redux/store/hooks';
 import Cookies from "universal-cookie";
 import { getProfileUser, getUserById } from '../../redux/actions/Users';
+import ChatBubble from '../ChatBubble/ChatBubble';
 
 export default function Profile() {
     const [selected, setSelected] = useState(0);
@@ -68,7 +69,7 @@ export default function Profile() {
         setSelected(index);
     };
 
-    function handleChange(e) {
+    function handleChange(e: any) {
         if (e.target.name === 'first_name' || e.target.name === 'last_name') {
             setPutUser({
                 ...putUser,
@@ -88,6 +89,7 @@ export default function Profile() {
         //console.log(putUser)
     }
 
+    const [UserChatActual,setUserChatActual] = useState({})
     console.log(putSelect)
 
     return (
@@ -100,7 +102,7 @@ export default function Profile() {
                 <div className={styles.leftContainerFeed}>
                     <div className={styles.feedLeft}>
                         <SectionAccount />
-                        <SectionChat />
+                        <SectionChat setUserChatActual={setUserChatActual} />
                     </div>
                     <div className={styles.footerSocial}>
                         <FooterSocial />
@@ -225,6 +227,7 @@ export default function Profile() {
                 </div>
 
             </div>
+            <ChatBubble UserChatActual={UserChatActual} />
         </div>
     )
 }

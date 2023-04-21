@@ -24,7 +24,7 @@ interface User {
   isOnline: boolean;
 }
 
-export default function SectionChat(): JSX.Element {
+export default function SectionChat({setUserChatActual}: any): JSX.Element {
   const avatarDefault = avatar7;
 
   // Obtener token del almacenamiento local
@@ -64,6 +64,7 @@ export default function SectionChat(): JSX.Element {
       "UserChat",
       JSON.stringify({ name: name, avatar: avatar, id })
     );
+    setUserChatActual({ name: name, avatar: avatar, id })
   }
 
   return (

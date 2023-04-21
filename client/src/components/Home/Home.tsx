@@ -122,6 +122,8 @@ function Home(): JSX.Element {
           e.tag?.includes(publications)
         );
 
+        const [UserChatActual,setUserChatActual] = useState({})
+
   return firstLoading === "true" ? (
     <PageLoading />
   ) : (
@@ -141,7 +143,7 @@ function Home(): JSX.Element {
                 handleSaved={handleSaved}
                 handleVisited={handleVisited}
               />
-              <SectionChat />
+              <SectionChat setUserChatActual={setUserChatActual} />
             </div>
           </div>
           <div className={style.footerLeft}>
@@ -210,7 +212,7 @@ function Home(): JSX.Element {
           </div>
         </div>
       </div>
-      <ChatBubble />
+      <ChatBubble UserChatActual={UserChatActual} />
     </div>
   );
 }
