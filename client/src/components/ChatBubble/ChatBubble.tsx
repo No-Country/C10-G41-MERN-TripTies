@@ -28,7 +28,7 @@ interface MessageUsers {
 }
 
 // NO CAMBIAR NADA AUN ESTA EN DESARROLLO
-export default function ChatBubble({UserChatActual}: any) {
+export default function ChatBubble({ UserChatActual }: any) {
 
     const avatarDefault = avatar7
     const cookies = new Cookies();
@@ -40,8 +40,9 @@ export default function ChatBubble({UserChatActual}: any) {
 
     // Estado para determinar si el chat está abierto o cerrado
     const [open, setOpen] = useState<string>("62px");
-    // Estado para almacenar los mensajes de prueba
+    // Estado para almacenar los mensajes
     const [msg, setMsg] = useState<MessageUsers[]>([]);
+    let msgLength = 0;
 
     const [render, setRender] = useState<boolean>(true);
     const ref = useRef<HTMLDivElement>(document.createElement("div"));
@@ -67,16 +68,28 @@ export default function ChatBubble({UserChatActual}: any) {
     useEffect(() => {
         dispatch(getAllConversations())
         console.log(UserChatActual)
-    }, [conversationID,render]);
+    }, [conversationID, msg]);
 
     useEffect(() => {
-        if(conversations.length !== 0){
+        if (conversations.length !== 0) {
             newConversation()
         }
-    }, [UserChatActual,render]);
+    }, [UserChatActual, render]);
+
+    // Función para verificar si hay nuevos mensajes
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (msg.length !== msgLength) {
+                newConversation();
+                msgLength = msg.length;
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [msg]);
 
     async function newConversation() {
-         // FUI PARTICIPANTE
+        // FUI PARTICIPANTE
         const participant = conversations.filter((e) => e.title === idUser);
         // FUI CREADOR DE LA CONVERSACION
         const creador = conversations.filter((e) => e.user === idUser);
@@ -94,9 +107,9 @@ export default function ChatBubble({UserChatActual}: any) {
             dispatch(getConversationsID(existParticipant.concat(existCreador)[0]._id))
                 .then(res => setMsg(res.conversation.messages))
                 .catch(res => console.log(res))
-                setConversationID(existParticipant.concat(existCreador)[0]._id)
-                console.log(msg)
-                console.log('EXISTE')
+            setConversationID(existParticipant.concat(existCreador)[0]._id)
+            console.log(msg)
+            console.log('EXISTE')
         } else {
             const newConversation = {
                 title: `${user.id}`,
@@ -131,13 +144,15 @@ export default function ChatBubble({UserChatActual}: any) {
             setMessage({
                 message: "",
             });
+            dispatch(getConversationsID(conversationID))
+                .then(res => setMsg(res.conversation.messages))
             setRender(!render)
         }
     }
 
     return (
         <>
-            { UserChatActual && user !== null && (
+            {UserChatActual && user !== null && (
                 <div className={styles.container} style={{ height: open }} ref={ref}>
                     <div className={styles.header} onClick={() => handleOpen()}>
                         <div className={styles.infoHeader}>
