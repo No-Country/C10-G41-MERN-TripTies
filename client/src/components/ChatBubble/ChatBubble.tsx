@@ -1,13 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "../../styles/ChatBubble/ChatBubble.module.css";
-import { ChatProps, Chat, Message } from "../../types";
+import { Chat, Message } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import {
     createConversation,
     getAllConversations,
+    getConversationsID,
     newMessage,
 } from "../../redux/actions/Users";
+import Cookies from "universal-cookie";
 import avatar7 from "../../img/user_avatar_default.jpg";
+
 interface Conversation {
     _id: string;
     title: string;
@@ -15,15 +18,21 @@ interface Conversation {
     createdAt: string;
     updatedAt: string;
 }
+
 interface MessageUsers {
-    msg: string;
-    id: number;
+    conversation: string;
+    message: string;
+    user: string;
+    __v: number
+    _id: string;
 }
 
 // NO CAMBIAR NADA AUN ESTA EN DESARROLLO
-export default function ChatBubble() {
+export default function ChatBubble({UserChatActual}: any) {
 
     const avatarDefault = avatar7
+    const cookies = new Cookies();
+    const idUser = cookies.get("idUser");
 
     // Obtener usuario del almacenamiento local
     const miObjetoJSON: string | null = localStorage.getItem("UserChat");
@@ -32,64 +41,9 @@ export default function ChatBubble() {
     // Estado para determinar si el chat está abierto o cerrado
     const [open, setOpen] = useState<string>("62px");
     // Estado para almacenar los mensajes de prueba
-    const [msg, setMsg] = useState<MessageUsers[]>([
-        {
-            msg: "Hola, ¿cómo estás hoy?",
-            id: 1,
-        },
-        {
-            msg: "Estoy bien, gracias. ¿Y tú?",
-            id: 2,
-        },
-        {
-            msg: "Estoy bien también, gracias. ¿Qué has estado haciendo últimamente?",
-            id: 1,
-        },
-        {
-            msg: "He estado trabajando mucho en mi trabajo y también he estado tratando de hacer más ejercicio.",
-            id: 2,
-        },
-        {
-            msg: "Eso suena bien. Yo también he estado tratando de hacer más ejercicio. ¿Qué tipo de ejercicio haces?",
-            id: 1,
-        },
-        {
-            msg: "Me gusta correr y hacer yoga. ¿Y tú?",
-            id: 2,
-        },
-        {
-            msg: "Me gusta levantar pesas y hacer entrenamiento de intervalos de alta intensidad.",
-            id: 1,
-        },
-        {
-            msg: "Eso suena intenso. ¿Te gusta?",
-            id: 2,
-        },
-        {
-            msg: "Sí, me encanta. Me hace sentir bien y me da energía para el resto del día.",
-            id: 1,
-        },
-        {
-            msg: "Eso es genial. ¿Tienes algún consejo para alguien que está tratando de comenzar a hacer ejercicio?",
-            id: 2,
-        },
-        {
-            msg: "Mi consejo sería comenzar lentamente y encontrar algo que disfrutes hacer. No tienes que hacer nada loco o extremo para obtener beneficios para la salud. Solo trata de ser consistente y verás resultados con el tiempo.",
-            id: 1,
-        },
-        {
-            msg: "Eso es un buen consejo. Gracias por compartirlo.",
-            id: 2,
-        },
-        {
-            msg: "De nada. ¿Quieres ir a tomar un café o algo así?",
-            id: 1,
-        },
-        {
-            msg: "Claro, me encantaría. ¿Dónde quieres ir?",
-            id: 2,
-        },
-    ]);
+    const [msg, setMsg] = useState<MessageUsers[]>([]);
+
+    const [render, setRender] = useState<boolean>(true);
     const ref = useRef<HTMLDivElement>(document.createElement("div"));
     const chatParent = useRef<HTMLDivElement>(null);
     const dispatch = useAppDispatch();
@@ -111,13 +65,39 @@ export default function ChatBubble() {
 
     // Efecto para filtrar las conversaciones
     useEffect(() => {
-        dispatch(getAllConversations());
-    }, [conversationID]);
+        dispatch(getAllConversations())
+        console.log(UserChatActual)
+    }, [conversationID,render]);
+
+    useEffect(() => {
+        if(conversations.length !== 0){
+            newConversation()
+        }
+    }, [UserChatActual,render]);
 
     async function newConversation() {
-        const oldConversation = conversations.filter((e) => e.title === user?.id);
+         // FUI PARTICIPANTE
+        const participant = conversations.filter((e) => e.title === idUser);
+        // FUI CREADOR DE LA CONVERSACION
+        const creador = conversations.filter((e) => e.user === idUser);
 
-        if (oldConversation.length === 0) {
+        const conversation = creador.concat(participant)
+        // EXISTE UNA CONERSACION CON ESE USUARIO DONDE FUI PARTICIPANTE
+        const existParticipant = conversation.filter(e => e.title === idUser && e.user === user.id)
+        // EXISTE UNA CONERSACION CON ESE USUARIO DONDE FUI CREADOR
+        const existCreador = conversation.filter(e => e.title === user.id && e.user === idUser)
+
+
+        console.log(existParticipant.concat(existCreador))
+
+        if (existParticipant.concat(existCreador).length !== 0) {
+            dispatch(getConversationsID(existParticipant.concat(existCreador)[0]._id))
+                .then(res => setMsg(res.conversation.messages))
+                .catch(res => console.log(res))
+                setConversationID(existParticipant.concat(existCreador)[0]._id)
+                console.log(msg)
+                console.log('EXISTE')
+        } else {
             const newConversation = {
                 title: `${user.id}`,
                 participantId: `${user.id}`,
@@ -125,9 +105,9 @@ export default function ChatBubble() {
             console.log('NO EXISTE')
             const response = await dispatch(createConversation(newConversation));
             setConversationID(response.data.participant1.conversation);
-        } else {
-            console.log('EXISTE')
+            console.log(response.data.participant1.conversation)
         }
+
     }
 
     function handleOpen() {
@@ -151,12 +131,13 @@ export default function ChatBubble() {
             setMessage({
                 message: "",
             });
+            setRender(!render)
         }
     }
 
     return (
         <>
-            {user !== null && (
+            { UserChatActual && user !== null && (
                 <div className={styles.container} style={{ height: open }} ref={ref}>
                     <div className={styles.header} onClick={() => handleOpen()}>
                         <div className={styles.infoHeader}>
@@ -181,10 +162,10 @@ export default function ChatBubble() {
                                     <div
                                         key={index}
                                         className={
-                                            e.id === 1 ? styles.MessageSent : styles.messageReceived
+                                            e.user === idUser ? styles.MessageSent : styles.messageReceived
                                         }
                                     >
-                                        <small>{e.msg}</small>
+                                        <small>{e.message}</small>
                                     </div>
                                 ))}
                             </div>
