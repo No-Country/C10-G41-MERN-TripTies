@@ -51,6 +51,6 @@
 
 @media (max-width: 768px) {
   .containerSlider {
-    max-width: 80vw;
+    max-width: 100%;
   }
 }

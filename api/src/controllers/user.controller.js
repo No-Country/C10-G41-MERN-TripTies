@@ -86,6 +86,7 @@ const save = async (req, res) => {
 }
 
 const getAllSave = async (req, res) => {}
+
 module.exports = {
   postUser,
   getAllUsers,
@@ -94,3 +95,4 @@ module.exports = {
   getInfoUser,
   save,
 }
+

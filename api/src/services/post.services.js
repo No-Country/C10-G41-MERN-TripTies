@@ -25,10 +25,9 @@ const findAllPosts = async ({ page = 1, limit = 100 }) => {
 }
 
 const findPostById = async (postId) => {
-
-  const post = await Post.findById(postId)
-  return post
-}
+  const post = await Post.findById(postId);
+  return post;
+};
 
 const createPost = async (id, obj) => {
   let userId = await User.findOne({ _id: id })
@@ -41,11 +40,11 @@ const createPost = async (id, obj) => {
   }
 
   const data = await Post.create({
-    user: user.id,
+    user: user,
     content: obj.content,
     tag: obj.tag,
     privacity: obj.privacity,
-    photoPost: obj.url,
+    photoPost: obj.photo,
     video: obj.video,
     rate: obj.rate,
     name: obj.name,
@@ -125,7 +124,7 @@ async function getImageOr404(postId, order) {
       'Not Found Publication Image with this order',
       404,
       'Not Found'
-    )
+    );
   }
 
   return publicationImage
@@ -171,8 +170,7 @@ const addLikeByPost = async (id, postId) => {
     session.endSession()
     throw new Error(error.message)
   }
-
-}
+};
 
 module.exports = {
   findAllPosts,
@@ -181,6 +179,5 @@ module.exports = {
   updatePost,
   addLikeByPost,
   // getAvailableImageOrders,
-  createImage
-}
-
+  createImage,
+};

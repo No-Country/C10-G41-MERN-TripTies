@@ -3,12 +3,9 @@ const router = express.Router()
 const passport = require('passport')
 require('../middlewares/auth.middleware')(passport)
 
-const {
-  getUserById,
-  getAllUsers,
-  save,
-} = require('../controllers/user.controller')
+const { getUserById, getAllUsers } = require('../controllers/user.controller')
 const isAdmin = require('../middlewares/isAdmin.middleware')
+
 
 router.get(
   '/',
@@ -19,6 +16,8 @@ router.get(
 
 router.route('/:userId').get(getUserById)
 
+
 router.post('/save', save)
 
 module.exports = router
+

@@ -4,6 +4,8 @@ const Profile = require('../models/profiles.models')
 const Post = require('../models/post.models')
 
 const { hash } = require('../utils/crypto')
+const { response } = require('express')
+const { findPostById } = require('./post.services')
 
 const getAllUsers = () => {
   return new Promise((resolve, reject) => {
@@ -120,7 +122,6 @@ const getUserInformation = async (userId) => {
     saved: user.saved,
   }
 }
-
 const savePublications = async (postId, userId) => {
   let user = await User.findOne({ _id: userId })
   if (user.saved.includes(postId)) {
@@ -148,3 +149,4 @@ module.exports = {
   savePublications,
   getPulicationsSave,
 }
+

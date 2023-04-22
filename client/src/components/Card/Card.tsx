@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import style from "../../styles/Card/Card.module.css";
 import avatar from "../../img/avatar.png";
 import user from "../../img/user.png";
-import menuVertical from "../../img/menu-vertical.png";
+import open from "../../img/open.png";
 import coffee from "../../img/coffee.png";
 import location from "../../img/smallPin.png";
 import tagPlace from "../../img/tag.png";
@@ -20,10 +20,16 @@ import SlideShow from "../SlideShow/SlideShow";
 import { Rating } from "react-simple-star-rating";
 import Comments from "../Comments/Comments";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
-import { getUserById, savePublications } from "../../redux/actions/Users";
+import {
+  getProfileUser,
+  getUserById,
+  savePublications,
+} from "../../redux/actions/Users";
 import { Cookie } from "universal-cookie";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import SinglePublication from "../SinglePublication/SinglePublication";
 
 type props = {
   places: any;
@@ -35,6 +41,7 @@ function Card({ places, login, profile, cookies }: props) {
   const dispatch = useAppDispatch();
   const selector = useAppSelector;
   const nav = useNavigate();
+  const [openPost, setOpenPost] = useState(false);
   const [display, setDisplay] = useState("none");
   const [displayComments, setDisplayComments] = useState("none");
   const ref = useRef<HTMLDivElement>(null);
@@ -75,39 +82,24 @@ function Card({ places, login, profile, cookies }: props) {
     }
   };
 
-  const handleSave = (e: any) => {
-    if (saved === false) {
-      Swal.fire({
-        title: "Publications saved!",
-        icon: "success",
-      }).then(() => {
-        dispatch(
-          savePublications({
-            postId: e.target.value,
-            userId: cookies.get("id"),
-          })
-        ).then(() => dispatch(getUserById()));
-      });
-    } else {
-      Swal.fire({
-        title: "Publications unsaved!",
-        icon: "error",
-      }).then(() => {
-        dispatch(
-          savePublications({
-            postId: e.target.value,
-            userId: cookies.get("id"),
-          })
-        ).then(() => dispatch(getUserById()));
-      });
-    }
+  const handleOpen = () => {
+    setOpenPost(!openPost);
   };
 
   return (
     <>
+      <SinglePublication
+        openPost={openPost}
+        setOpenPost={setOpenPost}
+        media={[places.photoPost, places.video]}
+        places={places}
+        day={dayMonthYear}
+        time={minutesSeconds}
+      />
       <section className={style.container}>
         <img
-          src={user.user?.photoUser}
+          className={style.userPhoto}
+          src={places.user?.photoUser}
           alt="avatar"
           width={50}
           height={50}
@@ -116,25 +108,24 @@ function Card({ places, login, profile, cookies }: props) {
         <section className={style.content}>
           <div className={style.userInfo}>
             <aside>
-              <h4 className={style.name}>
-                {user.user?.first_name} {user.user?.last_name}
-              </h4>
+              <Link to={`/profile/${places.user.id}`}>
+                <h4 className={style.name}>
+                  {places.user?.firstName} {places.user?.lastName}
+                </h4>
+              </Link>
+
               <span>
                 {dayMonthYear} at {minutesSeconds}
               </span>
             </aside>
             <div ref={ref}>
               <img
-                onClick={handleAppear}
+                width="20px"
+                height="20px"
+                onClick={handleOpen}
                 className={style.dotMenu}
-                src={menuVertical}
+                src={open}
                 alt="dots menu"
-              />
-              <Dropdown
-                name={places.user}
-                login={login}
-                profile={profile}
-                display={display}
               />
             </div>
           </div>
@@ -172,7 +163,7 @@ function Card({ places, login, profile, cookies }: props) {
               <span>{places.name}</span>
             </aside>
           </div>
-          {/* <SlideShow media={[places.photo, places.video]} /> */}
+          <SlideShow media={[places.photoPost, places.video]} />
           <div className={style.likesAndComments}>
             <aside>
               <img src={boldHeart} alt="bold heart" />
@@ -193,28 +184,6 @@ function Card({ places, login, profile, cookies }: props) {
               />
               <img src={share} alt="share" />
             </aside>
-
-            {saved === true ? (
-              <label htmlFor={places._id}>
-                <img src={postSaved} alt="" />
-                <input
-                  type="button"
-                  id={places._id}
-                  value={places._id}
-                  onClick={handleSave}
-                />
-              </label>
-            ) : (
-              <label htmlFor={places._id}>
-                <img src={postUnsaved} alt="" />
-                <input
-                  type="button"
-                  id={places._id}
-                  value={places._id}
-                  onClick={handleSave}
-                />
-              </label>
-            )}
           </div>
         </section>
       </section>

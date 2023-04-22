@@ -1,10 +1,10 @@
 export interface Users {
-  username: string;
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  photoUser: string;
+  username?: string;
+  email?: string;
+  password?: string;
+  firstName?: string;
+  lastName?: string;
+  photoUser?: string;
 }
 
 // useState Interface of Register Component
@@ -62,9 +62,21 @@ export interface Profile {
   email?: string;
   photoUser?: string;
   portrait?: string;
-  birthday?: string;
+  birthday?: string | null;
   profile?: object;
   description?: string;
+}
+
+export interface putUser {
+  user: {
+    username?: string;
+    email?: string;
+    password?: string;
+    first_name?: string;
+    last_name?: string;
+    photoUser?: string;
+  },
+  profile: Profile
 }
 
 type TagsItem = {

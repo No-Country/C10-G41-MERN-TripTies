@@ -20,10 +20,11 @@ function CompleteProfile(): JSX.Element {
   const profileUser: Profile = selector((state) => state.profile);
   const userData: UserLogin = selector((state) => state.user);
   const login = cookies.get("login");
+  const id = cookies.get("idUser");
   useEffect(() => {
     if (login === "true") {
       dispatch(getUserById());
-      dispatch(getProfileUser());
+      dispatch(getProfileUser(id));
     } else {
       nav("/");
     }
@@ -33,13 +34,15 @@ function CompleteProfile(): JSX.Element {
     first_name: "",
     last_name: "",
     username: "",
-    photoUser: "",
+    photoUser:
+      "https://res.cloudinary.com/dtpsfvnfo/image/upload/v1682088703/user_avatar_default_udk0e5.jpg",
   });
 
   const [profile, setProfile] = useState({
     description: "",
     birthday: "",
-    portrait: "",
+    portrait:
+      "https://res.cloudinary.com/dtpsfvnfo/image/upload/v1682089064/portada_perfil_jmrh5b.png",
   });
 
   const data = { user, profile };
