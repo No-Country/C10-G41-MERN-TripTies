@@ -27,7 +27,8 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { getAllPublications } from "../../redux/actions/Publications";
 import { Rating } from "react-simple-star-rating";
-
+import avatarDefault from "../../img/user_avatar.png";
+import mapa from "../../img/mapa.png";
 import img from "../../img/coffeLondon.png";
 import { getProfileUser, getUserById } from "../../redux/actions/Users";
 import ChatBubble from "../ChatBubble/ChatBubble";
@@ -164,7 +165,7 @@ export default function Profile() {
             </div>
             <div className={styles.infoUser}>
               <div className={styles.profileAvatar}>
-                <img src={profile.photoUser} alt="perfilAvatar" />
+                <img src={profile.photoUser?.length !== 0 ? profile.photoUser : avatarDefault} alt="perfilAvatar" />
                 {putSelect === "Change_profile_picture" ||
                 putSelect === "Edit_profile" ? (
                   <div className={styles.changeAvatar}>
@@ -289,6 +290,7 @@ export default function Profile() {
               </div>
             </div>
             <div className={styles.sections}>
+            <div className={styles.separators}>{'separators'}</div>
               <div
                 className={`${
                   selected === 0 ? styles.selected : styles.review
@@ -306,6 +308,7 @@ export default function Profile() {
                 <img src={pin} alt="star" width="24px" height="24px" />
                 Places I've been
               </div>
+              <div className={styles.separators}>{'separators'}</div>
             </div>
             <hr />
             <div className={styles.cardReviewContainer}>
@@ -314,17 +317,17 @@ export default function Profile() {
                 myPublications.map((e: any) => (
                   <div className={styles.cardReview}>
                     <img src={img} alt="" />
-                    <h5>{e.clasification}</h5>
+                    <h4>{e.clasification}</h4>
                     <Rating
                       initialValue={e.rate}
                       readonly
                       fillColorArray={[
-                        "#31135e",
-                        "#31135e",
-                        "#31135e",
-                        "#31135e",
-                        "#31135e",
-                        "#31135e",
+                        "#5847A6",
+                        "#5847A6",
+                        "#5847A6",
+                        "#5847A6",
+                        "#5847A6",
+                        "#5847A6",
                       ]}
                       size={20}
                       style={{ marginLeft: "0.5rem" }}
@@ -332,6 +335,17 @@ export default function Profile() {
                   </div>
                 ))}
             </div>
+
+            <div className={styles.containerMapa}>
+              <div className={styles.color}>
+            {
+              selected === 1 &&
+              <div className={styles.mapa}>
+              </div>
+            }
+              </div>
+            </div>
+
           </div>
           <div className={styles.footerTerm}>
             <FooterTerm />

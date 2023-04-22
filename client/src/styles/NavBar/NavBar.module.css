@@ -14,7 +14,7 @@
   justify-content: flex-start;
   align-items: center;
   width: 88%;
-  margin-left: 0.8rem;
+  margin-left: 2rem;
 }
 
 .navTitleh1 {
@@ -23,10 +23,10 @@
 
 .navButtons {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: end;
   align-items: center;
   width: 30%;
-  /* margin-right: 0.5rem; */
+  margin-right: 2rem;
 }
 
 .navButtonsh2 {

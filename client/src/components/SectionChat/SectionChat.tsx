@@ -7,7 +7,8 @@ import connected from "../../img/connected.png";
 import { useNavigate } from "react-router-dom";
 import { ChatProps } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
-import { getAllUsers, getFollowing } from "../../redux/actions/Users";
+import { cleanProfile, getAllUsers, getFollowing } from "../../redux/actions/Users";
+import Cookies from "universal-cookie";
 
 interface User {
   _id: string;
@@ -29,6 +30,8 @@ export default function SectionChat({setUserChatActual}: any): JSX.Element {
 
   // Obtener token del almacenamiento local
   const token: string | null = localStorage.getItem("token");
+  const cookies = new Cookies();
+  const id = cookies.get("idUser");
 
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -54,8 +57,12 @@ export default function SectionChat({setUserChatActual}: any): JSX.Element {
 
   // Función para cerrar sesión
   function logOut(): void {
-    window.localStorage.removeItem("users");
-    window.localStorage.removeItem("token");
+    dispatch(cleanProfile());
+    cookies.remove("login");
+    cookies.remove("idUser");
+    cookies.remove("token");
+    cookies.set("visit", false);
+    window.localStorage.removeItem("UserChat");
     nav("/login");
   }
 
@@ -134,10 +141,10 @@ export default function SectionChat({setUserChatActual}: any): JSX.Element {
                   }`}
                 >
                   <li className={styles.space}></li>
-                  <a href="/profile" onClick={() => setIsOpen(!isOpen)}>
+                  <a href={`/profile/${id}`} onClick={() => setIsOpen(!isOpen)}>
                     <li>View profile</li>
                   </a>
-                  <a href="#" onClick={() => setIsOpen(!isOpen)}>
+                  <a href={`/profile/${id}`} onClick={() => setIsOpen(!isOpen)}>
                     <li>Account settings</li>
                   </a>
                   {/* Opción para cerrar sesión */}
