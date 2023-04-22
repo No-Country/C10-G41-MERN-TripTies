@@ -1,0 +1,2 @@
+TripTies - Frontend
+The frontend built with TypeScript, React, Redux and Module.css is the presentation layer of the web application, in charge of the user interface (UI) and the logic related to the interaction with the user. Together, these technologies provide a more structured, scalable, and maintainable development experience for building modern web applications.
