@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "../../img/logo.png";
+import logo from "../../img/Logo.png";
 import Loading from "../Loading/Loading";
 import style from "../../styles/PageLoading/PageLoading.module.css";
 function PageLoading(): JSX.Element {

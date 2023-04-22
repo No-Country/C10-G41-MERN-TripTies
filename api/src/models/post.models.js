@@ -1,5 +1,5 @@
-const { Schema, model } = require("mongoose");
-const { default: mongoose } = require("mongoose");
+const { Schema, model } = require('mongoose')
+const { default: mongoose } = require('mongoose')
 
 const postSchema = new Schema(
   {
@@ -13,10 +13,10 @@ const postSchema = new Schema(
     name: { type: String, required: true },
     clasification: { type: String, required: true },
     reported: { type: Number, default: 0 },
-    liked: { type: mongoose.Schema.Types.ObjectId, ref: "Like" },
+    liked: { type: mongoose.Schema.Types.ObjectId, ref: 'Like' },
     comments: { type: Number, default: 0 },
   },
   { timestamps: true }
-);
+)
 
-module.exports = model("Post", postSchema);
+module.exports = model('Post', postSchema)
