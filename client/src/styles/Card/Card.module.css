@@ -113,6 +113,12 @@
   cursor: pointer;
 }
 
+.Commentsection {
+  display: flex;
+  justify-content: center;
+  margin-block-start: 5%;
+}
+
 @media (max-width: 768px) {
   .container {
     max-width: 70vw;

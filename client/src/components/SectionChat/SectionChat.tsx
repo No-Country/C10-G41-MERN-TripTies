@@ -4,7 +4,7 @@ import avatar7 from "../../img/user_avatar_default.jpg";
 import add from "../../img/message-add.png";
 import setting from "../../img/setting.png";
 import connected from "../../img/connected.png";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ChatProps } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import { cleanProfile, getAllUsers, getFollowing } from "../../redux/actions/Users";
@@ -141,12 +141,12 @@ export default function SectionChat({setUserChatActual}: any): JSX.Element {
                   }`}
                 >
                   <li className={styles.space}></li>
-                  <a href={`/profile/${id}`} onClick={() => setIsOpen(!isOpen)}>
+                  <Link to={`/profile/${id}`} onClick={() => setIsOpen(!isOpen)}>
                     <li>View profile</li>
-                  </a>
-                  <a href={`/profile/${id}`} onClick={() => setIsOpen(!isOpen)}>
+                  </Link>
+                  <Link to={`/profile/${id}`} onClick={() => setIsOpen(!isOpen)}>
                     <li>Account settings</li>
-                  </a>
+                  </Link>
                   {/* Opción para cerrar sesión */}
                   <a
                     onClick={() => {
