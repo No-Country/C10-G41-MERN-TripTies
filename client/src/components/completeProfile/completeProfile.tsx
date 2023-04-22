@@ -76,9 +76,7 @@ function CompleteProfile(): JSX.Element {
         cookies.set("fisrtLoading", true);
       })
       .then(() => {
-        setTimeout(() => {
           nav("/home");
-        }, 500);
       });
   };
 
