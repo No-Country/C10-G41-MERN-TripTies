@@ -156,7 +156,17 @@ function ModalPost({
   console.log(post);
 
   const handleSubmit = (e: any) => {
-    dispatch(postPublication(post)).then(() => nav("/home"));
+    dispatch(postPublication(post)).then(() => setPost({
+      privacity: "Public",
+      text: "",
+      tag: [],
+      photo: [],
+      video: [],
+      rate: 0,
+      clasification: "",
+      location: "",
+      name: "",
+    })).then(() => nav("/home"));
   };
 
   const handleUpdatePhotos = async (e: any) => {
