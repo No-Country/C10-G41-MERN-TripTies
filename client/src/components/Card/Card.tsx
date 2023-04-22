@@ -30,6 +30,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import SinglePublication from "../SinglePublication/SinglePublication";
+import { postLike } from "../../redux/actions/Publications";
 
 type props = {
   places: any;
@@ -80,6 +81,12 @@ function Card({ places, login, profile, cookies }: props) {
     } else {
       setDisplayComments("none");
     }
+  };
+
+  // FUNCION POST LIKE
+  const handleLike = () => {
+    // const id = places._id
+    // dispatch(postLike(id))
   };
 
   const handleOpen = () => {
@@ -140,12 +147,12 @@ function Card({ places, login, profile, cookies }: props) {
                 initialValue={places.rate}
                 readonly
                 fillColorArray={[
-                  "#31135e",
-                  "#31135e",
-                  "#31135e",
-                  "#31135e",
-                  "#31135e",
-                  "#31135e",
+                  "#5847A6",
+                  "#5847A6",
+                  "#5847A6",
+                  "#5847A6",
+                  "#5847A6",
+                  "#5847A6",
                 ]}
                 size={20}
               />
@@ -176,7 +183,10 @@ function Card({ places, login, profile, cookies }: props) {
           </div>
           <div className={style.actions}>
             <aside>
-              <img src={heart} alt="heart" />
+              <img 
+              onClick={handleLike}
+              src={heart} 
+              alt="heart" />
               <img
                 onClick={handleSectionComments}
                 src={messageBig}
@@ -185,9 +195,11 @@ function Card({ places, login, profile, cookies }: props) {
               <img src={share} alt="share" />
             </aside>
           </div>
+        <div className={style.Commentsection}>
+      <Comments profile={profile} goingToComment={displayComments} places={places} />
+        </div>
         </section>
       </section>
-      <Comments profile={profile} goingToComment={displayComments} />
     </>
   );
 }
