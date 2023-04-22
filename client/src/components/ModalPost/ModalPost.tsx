@@ -166,7 +166,7 @@ function ModalPost({
       clasification: "",
       location: "",
       name: "",
-    })).then(() => nav("/home"));
+    }));
   };
 
   const handleUpdatePhotos = async (e: any) => {
