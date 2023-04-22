@@ -102,7 +102,7 @@ function Home(): JSX.Element {
     if (login === "true" || visit === "true") {
       dispatch(getAllPublications());
       dispatch(getUserById());
-      dispatch(getProfileUser());
+      dispatch(getProfileUser(undefined));
       dispatch(getTags());
       setTimeout(() => {
         cookies.remove("fisrtLoading");

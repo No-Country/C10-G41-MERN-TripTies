@@ -63,7 +63,6 @@ const editConversation = async (conversationId, obj) => {
       { conversation: conversationId },
       { title: obj.title },
     )
-    console.log(updatedConversation)
     return updatedConversation
   } catch (error) {
     throw new Error(`Error updating user conversation: ${error.message}`)
