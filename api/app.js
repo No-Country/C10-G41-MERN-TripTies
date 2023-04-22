@@ -27,23 +27,13 @@ const corsOptions = {
 
 app.use(cors())
 
-
 if (process.env.NODE_ENV === 'production') {
-  app.use(helmet.contentSecurityPolicy({
-    directives: {
-        "default-src":[ "'self'" ],
-        "base-uri":[ "'self'" ],
-        "font-src":[ "'self'", "https:", "data:" ],
-        "frame-ancestors":[ "'self'" ],
-        "img-src":[ "'self'", "data:", "http://res.cloudinary.com"],
-        "script-src":[ "'self'" ],
-        "script-src-attr":[ "'none'" ],
-        "style-src":[ "'self'", "https:", "'unsafe-inline'" ],
-    }
-}))
-  app.use(helmet({ crossOriginResourcePolicy: false}))
+  /* Set security HTTP headers */
+  /* For Error ERR_BLOCKED_BY_RESPONSE.NotSameOrigin 200 
+      https://stackoverflow.com/questions/70752770/helmet-express-err-blocked-by-response-notsameorigin-200
+  */
+  app.use(helmet({ crossOriginResourcePolicy: false }))
 }
-
 //! Accept Json & form-urlencoded
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
