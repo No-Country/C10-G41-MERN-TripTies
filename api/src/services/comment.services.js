@@ -25,7 +25,6 @@ const findComments = async (post_id) => {
       parentAux.replies.push(comment)
     }
   }
-  console.log('COMMENTS:', commentMap)
   return([...commentMap.values()])
 }
 

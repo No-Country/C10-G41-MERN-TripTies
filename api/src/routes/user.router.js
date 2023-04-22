@@ -17,7 +17,7 @@ router.get(
 router.route('/:userId').get(getUserById)
 
 
-router.post('/save', save)
+// router.post('/save', save)
 
 module.exports = router
 

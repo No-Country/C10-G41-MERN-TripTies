@@ -6,7 +6,7 @@ const postSchema = new Schema(
     user: { type: Object, required: true },
     content: { type: String, required: true },
     tag: { type: [String], required: true },
-    privacity: { type: String, enum: ["Public", "Private"], required: true },
+    privacity: { type: String, enum: ['Public', 'Private'], required: true },
     photoPost: { type: [Object] },
     video: { type: [Object] },
     rate: { type: Number, min: 1, max: 5, required: true },

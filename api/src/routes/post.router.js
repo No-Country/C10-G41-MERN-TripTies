@@ -26,7 +26,7 @@ router
   )
 
 router
-  .route("/:postId")
+  .route('/:postId')
   .get(passport.authenticate('jwt', { session: false }), getPostById)
   .put(passport.authenticate('jwt', { session: false }), putPost)
   .post(
@@ -38,7 +38,7 @@ router
 router.use('/:postId/comments', routesComments)
 
 router
-  .route("/:postId/like")
+  .route('/:postId/like')
   .post(passport.authenticate('jwt', { session: false }), postLikeByPost)
 
 module.exports = router
