@@ -156,6 +156,7 @@ function ModalPost({
   console.log(post);
 
   const handleSubmit = (e: any) => {
+    e.preventDefault()
     dispatch(postPublication(post)).then(() => setPost({
       privacity: "Public",
       text: "",
@@ -166,7 +167,7 @@ function ModalPost({
       clasification: "",
       location: "",
       name: "",
-    }));
+    })).finally(()=> nav("/home"))
   };
 
   const handleUpdatePhotos = async (e: any) => {
