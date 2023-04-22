@@ -147,7 +147,6 @@ const createImagePost = async (req, res, next) => {
         await uploadFile(file, fileName)
 
         const newImage = await Post.createImage(bucketUrl);
-        console.log("newImage: ", newImage);
         return newImage;
       })
     )

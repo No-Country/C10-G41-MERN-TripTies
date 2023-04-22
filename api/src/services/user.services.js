@@ -4,9 +4,6 @@ const Profile = require('../models/profiles.models')
 const Post = require('../models/post.models')
 
 const { hash } = require('../utils/crypto')
-const { response } = require('express')
-const { findPostById } = require('./post.services')
-
 const getAllUsers = () => {
   return new Promise((resolve, reject) => {
     User.find()
@@ -106,7 +103,6 @@ const removeUser = async (userId) => {
 
 const updateUser = async (id, obj) => {
   const data = await User.updateOne({ _id: id }, obj)
-  console.log(data)
   return data[0]
 }
 

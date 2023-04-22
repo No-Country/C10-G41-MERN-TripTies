@@ -93,7 +93,6 @@ const updatePost = async (postId, userId, obj) => {
 
 async function createImage(bucketUrl) {
   const session = await PostsImages.startSession()
-  console.log('bucketURL: ', bucketUrl)
 
   try {
     await session.withTransaction(async () => {
