@@ -1,8 +1,8 @@
-const express = require("express");
-const router = express.Router();
-const passport = require("passport");
-const routesComments = require("./comment.router");
-require("../middlewares/auth.middleware")(passport);
+const express = require('express')
+const router = express.Router()
+const passport = require('passport')
+const routesComments = require('./comment.router')
+require('../middlewares/auth.middleware')(passport)
 
 const {
   postNewPost,
@@ -10,15 +10,15 @@ const {
   getPostById,
   putPost,
   postLikeByPost,
-  createImagePost,
-} = require("../controllers/post.controller");
-const { multerPublicationsPhotos } = require("../utils/multer");
-const { postTag } = require("../controllers/tag.controller");
+  createImagePost
+} = require('../controllers/post.controller')
+const { multerPublicationsPhotos } = require('../utils/multer')
+const { postTag } = require('../controllers/tag.controller')
 
 router
-  .route("/")
+  .route('/')
   .get(getAllPosts)
-  .post(passport.authenticate('jwt', { session: false }), multerPublicationsPhotos.array('image', 3), postNewPost, postTag)
+  .post(passport.authenticate('jwt', { session: false }), multerPublicationsPhotos.single('image'), postNewPost, postTag)
   
 router.route('/:postId')
   .get(passport.authenticate('jwt', { session: false }), getPostById)
