@@ -34,7 +34,7 @@ function Log(): JSX.Element {
   const profile: Profile = selector((state) => state.profile);
 
   useEffect(() => {
-    dispatch(getProfileUser());
+    dispatch(getProfileUser(undefined));
   }, []);
 
   const handleChange = (e: any) => {
