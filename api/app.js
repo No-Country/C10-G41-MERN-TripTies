@@ -29,8 +29,7 @@ app.use(cors())
 
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(helmet.contentSecurityPolicy(false))
-  app.use(helmet({ crossOriginResourcePolicy: false}))
+  app.use(helmet({ crossOriginResourcePolicy: false, crossOriginEmbedderPolicy: false}))
 }
 
 //! Accept Json & form-urlencoded
