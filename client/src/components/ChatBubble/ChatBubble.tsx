@@ -67,8 +67,7 @@ export default function ChatBubble({ UserChatActual }: any) {
     // Efecto para filtrar las conversaciones
     useEffect(() => {
         dispatch(getAllConversations())
-        console.log(UserChatActual)
-    }, [conversationID, msg]);
+    }, [conversationID]);
 
     useEffect(() => {
         if (conversations.length !== 0) {
@@ -78,15 +77,18 @@ export default function ChatBubble({ UserChatActual }: any) {
 
     // Función para verificar si hay nuevos mensajes
     useEffect(() => {
+        if(open === "400px"){
         const interval = setInterval(() => {
             if (msg.length !== msgLength) {
-                newConversation();
+                dispatch(getConversationsID(conversationID))
+                .then(res => setMsg(res.conversation.messages))
                 msgLength = msg.length;
             }
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [msg]);
+    }
+    }, [open,msg]);
 
     async function newConversation() {
         // FUI PARTICIPANTE
