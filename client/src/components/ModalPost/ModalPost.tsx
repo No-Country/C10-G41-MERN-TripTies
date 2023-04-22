@@ -19,6 +19,7 @@ import Creatable, { useCreatable } from "react-select/creatable";
 import Select from "react-select";
 import Loading from "../Loading/Loading";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 type props = {
   visible: boolean;
@@ -168,12 +169,12 @@ function ModalPost({
     const response = await axios
       .post("https://api.cloudinary.com/v1_1/dtpsfvnfo/image/upload", data)
       .then((res) => {
-        console.log(res);
         setPost({
           ...post,
           photo: [...post.photo, { url: res.data.url, type: "image" }],
-        });
-      });
+        })
+      }).then(()=> Swal.fire({ title: "Image upload", icon: "success" })
+      )
   };
 
   const handleUpdateVideos = async (e: any) => {
