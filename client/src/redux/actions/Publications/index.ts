@@ -65,3 +65,48 @@ export const getTags = () => {
     });
   };
 };
+
+export const postComment = ({comment,id}: any) => {
+  return async function () {
+    try {
+      console.log("action postComment", comment);
+      const response = await axios.post(
+        `/posts/${id}/comments`,
+        {
+            parent_id: "?",
+            content: comment
+        },
+        {
+          headers: {
+            Authorization: `jwt ${cookies.get("token")}`,
+          },
+        }
+      );
+      console.log(response);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+};
+
+export const postLike = (id: any) => {
+  return async function () {
+    try {
+      const token = cookies.get("token")
+      console.log("action postLike", token);
+      const response = await axios.post(
+        `/posts/${id}/like`,
+        {
+          headers: {
+            Authorization: `jwt ${token}`,
+          },
+        }
+      );
+      console.log(response);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+};

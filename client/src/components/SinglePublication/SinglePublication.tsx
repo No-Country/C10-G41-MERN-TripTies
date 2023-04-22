@@ -7,6 +7,9 @@ import tagPlace from "../../img/tag.png";
 import boldHeart from "../../img/heart-circle-bold.png";
 import message from "../../img/message-text.png";
 import cross from "../../img/cross.png";
+import { postComment, postLike } from "../../redux/actions/Publications";
+import { useAppDispatch } from "../../redux/store/hooks";
+import { useState } from "react";
 
 function SinglePublication({
   openPost,
@@ -16,7 +19,25 @@ function SinglePublication({
   day,
   time,
 }: any): JSX.Element {
+
+  const dispatch = useAppDispatch();
+  const [comment, setComment] = useState("");
   console.log(places);
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    if (e.key === "Enter" && comment) {
+      // const id = places._id
+      // dispatch(postComment({comment, id}))
+      setComment("");
+    }
+  };
+
+    // FUNCION POST LIKE
+    const handleLike = () => {
+      // const id = places._id
+      // dispatch(postLike(id))
+    };
   return (
     <div className={style.modalContainer}>
       {openPost && (
@@ -72,7 +93,7 @@ function SinglePublication({
                 </div>
                 <div className={style.likesAndComments}>
                   <aside>
-                    <img src={boldHeart} alt="bold heart" />
+                    <img onClick={handleLike} src={boldHeart} alt="bold heart" />
                     <span>{places.liked}</span>
                   </aside>
                   <aside>
@@ -82,6 +103,9 @@ function SinglePublication({
                 </div>
                 <input
                   type="text"
+                  onChange={(event) => setComment(event.target.value)}
+                  onKeyUp={(e) => handleSubmit(e)}
+                  value={comment}
                   className={style.inputPost}
                   placeholder="Add comment"
                 />
