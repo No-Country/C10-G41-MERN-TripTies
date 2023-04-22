@@ -168,10 +168,11 @@ function ModalPost({
 
     const response = await axios
       .post("https://api.cloudinary.com/v1_1/dtpsfvnfo/image/upload", data)
-      .then((res) => {
+      .then((res: { data: { secure_url: string}; }) => {
+
         setPost({
           ...post,
-          photo: [...post.photo, { url: res.data.url, type: "image" }],
+          photo: [...post.photo, { url: res.data.secure_url, type: "image" }],
         })
       }).then(()=> Swal.fire({ title: "Image upload", icon: "success" })
       )
@@ -186,7 +187,7 @@ function ModalPost({
 
     const response = await axios
       .post("https://api.cloudinary.com/v1_1/dtpsfvnfo/video/upload", data)
-      .then((res) => {
+      .then((res: { data: { url: any; }; }) => {
         console.log(res);
         setPost({
           ...post,
@@ -261,11 +262,11 @@ function ModalPost({
                     placeholder="Select 3 tags!"
                     onChange={handleTag}
                     styles={{
-                      placeholder: (state) => ({
+                      placeholder: (state: any) => ({
                         ...state,
                         color: "#6c5206",
                       }),
-                      control: (state) => ({
+                      control: (state: any) => ({
                         ...state,
                         fontSize: 16,
                         color: "#6c5206",
@@ -274,11 +275,11 @@ function ModalPost({
                         background: "none",
                         border: "none",
                       }),
-                      indicatorSeparator: (state) => ({
+                      indicatorSeparator: (state: any) => ({
                         ...state,
                         display: "none",
                       }),
-                      indicatorsContainer: (state) => ({
+                      indicatorsContainer: (state: any) => ({
                         ...state,
                         display: "none",
                       }),
@@ -340,11 +341,11 @@ function ModalPost({
                     maxMenuHeight={120}
                     placeholder="Add Clasification!"
                     styles={{
-                      placeholder: (state) => ({
+                      placeholder: (state: any) => ({
                         ...state,
                         color: "#6c5206",
                       }),
-                      control: (base, state) => ({
+                      control: (base: any, state: any) => ({
                         ...base,
                         color: "#6c5206",
                         minWidth: 150,
@@ -352,11 +353,11 @@ function ModalPost({
                         background: "none",
                         border: "none",
                       }),
-                      indicatorSeparator: (state) => ({
+                      indicatorSeparator: (state: any) => ({
                         ...state,
                         display: "none",
                       }),
-                      indicatorsContainer: (state) => ({
+                      indicatorsContainer: (state: any) => ({
                         ...state,
                         display: "none",
                       }),
@@ -372,11 +373,11 @@ function ModalPost({
                     maxMenuHeight={120}
                     placeholder="Add location!"
                     styles={{
-                      placeholder: (state) => ({
+                      placeholder: (state: any) => ({
                         ...state,
                         color: "#6c5206",
                       }),
-                      control: (base, state) => ({
+                      control: (base: any, state: any) => ({
                         ...base,
                         color: "#6c5206",
                         minWidth: 150,
@@ -384,11 +385,11 @@ function ModalPost({
                         background: "none",
                         border: "none",
                       }),
-                      indicatorSeparator: (state) => ({
+                      indicatorSeparator: (state: any) => ({
                         ...state,
                         display: "none",
                       }),
-                      indicatorsContainer: (state) => ({
+                      indicatorsContainer: (state: any) => ({
                         ...state,
                         display: "none",
                       }),
