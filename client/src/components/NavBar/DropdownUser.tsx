@@ -17,7 +17,8 @@ function DropdownUser({ display }: string | any) {
     cookies.remove("idUser");
     cookies.remove("token");
     cookies.set("visit", false);
-    nav("/");
+    window.localStorage.removeItem("UserChat");
+    nav("/login");
   };
 
   return (

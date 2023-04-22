@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Search from "../Search/Search";
 import { useAppDispatch } from "../../redux/store/hooks";
 import { cleanProfile } from "../../redux/actions/Users";
+import avatarDefault from "../../img/user_avatar_default.jpg";
 import Cookies from "universal-cookie";
 
 function NavBar({ handleHome, places, user, visit }: any): JSX.Element {
@@ -18,6 +19,7 @@ function NavBar({ handleHome, places, user, visit }: any): JSX.Element {
   const dispatch = useAppDispatch();
   const nav = useNavigate();
   const cookies = new Cookies();
+  const id = cookies.get("idUser");
 
   useEffect(() => {
     if (user.user?.first_name === "" && user.user?.last_name === "") {
@@ -75,13 +77,15 @@ function NavBar({ handleHome, places, user, visit }: any): JSX.Element {
             />
             <DropdownUser display={display} />
           </section>
+          <a href={`/profile/${id}`}>
           <img
-            src={user.user?.photoUser}
+            src={user.user?.photoUser.length !== 0 ? user.user?.photoUser : avatarDefault}
             alt=""
             width="50"
             height="50"
             style={{ borderRadius: "50%" }}
           />
+          </a>
         </div>
       )}
     </nav>
