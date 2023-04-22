@@ -9,6 +9,9 @@ function App(): JSX.Element {
     <div className="App">
       <LandingPage />
     </div>
+
+
+
   );
 }
 
