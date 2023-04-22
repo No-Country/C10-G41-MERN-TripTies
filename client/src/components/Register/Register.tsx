@@ -106,11 +106,6 @@ function Register(): JSX.Element {
             icon: "warning",
           })
             .then(() => {
-              dispatch(loginUser(newUser));
-              cookies.set("fisrtLoading", true);
-            })
-            .then(() => {
-              cookies.set("login", true);
               nav("/completeProfile");
             });
         } else {
