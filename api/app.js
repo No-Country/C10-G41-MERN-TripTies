@@ -14,7 +14,7 @@ const app = express()
 const PORT = process.env.PORT || 8000
 
 //! Enable Cors
-const whitelist = ['http://localhost:8000', 'http://localhost:5173',"https://res.cloudinary.com/"]
+const whitelist = ['http://localhost:8000', 'http://localhost:5173']
 const corsOptions = {
   origin: (origin, callback) => {
     if (whitelist.includes(origin) || !origin) {
@@ -27,13 +27,12 @@ const corsOptions = {
 
 app.use(cors())
 
-if (process.env.NODE_ENV === 'production') {
-  /* Set security HTTP headers */
-  /* For Error ERR_BLOCKED_BY_RESPONSE.NotSameOrigin 200 
-      https://stackoverflow.com/questions/70752770/helmet-express-err-blocked-by-response-notsameorigin-200
-  */
-  app.use(helmet({ crossOriginResourcePolicy: false }))
-}
+
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  })
+);
 //! Accept Json & form-urlencoded
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
