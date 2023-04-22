@@ -69,7 +69,6 @@ function CompleteProfile(): JSX.Element {
   };
 
   const handleSubmit = (e: any) => {
-    e.preventDefault();
     dispatch(editProfile(data))
       .then(() => {
         cookies.set("login", true);
