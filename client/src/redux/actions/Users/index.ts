@@ -148,7 +148,6 @@ export const getConversationsID = (id) => {
           Authorization: `jwt ${cookies.get("token")}`,
         },
       });
-      console.log(response);
       return response.data;
     } catch (error) {
       console.log(error);

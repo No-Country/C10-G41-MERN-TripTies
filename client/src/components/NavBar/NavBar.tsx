@@ -46,10 +46,12 @@ function NavBar({ handleHome, places, user, visit }: any): JSX.Element {
 
   return (
     <nav className={style.navContainer}>
+      <div>
       <Link to="/home" className={style.navTitle} onClick={handleHome}>
         <img src={logo} alt="" />
         <h1 className={style.navTitleh1}>TripTies</h1>
       </Link>
+      </div>
       {visit === "true" ? (
         <div className={style.navButtons}>
           <button

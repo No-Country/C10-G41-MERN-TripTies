@@ -125,7 +125,7 @@ export default function Profile() {
   console.log(putSelect);
 
   const myPublications =
-    publications && publications.posts.filter((e: any) => e.user.id === id);
+    publications.length !== 0 && publications.posts.filter((e: any) => e.user.id === id);
   console.log(myPublications);
   return (
     <div className={styles.container}>
@@ -309,7 +309,8 @@ export default function Profile() {
             </div>
             <hr />
             <div className={styles.cardReviewContainer}>
-              {selected === 0 &&
+              {
+              myPublications && selected === 0 &&
                 myPublications.map((e: any) => (
                   <div className={styles.cardReview}>
                     <img src={img} alt="" />
@@ -337,6 +338,7 @@ export default function Profile() {
           </div>
         </div>
       </div>
+      <ChatBubble UserChatActual={UserChatActual} />
     </div>
   );
 }
