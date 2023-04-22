@@ -1,51 +1,50 @@
-const { default: mongoose } = require("mongoose");
-const Likes = require("../models/likes.models");
-const Post = require("../models/post.models");
-const Profile = require("../models/profiles.models");
-const User = require("../models/users.models");
-const Tag = require("../services/tag.services");
-const PostsImages = require("../models/postsImages.models");
-const { uploadFile } = require("../../s3");
+const { default: mongoose } = require('mongoose')
+const Likes = require('../models/likes.models')
+const Post = require('../models/post.models')
+const Profile = require('../models/profiles.models')
+const User = require('../models/users.models')
+const Tag = require('../services/tag.services')
+const PostsImages = require('../models/postsImages.models')
+const { uploadFile } = require('../../s3')
 
 const findAllPosts = async ({ page = 1, limit = 100 }) => {
-  const skip = (page - 1) * limit;
+  const skip = (page - 1) * limit
   const posts = await Post.find()
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit)
     .select(
-      "content photoPost video privacity rate name clasification reported tag user liked comments media.location createdAt"
+      'content photoPost video privacity rate name clasification reported tag user liked comments media.location createdAt'
     )
-    .lean();
+    .lean()
 
-  const count = await Post.countDocuments();
-  const totalPages = Math.ceil(count / limit);
+  const count = await Post.countDocuments()
+  const totalPages = Math.ceil(count / limit)
 
-  return { posts, totalPages };
-};
-
-const findPostById = async (postId) => {
-
-  const post = await Post.findById(postId)
-  return post
+  return { posts, totalPages }
 }
 
+const findPostById = async (postId) => {
+  const post = await Post.findById(postId);
+  return post;
+};
+
 const createPost = async (id, obj) => {
-  let userId = await User.findOne({ _id: id });
+  let userId = await User.findOne({ _id: id })
 
   let user = {
     id: userId._id,
     firstName: userId.first_name,
     lastName: userId.last_name,
     photoUser: userId.photo,
-  };
+  }
 
   const data = await Post.create({
-    user: user.id,
+    user: user,
     content: obj.content,
     tag: obj.tag,
     privacity: obj.privacity,
-    photoPost: obj.url,
+    photoPost: obj.photo,
     video: obj.video,
     rate: obj.rate,
     name: obj.name,
@@ -59,9 +58,9 @@ const createPost = async (id, obj) => {
 const updatePost = async (postId, userId, obj) => {
   const post = await Post.findOneAndUpdate({ _id: postId, user: userId }, obj, {
     new: true,
-  });
-  return post;
-};
+  })
+  return post
+}
 
 //!---------------POST IMAGES -------------------
 
@@ -94,7 +93,6 @@ const updatePost = async (postId, userId, obj) => {
 
 async function createImage(bucketUrl) {
   const session = await PostsImages.startSession()
-  console.log("bucketURL: ", bucketUrl);
 
   try {
     await session.withTransaction(async () => {
@@ -103,14 +101,14 @@ async function createImage(bucketUrl) {
           url: bucketUrl,
         },
         { session }
-      );
+      )
 
-      return newImage;
-    });
+      return newImage
+    })
   } catch (error) {
-    return error;
+    return error
   } finally {
-    session.endSession();
+    session.endSession()
   }
 }
 
@@ -118,34 +116,34 @@ async function getImageOr404(postId, order) {
   const publicationImage = await PostsImages.findOne({
     publication: postId,
     order: parseInt(order),
-  }).exec();
+  }).exec()
 
   if (!publicationImage) {
     throw new Error(
       'Not Found Publication Image with this order',
       404,
       'Not Found'
-    )
+    );
   }
 
-  return publicationImage;
+  return publicationImage
 }
 
 async function removeImage(postId, order) {
-  const session = await PostsImages.startSession();
+  const session = await PostsImages.startSession()
 
   try {
-    const publicationImage = await getImageOr404(postId, order);
+    const publicationImage = await getImageOr404(postId, order)
 
     await session.withTransaction(async () => {
-      await publicationImage.remove({ session });
-    });
+      await publicationImage.remove({ session })
+    })
 
-    return publicationImage;
+    return publicationImage
   } catch (error) {
-    return error;
+    return error
   } finally {
-    session.endSession();
+    session.endSession()
   }
 }
 
@@ -154,25 +152,24 @@ async function removeImage(postId, order) {
 //! -------------- LIKES --------------------
 
 const addLikeByPost = async (id, postId) => {
-  const session = await mongoose.startSession();
-  session.startTransaction();
+  const session = await mongoose.startSession()
+  session.startTransaction()
   try {
-    const profile = await Profile.findOne({ user: id });
+    const profile = await Profile.findOne({ user: id })
     let like = await Likes.findOneAndUpdate(
       { profile: profile._id, post: postId },
       { $setOnInsert: { post: postId } },
       { upsert: true, new: true, session, setDefaultsOnInsert: true }
-    );
-    await session.commitTransaction();
-    session.endSession();
-    return like;
+    )
+    await session.commitTransaction()
+    session.endSession()
+    return like
   } catch (error) {
-    await session.abortTransaction();
-    session.endSession();
-    throw new Error(error.message);
+    await session.abortTransaction()
+    session.endSession()
+    throw new Error(error.message)
   }
-
-}
+};
 
 module.exports = {
   findAllPosts,
@@ -181,6 +178,5 @@ module.exports = {
   updatePost,
   addLikeByPost,
   // getAvailableImageOrders,
-  createImage
-}
-
+  createImage,
+};

@@ -5,9 +5,10 @@ type props = {
 };
 
 function PlaceIVisited({ visited }: props): JSX.Element {
+  // TOFIX
   return (
     <div>
-      {/* {visited && visited.map((e: any, i: number) => <Card places={e} />)} */}
+      {visited && visited.map((e: any, i: number) => <Card places={e}  login={e} profile={e} cookies={e} />)}
     </div>
   );
 }

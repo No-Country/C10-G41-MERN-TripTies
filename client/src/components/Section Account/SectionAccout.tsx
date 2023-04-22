@@ -5,26 +5,25 @@ import home from "../../img/home-2.png";
 import homeBold from "../../img/homeBold.png";
 import style from "../../styles/SectionAccount/Account.module.css";
 import { useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
 
 type props = {
   handleSaved: any;
-  handleVisited: any;
 };
 
-const SectionAccount = ({ handleSaved, handleVisited }: props) => {
-
+const SectionAccount = ({ handleSaved }: props) => {
   const nav = useNavigate();
-  
+  const cookies = new Cookies();
+  const id = cookies.get("idUser");
 
   return (
     <>
       <h3 className={style.titleAccount}>Account</h3>
       <div className={style.containerAccount}>
-        <img 
-        src={window.location.pathname === "/home"
-            ? homeBold
-            : home } 
-        alt="home" />
+        <img
+          src={window.location.pathname === "/home" ? homeBold : home}
+          alt="home"
+        />
         <button onClick={() => nav("/home")} className={style.buttons}>
           Home
         </button>
@@ -32,18 +31,9 @@ const SectionAccount = ({ handleSaved, handleVisited }: props) => {
 
       <div className={style.containerAccount}>
         <img src={user} alt="user" />
-        <button onClick={() => nav("/profile")} className={style.buttons}>My Profile</button>
-      </div>
-
-      <div className={style.containerAccount}>
-        <img src={saved} alt="saved" />
-        <button onClick={handleSaved} className={style.buttons}>
-          Saved
+        <button onClick={() => nav(`/profile/${id}`)} className={style.buttons}>
+          My Profile
         </button>
-      </div>
-      <div className={style.containerAccount}>
-        <img src={inbox} alt="inbox" />
-        <button className={style.buttons}>Inbox</button>
       </div>
     </>
   );

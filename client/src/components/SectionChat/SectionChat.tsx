@@ -7,7 +7,7 @@ import connected from "../../img/connected.png";
 import { useNavigate } from "react-router-dom";
 import { ChatProps } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
-import { getAllUsers } from "../../redux/actions/Users";
+import { getAllUsers, getFollowing } from "../../redux/actions/Users";
 
 interface User {
   _id: string;
@@ -24,7 +24,7 @@ interface User {
   isOnline: boolean;
 }
 
-export default function SectionChat(): JSX.Element {
+export default function SectionChat({setUserChatActual}: any): JSX.Element {
   const avatarDefault = avatar7;
 
   // Obtener token del almacenamiento local
@@ -33,12 +33,12 @@ export default function SectionChat(): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.users);
+  const user = useAppSelector((state) => state.following);
   const nav = useNavigate();
 
   // Hook para manejar el click fuera del menú de configuración y cerrarlo
   useEffect(() => {
-    dispatch(getAllUsers());
+    dispatch(getFollowing());
     const handleOutsideClick = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
         setIsOpen(false);
@@ -64,6 +64,7 @@ export default function SectionChat(): JSX.Element {
       "UserChat",
       JSON.stringify({ name: name, avatar: avatar, id })
     );
+    setUserChatActual({ name: name, avatar: avatar, id })
   }
 
   return (
