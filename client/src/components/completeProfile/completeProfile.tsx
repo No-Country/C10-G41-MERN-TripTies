@@ -77,7 +77,7 @@ function CompleteProfile(): JSX.Element {
       })
       .then(() => {
           nav("/home");
-      });
+        });
   };
 
   return (

@@ -88,7 +88,7 @@ export const editProfile = (data: object) => {
     const response = await axios.put(`/profiles/${idUser}`, data, {
       headers: { Authorization: `jwt ${token}` },
     });
-    console.log(response);
+    console.log("soy la respuesta del complete profile", response);
     return response;
   };
 };
