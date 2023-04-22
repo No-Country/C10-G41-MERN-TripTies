@@ -14,7 +14,7 @@ const app = express()
 const PORT = process.env.PORT || 8000
 
 //! Enable Cors
-const whitelist = ['http://localhost:8000', 'http://localhost:5173']
+const whitelist = ['http://localhost:8000', 'http://localhost:5173',"https://res.cloudinary.com/"]
 const corsOptions = {
   origin: (origin, callback) => {
     if (whitelist.includes(origin) || !origin) {
