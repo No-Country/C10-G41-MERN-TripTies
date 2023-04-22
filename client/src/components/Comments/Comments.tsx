@@ -2,14 +2,21 @@ import React, { useState } from "react";
 import style from "../../styles/Comments/Comments.module.css";
 import send from "../../img/message-add.png";
 import user from "../../img/user.png";
+import { postComment } from "../../redux/actions/Publications";
+import { useAppDispatch } from "../../redux/store/hooks";
 
-function Comments({ goingToComment, profile }: string | any) {
+function Comments({ goingToComment, profile, places }: string | any) {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([...comment]);
+  const dispatch = useAppDispatch()
+  const id = places._id
+
+console.log('DESDE COMMENTS',id)
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
     if (comment) {
+      //dispatch(postComment({comment, id}))
       setComments((prevComment) => [...prevComment, comment]);
       setComment("");
     }

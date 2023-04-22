@@ -140,7 +140,7 @@ export const getAllConversations = () => {
 };
 
 //Action para obtener todas las conversaciones
-export const getConversationsID = (id) => {
+export const getConversationsID = (id: any) => {
   return async function () {
     try {
       const response = await axios.get(`/conversations/${id}`, {

@@ -1,9 +1,7 @@
 .container {
   background-color: #f2f2f2;
-  margin-block-start: -2.1rem;
-  margin-block-end: 2.1rem;
-  border-radius: 20px;
   padding: 10px;
+  width: 100%;
 }
 
 .commentForm {
@@ -57,7 +55,7 @@
 
 .commentCont > button {
   border: none;
-  color: red;
+  color: var(--violet);
   font-size: 15px;
 }
 

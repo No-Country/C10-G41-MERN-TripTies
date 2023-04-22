@@ -77,7 +77,7 @@ function NavBar({ handleHome, places, user, visit }: any): JSX.Element {
             />
             <DropdownUser display={display} />
           </section>
-          <a href={`/profile/${id}`}>
+          <Link to={`/profile/${id}`}>
           <img
             src={user.user?.photoUser.length !== 0 ? user.user?.photoUser : avatarDefault}
             alt=""
@@ -85,7 +85,7 @@ function NavBar({ handleHome, places, user, visit }: any): JSX.Element {
             height="50"
             style={{ borderRadius: "50%" }}
           />
-          </a>
+          </Link>
         </div>
       )}
     </nav>
