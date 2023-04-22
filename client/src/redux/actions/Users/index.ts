@@ -85,6 +85,7 @@ export const editProfile = (data: object) => {
   const idUser = cookies.get("idUser");
   const token = cookies.get("token");
   return async function () {
+    console.log(data)
     const response = await axios.put(`/profiles/${idUser}`, data, {
       headers: { Authorization: `jwt ${token}` },
     });
@@ -242,6 +243,7 @@ export const followUser = (following: string) => {
         },
         { headers: { Authorization: `jwt ${token}` } }
       );
+      console.log(response)
       return response;
     } catch (error) {
       throw error;

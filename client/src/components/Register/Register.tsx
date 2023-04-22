@@ -106,6 +106,11 @@ function Register(): JSX.Element {
             icon: "warning",
           })
             .then(() => {
+              dispatch(loginUser(newUser));
+              cookies.set("fisrtLoading", true);
+            })
+            .then(() => {
+              cookies.set("login", true);
               nav("/completeProfile");
             });
         } else {
@@ -119,7 +124,6 @@ function Register(): JSX.Element {
   };
 
   const handleOnResolveGoogle = ({ data, provider }: IResolveParams) => {
-    console.log("datos", data);
     setUserGoogle({
       username: data && data.name,
       email: data && data.email,
@@ -148,7 +152,6 @@ function Register(): JSX.Element {
   //Submit register with social network
   useEffect(() => {
     if (userGoogle.email !== "") {
-      console.log("lo q va", userGoogle);
       dispatch(createUser(userGoogle)).then((data: any) => {
         if (data.response?.data !== "User has already exist") {
           dispatch(loginSocialNetworks(userGoogle));

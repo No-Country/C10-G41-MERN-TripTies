@@ -21,7 +21,7 @@ import {
   getFollowers,
   getFollowing,
 } from "../../redux/actions/Users";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PageLoading from "../Page Loading/PageLoading";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -34,6 +34,7 @@ import { getProfileUser, getUserById } from "../../redux/actions/Users";
 import ChatBubble from "../ChatBubble/ChatBubble";
 
 export default function Profile() {
+  const nav = useNavigate()
   const selector = useAppSelector;
   const dispatch = useAppDispatch();
   const [selected, setSelected] = useState(0);
@@ -67,7 +68,6 @@ export default function Profile() {
   const following = selector((state) => state.following);
   const followers = selector((state) => state.followers);
 
-  console.log("SOY EL DE PARAMS", id);
 
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -107,8 +107,6 @@ export default function Profile() {
           [e.target.name]: e.target.value,
         },
       });
-      console.log(putUser.user.first_name);
-      console.log(putUser);
     }
     // setPutUser({
     //     ...putUser,
@@ -117,17 +115,18 @@ export default function Profile() {
     //console.log(putUser)
   }
   const handleFollow = (e: any) => {
+    e.preventDefault()
     setIsOpen(!isOpen);
-    dispatch(followUser(e.target.value));
-    window.location.reload();
+    dispatch(followUser(e.target.value)).then(()=> nav("/home"))
+
   };
 
+
+
   const [UserChatActual, setUserChatActual] = useState({});
-  console.log(putSelect);
 
   const myPublications =
     publications.length !== 0 && publications.posts.filter((e: any) => e.user.id === id);
-  console.log(myPublications);
   return (
     <div className={styles.container}>
       <NavBar profile={profile} user={user} />

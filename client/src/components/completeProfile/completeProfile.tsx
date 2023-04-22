@@ -68,9 +68,12 @@ function CompleteProfile(): JSX.Element {
     }
   };
 
+
   const handleSubmit = (e: any) => {
+    e.preventDefault()
     dispatch(editProfile(data))
       .then(() => {
+        dispatch(loginUser({email: userData.user?.email, password: userData.user?.password}))
         cookies.set("login", true);
         cookies.set("visit", false);
         cookies.set("fisrtLoading", true);
