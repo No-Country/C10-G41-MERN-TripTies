@@ -48,6 +48,8 @@ function Home(): JSX.Element {
   const tags = selector<any>((state) => state.tags);
   const saveState = selector((state) => state.save);
 
+  console.log("soy el user", user);
+
   //States of component
   const [loadingHome, setLoadingHome] = useState(true);
   const [loadingPublication, setLoadingPublications] = useState(false);

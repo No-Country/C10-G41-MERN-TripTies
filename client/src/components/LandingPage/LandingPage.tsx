@@ -20,6 +20,8 @@ const LandingPage = (): JSX.Element => {
     cookies.set("login", false);
   }, []);
 
+  console.log(cookies.get("visit"));
+
   return (
     <>
       <NavBarL />

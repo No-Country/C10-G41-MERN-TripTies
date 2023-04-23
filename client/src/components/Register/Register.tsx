@@ -91,35 +91,42 @@ function Register(): JSX.Element {
       ) {
         Swal.fire({ title: "All the fields are required", icon: "warning" });
       } else {
-        dispatch(createUser(newUser));
-        setInput({
-          username: "",
-          email: "",
-          password: "",
-          firstName: "",
-          lastName: "",
-          photoUser: "",
-        });
-        if (newUser.firstName === "" && newUser.lastName === "") {
-          Swal.fire({
-            title: "You will be redirected to complete data for your profile",
-            icon: "warning",
-          })
-            .then(() => {
-              dispatch(loginUser(newUser));
-              cookies.set("fisrtLoading", true);
-            })
-            .then(() => {
-              cookies.set("login", true);
-              nav("/completeProfile");
-            });
-        } else {
-          dispatch(loginUser(newUser));
-          cookies.set("fisrtLoading", true);
+        try {
+          dispatch(createUser(newUser)).then((data: any) => {
+            if (data.response?.data === "User has already exist") {
+              Swal.fire({ title: data.response?.data, icon: "error" });
+            } else {
+              if (newUser.firstName === "" && newUser.lastName === "") {
+                dispatch(loginUser(newUser)).then((res) => {
+                  if (res.data.message === "Correct credentials") {
+                    cookies.remove("visit");
+                    cookies.set("login", true);
+                    cookies.set("fisrtLoading", true);
+                    Swal.fire({
+                      title:
+                        "You will be redirected to complete data for your profile",
+                      icon: "warning",
+                    }).then(() => nav("/completeProfile"));
+                  } else {
+                    Swal.fire({
+                      title: "Login failed",
+                      icon: "error",
+                    }).then(() => nav("/login"));
+                  }
+                });
+              } else {
+                dispatch(loginUser(newUser));
+                cookies.set("fisrtLoading", true);
+                cookies.set("login", true);
+              }
+            }
+          });
+        } catch (error) {
+          console.log(error);
         }
       }
-    } catch (error) {
-      throw error;
+    } catch {
+      (err: unknown) => console.log(`entre al catch con el error: ${err}`);
     }
   };
 

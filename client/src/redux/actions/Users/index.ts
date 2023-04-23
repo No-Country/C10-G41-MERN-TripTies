@@ -10,10 +10,9 @@ export const createUser = (newUser: Users) => {
   return async function () {
     try {
       const response = await axios.post("auth/sign-up", newUser);
-      cookies.set("idUser", response.data._id);
+      console.log("usuario creado", response);
       return response;
     } catch (error) {
-      console.log(error);
       return error;
     }
   };
@@ -24,6 +23,8 @@ export const loginUser = (user: any) => {
   return async function () {
     try {
       const response = await axios.post("/auth/login", user);
+      console.log(response.data.id);
+      console.log(response.data.token);
       cookies.set("idUser", response.data.id);
       cookies.set("token", response.data.token);
       console.log(response);
@@ -52,6 +53,8 @@ export const getUserById = () => {
   const id = cookies.get("idUser");
   const token = cookies.get("token");
 
+  console.log(id);
+
   return async function (dispatch: AppDispatch) {
     const response = await axios
       .get(`/user/${id}`, {
@@ -60,6 +63,7 @@ export const getUserById = () => {
       .then((response) =>
         dispatch({ type: "GET_USER", payload: response.data })
       );
+    return response;
   };
 };
 
@@ -85,10 +89,14 @@ export const editProfile = (data: object) => {
   const idUser = cookies.get("idUser");
   const token = cookies.get("token");
   return async function () {
-    console.log(data)
-    const response = await axios.put(`/profiles/${idUser}`, data, {
-      headers: { Authorization: `jwt ${token}` },
-    });
+    console.log(data);
+    const response = await axios.put(
+      `/profiles/${idUser}`,
+      { user: data },
+      {
+        headers: { Authorization: `jwt ${token}` },
+      }
+    );
     console.log("soy la respuesta del complete profile", response);
     return response;
   };
@@ -162,7 +170,7 @@ export const newMessage = (id: string, newMessage: Message) => {
   return async function () {
     try {
       const token = cookies.get("token");
-      console.log(token)
+      console.log(token);
       const response = await axios.post(
         `conversations/${id}/message`,
         newMessage,
@@ -172,7 +180,7 @@ export const newMessage = (id: string, newMessage: Message) => {
           },
         }
       );
-      console.log(response)
+      console.log(response);
       return response;
     } catch (error) {
       console.log(error);
@@ -243,7 +251,7 @@ export const followUser = (following: string) => {
         },
         { headers: { Authorization: `jwt ${token}` } }
       );
-      console.log(response)
+      console.log(response);
       return response;
     } catch (error) {
       throw error;
