@@ -67,6 +67,18 @@ export const getUserById = () => {
   };
 };
 
+export const getPostsByUser = (id: string | undefined) => {
+  console.log(id);
+  return async function (dispatch: AppDispatch) {
+    const response = await axios.get(`/user/${id}`).then((response) => {
+      dispatch({
+        type: "GET_POSTS_BY_USER",
+        payload: response.data,
+      });
+    });
+  };
+};
+
 export const getProfileUser = (idProfile: string | undefined) => {
   console.log("INDEX PROFILE", idProfile);
   const id = cookies.get("idUser");
@@ -204,35 +216,6 @@ export const createConversation = (newConversation: Conversation) => {
       return response;
     } catch (error) {
       console.log(error);
-      throw error;
-    }
-  };
-};
-
-// Save publications
-export const savePublications = (newSave: object) => {
-  return async function () {
-    try {
-      const response = await axios.post("/user/save", newSave);
-      console.log(response);
-      return response;
-    } catch (error) {
-      throw error;
-    }
-  };
-};
-
-export const getPublicationsSave = () => {
-  const id = cookies.get("idUser");
-  return async function (dispatch: AppDispatch) {
-    try {
-      const response = await axios
-        .get(`/user/save/${id}`)
-        .then((response) =>
-          dispatch({ type: "GET_SAVE", payload: response.data })
-        );
-      console.log(response);
-    } catch (error) {
       throw error;
     }
   };

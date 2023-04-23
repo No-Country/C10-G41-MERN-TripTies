@@ -19,10 +19,8 @@ function SinglePublication({
   day,
   time,
 }: any): JSX.Element {
-
   const dispatch = useAppDispatch();
   const [comment, setComment] = useState("");
-  console.log(places);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -33,11 +31,11 @@ function SinglePublication({
     }
   };
 
-    // FUNCION POST LIKE
-    const handleLike = () => {
-      // const id = places._id
-      // dispatch(postLike(id))
-    };
+  // FUNCION POST LIKE
+  const handleLike = () => {
+    // const id = places._id
+    // dispatch(postLike(id))
+  };
   return (
     <div className={style.modalContainer}>
       {openPost && (
@@ -70,10 +68,9 @@ function SinglePublication({
                   </section>
                 </div>
                 <div className={style.contentCard}>
-                  <p>
-                    {places.content}. {places.tag}
-                  </p>
+                  <p>{places.content}.</p>
                 </div>
+                <p>{places.tag.join(" ")}</p>
                 <div className={style.userInfo}>
                   <aside>
                     <Rating initialValue={places.rate} readonly size={30} />
@@ -93,7 +90,11 @@ function SinglePublication({
                 </div>
                 <div className={style.likesAndComments}>
                   <aside>
-                    <img onClick={handleLike} src={boldHeart} alt="bold heart" />
+                    <img
+                      onClick={handleLike}
+                      src={boldHeart}
+                      alt="bold heart"
+                    />
                     <span>{places.liked}</span>
                   </aside>
                   <aside>

@@ -3,8 +3,8 @@ import "./Loading.css";
 const Loading = (props: any) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={160}
-    height={160}
+    width={50}
+    height={50}
     className="pl"
     {...props}
   >

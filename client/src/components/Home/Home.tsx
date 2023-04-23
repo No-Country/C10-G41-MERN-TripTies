@@ -18,12 +18,8 @@ import ModalPost from "../ModalPost/ModalPost";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import { getAllPublications, getTags } from "../../redux/actions/Publications";
 import Cookies from "universal-cookie";
-import { Profile, Tags, Chat, Users } from "../../types";
-import {
-  getProfileUser,
-  getPublicationsSave,
-  getUserById,
-} from "../../redux/actions/Users";
+import { Profile } from "../../types";
+import { getProfileUser, getUserById } from "../../redux/actions/Users";
 import { useNavigate } from "react-router-dom";
 import Loading from "../Loading/Loading";
 import PageLoading from "../Page Loading/PageLoading";
@@ -55,16 +51,8 @@ function Home(): JSX.Element {
   const [visible, setVisible] = useState(false);
 
   //Handles
-  const handleHash = (e: any) => {
-    e.preventDefault();
-    // setHash(e.target.value);
-  };
   const handleHome = (e: any) => {
     setRender("all");
-  };
-  const handleSaved = (e: any) => {
-    setRender("save");
-    dispatch(getPublicationsSave());
   };
 
   const handleOpen = () => {
@@ -95,30 +83,19 @@ function Home(): JSX.Element {
 
   //InitialState of component
   useEffect(() => {
-    if (login === "true" || visit === "true") {
-      dispatch(getAllPublications());
-      dispatch(getUserById());
-      dispatch(getProfileUser(undefined));
-      dispatch(getTags());
-      setTimeout(() => {
-        cookies.remove("fisrtLoading");
-        setLoadingHome(false);
-      }, 3000);
-    } else {
-      nav("/");
-    }
-  }, [login, visit]);
-
-  const useTags =
-    (render === "all" && allPublications.posts) ||
-    (render === "tag" &&
-      allPublications &&
-      allPublications.posts?.filter((e: any) =>
-        e.tag?.includes(publications)
-      )) ||
-    (render === "save" && null);
+    dispatch(getAllPublications());
+    dispatch(getUserById());
+    dispatch(getProfileUser(undefined));
+    dispatch(getTags());
+    setTimeout(() => {
+      cookies.remove("fisrtLoading");
+      setLoadingHome(false);
+    }, 3000);
+  }, []);
 
   const [UserChatActual, setUserChatActual] = useState({});
+
+  console.log(allPublications.posts);
 
   return firstLoading === "true" ? (
     <PageLoading />
@@ -135,7 +112,7 @@ function Home(): JSX.Element {
         <div className={style.leftContainer}>
           <div>
             <div className={style.feedLeft}>
-              <SectionAccount handleSaved={handleSaved} />
+              <SectionAccount />
               <SectionChat setUserChatActual={setUserChatActual} />
             </div>
           </div>
@@ -152,6 +129,7 @@ function Home(): JSX.Element {
             profile={profile}
             tags={tags.tags}
             loadingModal={loadingModal}
+            setLoadingModal={setLoadingModal}
           />
           <div className={style.postGenerator}>
             <img src={imgProfile} alt="Perfil" className={style.imgProfile} />
@@ -178,8 +156,8 @@ function Home(): JSX.Element {
             {loadingPublication ? (
               <Loading />
             ) : (
-              useTags &&
-              useTags?.map((e: any, i: number) => (
+              allPublications &&
+              allPublications.posts?.map((e: any, i: number) => (
                 <Card
                   places={e}
                   login={login}

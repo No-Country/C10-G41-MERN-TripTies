@@ -37,9 +37,7 @@ function SlideShow({ media }: props): JSX.Element {
         style={{ transform: `translateX(-${current * 550}px)` }}
       >
         {media &&
-          media[0].map((e, i) => (
-            <img key={i} src={e.url} alt={e.type} width={550} height={350} />
-          ))}
+          media[0].map((e, i) => <img key={i} src={e.url} alt={e.type} />)}
         {media &&
           media[1].map((e, i) => (
             <video

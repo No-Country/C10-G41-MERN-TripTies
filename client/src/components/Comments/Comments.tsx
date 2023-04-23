@@ -8,10 +8,8 @@ import { useAppDispatch } from "../../redux/store/hooks";
 function Comments({ goingToComment, profile, places }: string | any) {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([...comment]);
-  const dispatch = useAppDispatch()
-  const id = places._id
-
-console.log('DESDE COMMENTS',id)
+  const dispatch = useAppDispatch();
+  const id = places._id;
 
   const handleSubmit = (event: any) => {
     event.preventDefault();

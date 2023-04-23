@@ -20,10 +20,6 @@ function NavBar({ handleHome, places, user, visit }: any): JSX.Element {
   const cookies = new Cookies();
   const id = cookies.get("idUser");
 
-  console.log(visit);
-
-  console.log(user.user);
-
   useEffect(() => {
     if (user.user?.first_name === "" && user.user?.last_name === "") {
       nav("/completeProfile");

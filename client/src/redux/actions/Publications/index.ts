@@ -17,7 +17,6 @@ export const getAllPublications = () => {
 export const postPublication = (newPublication: any) => {
   return async function () {
     try {
-      console.log("action", newPublication);
       const response = await axios.post(
         "/posts",
         {
@@ -66,15 +65,15 @@ export const getTags = () => {
   };
 };
 
-export const postComment = ({comment,id}: any) => {
+export const postComment = ({ comment, id }: any) => {
   return async function () {
     try {
       console.log("action postComment", comment);
       const response = await axios.post(
         `/posts/${id}/comments`,
         {
-            parent_id: "?",
-            content: comment
+          parent_id: "?",
+          content: comment,
         },
         {
           headers: {
@@ -93,16 +92,13 @@ export const postComment = ({comment,id}: any) => {
 export const postLike = (id: any) => {
   return async function () {
     try {
-      const token = cookies.get("token")
+      const token = cookies.get("token");
       console.log("action postLike", token);
-      const response = await axios.post(
-        `/posts/${id}/like`,
-        {
-          headers: {
-            Authorization: `jwt ${token}`,
-          },
-        }
-      );
+      const response = await axios.post(`/posts/${id}/like`, {
+        headers: {
+          Authorization: `jwt ${token}`,
+        },
+      });
       console.log(response);
       return response;
     } catch (error) {

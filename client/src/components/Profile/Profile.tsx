@@ -20,6 +20,7 @@ import {
   followUser,
   getFollowers,
   getFollowing,
+  getPostsByUser,
 } from "../../redux/actions/Users";
 import { useNavigate, useParams } from "react-router-dom";
 import PageLoading from "../Page Loading/PageLoading";
@@ -34,7 +35,7 @@ import { getProfileUser, getUserById } from "../../redux/actions/Users";
 import ChatBubble from "../ChatBubble/ChatBubble";
 
 export default function Profile() {
-  const nav = useNavigate()
+  const nav = useNavigate();
   const selector = useAppSelector;
   const dispatch = useAppDispatch();
   const [selected, setSelected] = useState(0);
@@ -55,19 +56,18 @@ export default function Profile() {
 
   let { id } = useParams();
   useEffect(() => {
-    dispatch(getAllPublications());
+    dispatch(getPostsByUser(id));
     dispatch(getUserById());
     dispatch(getProfileUser(id));
     dispatch(getFollowing());
     dispatch(getFollowers());
-  }, [id]);
+  }, []);
 
   const publications = selector<any>((state) => state.publications);
   const profile: Profile = selector((state) => state.profile);
   const user = selector((state) => state.user);
   const following = selector((state) => state.following);
   const followers = selector((state) => state.followers);
-
 
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -115,25 +115,20 @@ export default function Profile() {
     //console.log(putUser)
   }
   const handleFollow = (e: any) => {
-    e.preventDefault()
+    e.preventDefault();
     setIsOpen(!isOpen);
-    dispatch(followUser(e.target.value)).then(()=> nav("/home"))
-
+    dispatch(followUser(e.target.value)).then(() => nav("/home"));
   };
-
-
 
   const [UserChatActual, setUserChatActual] = useState({});
 
-  const myPublications =
-    publications.length !== 0 && publications.posts.filter((e: any) => e.user.id === id);
   return (
     <div className={styles.container}>
       <NavBar profile={profile} user={user} />
       <div className={styles.containerAllProfiel}>
         <div className={styles.leftContainerFeed}>
           <div className={styles.feedLeft}>
-            <SectionAccount handleSaved={undefined} />
+            <SectionAccount />
             <SectionChat setUserChatActual={setUserChatActual} />
           </div>
           <div className={styles.footerSocial}>
@@ -164,7 +159,14 @@ export default function Profile() {
             </div>
             <div className={styles.infoUser}>
               <div className={styles.profileAvatar}>
-                <img src={profile.photoUser?.length !== 0 ? profile.photoUser : avatarDefault} alt="perfilAvatar" />
+                <img
+                  src={
+                    profile.photoUser?.length !== 0
+                      ? profile.photoUser
+                      : avatarDefault
+                  }
+                  alt="perfilAvatar"
+                />
                 {putSelect === "Change_profile_picture" ||
                 putSelect === "Edit_profile" ? (
                   <div className={styles.changeAvatar}>
@@ -289,7 +291,7 @@ export default function Profile() {
               </div>
             </div>
             <div className={styles.sections}>
-            <div className={styles.separators}>{'separators'}</div>
+              <div className={styles.separators}>{"separators"}</div>
               <div
                 className={`${
                   selected === 0 ? styles.selected : styles.review
@@ -307,12 +309,12 @@ export default function Profile() {
                 <img src={pin} alt="star" width="24px" height="24px" />
                 Places I've been
               </div>
-              <div className={styles.separators}>{'separators'}</div>
+              <div className={styles.separators}>{"separators"}</div>
             </div>
             <hr />
             <div className={styles.cardReviewContainer}>
-              {
-              myPublications && selected === 0 &&
+              {/* {myPublications &&
+                selected === 0 &&
                 myPublications.map((e: any) => (
                   <div className={styles.cardReview}>
                     <img src={img} alt="" />
@@ -332,19 +334,14 @@ export default function Profile() {
                       style={{ marginLeft: "0.5rem" }}
                     />
                   </div>
-                ))}
+                ))} */}
             </div>
 
             <div className={styles.containerMapa}>
               <div className={styles.color}>
-            {
-              selected === 1 &&
-              <div className={styles.mapa}>
-              </div>
-            }
+                {selected === 1 && <div className={styles.mapa}></div>}
               </div>
             </div>
-
           </div>
           <div className={styles.footerTerm}>
             <FooterTerm />

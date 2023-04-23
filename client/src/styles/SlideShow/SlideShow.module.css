@@ -1,5 +1,5 @@
 .containerSlider {
-  width: 550px;
+  width: 100%;
   overflow: hidden;
   position: relative;
 }
@@ -9,6 +9,10 @@
   transition: 0.2s ease-out;
   position: relative;
   z-index: 3;
+}
+
+.slider img {
+  width: 100%;
 }
 
 .containerSlider h2 {
