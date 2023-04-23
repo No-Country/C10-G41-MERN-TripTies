@@ -10,7 +10,6 @@ import App from "./App";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import "./index.css";
-import Saved from "./components/Saved/Saved";
 import PlaceIVisited from "./components/PlaceIVisited/PlaceIVisited";
 import CompleteProfile from "./components/completeProfile/completeProfile";
 import Profile from "./components/Profile/Profile";

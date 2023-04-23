@@ -8,7 +8,6 @@ import SectionDiscover from "../SectionDiscover/SectionDiscover";
 import SectionAccount from "../Section Account/SectionAccout";
 import Card from "../Card/Card";
 import SectionChat from "../SectionChat/SectionChat";
-import Saved from "../Saved/Saved";
 import PlaceIVisited from "../PlaceIVisited/PlaceIVisited";
 import SectionSuggestions from "../SectionSuggestions/SectionSuggestions";
 import FooterTerm from "../Footers/FooterTerm";
