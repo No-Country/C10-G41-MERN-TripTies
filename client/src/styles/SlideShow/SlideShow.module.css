@@ -1,18 +1,16 @@
 .containerSlider {
-  width: 100%;
+  min-width: 100%;
   overflow: hidden;
   position: relative;
 }
 
 .slider {
+  width: 500px;
+  height: 350px;
   display: flex;
   transition: 0.2s ease-out;
   position: relative;
   z-index: 3;
-}
-
-.slider img {
-  width: 100%;
 }
 
 .containerSlider h2 {
