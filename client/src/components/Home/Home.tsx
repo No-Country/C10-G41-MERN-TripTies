@@ -28,7 +28,6 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../Loading/Loading";
 import PageLoading from "../Page Loading/PageLoading";
 import Swal from "sweetalert2";
-import SinglePublication from "../SinglePublication/SinglePublication";
 
 function Home(): JSX.Element {
   const selector = useAppSelector;
@@ -46,18 +45,13 @@ function Home(): JSX.Element {
   const profile: Profile = selector((state) => state.profile);
   const user = selector((state) => state.user);
   const tags = selector<any>((state) => state.tags);
-  const saveState = selector((state) => state.save);
-
-  console.log("soy el user", user);
 
   //States of component
   const [loadingHome, setLoadingHome] = useState(true);
   const [loadingPublication, setLoadingPublications] = useState(false);
   const [loadingModal, setLoadingModal] = useState(true);
-  const [chat, setChat] = useState<Chat>({ id: "", name: "", avatar: "" });
   const [render, setRender] = useState("all");
   let [publications, setPublications] = useState("");
-  const [publicationsSaved, setPublicationSaved] = useState(false);
   const [visible, setVisible] = useState(false);
 
   //Handles

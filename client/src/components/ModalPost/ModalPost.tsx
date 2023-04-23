@@ -153,21 +153,14 @@ function ModalPost({
     }
   };
 
-  console.log(post);
-
   const handleSubmit = (e: any) => {
-    e.preventDefault()
-    dispatch(postPublication(post)).then(() => setPost({
-      privacity: "Public",
-      text: "",
-      tag: [],
-      photo: [],
-      video: [],
-      rate: 0,
-      clasification: "",
-      location: "",
-      name: "",
-    })).finally(()=> nav("/home"))
+    e.preventDefault();
+    dispatch(postPublication(post)).then((res) => {
+      if (res.status === 201) {
+        setVisible(false);
+        window.location.reload();
+      }
+    });
   };
 
   const handleUpdatePhotos = async (e: any) => {
@@ -179,14 +172,13 @@ function ModalPost({
 
     const response = await axios
       .post("https://api.cloudinary.com/v1_1/dtpsfvnfo/image/upload", data)
-      .then((res: { data: { secure_url: string}; }) => {
-
+      .then((res: { data: { secure_url: string } }) => {
         setPost({
           ...post,
           photo: [...post.photo, { url: res.data.secure_url, type: "image" }],
-        })
-      }).then(()=> Swal.fire({ title: "Image upload", icon: "success" })
-      )
+        });
+      })
+      .then(() => Swal.fire({ title: "Image upload", icon: "success" }));
   };
 
   const handleUpdateVideos = async (e: any) => {
@@ -198,7 +190,7 @@ function ModalPost({
 
     const response = await axios
       .post("https://api.cloudinary.com/v1_1/dtpsfvnfo/video/upload", data)
-      .then((res: { data: { url: any; }; }) => {
+      .then((res: { data: { url: any } }) => {
         console.log(res);
         setPost({
           ...post,
