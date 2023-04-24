@@ -3,7 +3,6 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const helmet = require("helmet");
-const morgan = require("morgan");
 // require('dotenv').config()
 
 //! Files
@@ -27,7 +26,6 @@ const corsOptions = {
 };
 
 app.use(cors());
-// app.use(morgan("dev"))
 
 if (process.env.NODE_ENV === "production") {
   /* Set security HTTP headers */

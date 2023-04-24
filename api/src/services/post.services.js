@@ -14,7 +14,7 @@ const findAllPosts = async ({ page = 1, limit = 100 }) => {
     .skip(skip)
     .limit(limit)
     .select(
-      "content photoPost video privacity rate name clasification reported tag user liked comments media.location createdAt"
+      "content photoPost video privacity rate name clasification reported tag user liked comments location createdAt"
     )
     .lean();
 

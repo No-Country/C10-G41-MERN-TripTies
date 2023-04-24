@@ -60,7 +60,6 @@ const editUserProfile = async (userId, userData) => {
     if (!profile) {
       throw new Error("Not found profiles", 404, "Not Found");
     }
-    console.log("soy el userData", userData);
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       {
