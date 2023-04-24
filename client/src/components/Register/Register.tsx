@@ -54,14 +54,6 @@ function Register(): JSX.Element {
     lastName: "",
     photoUser: "",
   });
-  const [userFacebook, setUserFacebook] = useState<Users>({
-    password: "",
-    username: "",
-    email: "",
-    firstName: "",
-    lastName: "",
-    photoUser: "",
-  });
 
   //Handles
   function handlePassword(
@@ -91,57 +83,52 @@ function Register(): JSX.Element {
       ) {
         Swal.fire({ title: "All the fields are required", icon: "warning" });
       } else {
-        dispatch(createUser(newUser));
-        setInput({
-          username: "",
-          email: "",
-          password: "",
-          firstName: "",
-          lastName: "",
-          photoUser: "",
-        });
-        if (newUser.firstName === "" && newUser.lastName === "") {
-          Swal.fire({
-            title: "You will be redirected to complete data for your profile",
-            icon: "warning",
-          })
-            .then(() => {
-              dispatch(loginUser(newUser));
-              cookies.set("fisrtLoading", true);
-            })
-            .then(() => {
-              cookies.set("login", true);
-              nav("/completeProfile");
-            });
-        } else {
-          dispatch(loginUser(newUser));
-          cookies.set("fisrtLoading", true);
+        try {
+          dispatch(createUser(newUser)).then((data: any) => {
+            if (data.response?.data === "User has already exist") {
+              Swal.fire({ title: data.response?.data, icon: "error" });
+            } else {
+              if (newUser.firstName === "" && newUser.lastName === "") {
+                dispatch(loginUser(newUser)).then((res) => {
+                  if (res.data.message === "Correct credentials") {
+                    cookies.remove("visit");
+                    cookies.set("login", true);
+                    cookies.set("fisrtLoading", true);
+                    Swal.fire({
+                      title:
+                        "You will be redirected to complete data for your profile",
+                      icon: "warning",
+                    }).then(() => nav("/completeProfile"));
+                  } else {
+                    Swal.fire({
+                      title: "Login failed",
+                      icon: "error",
+                    }).then(() => nav("/login"));
+                  }
+                });
+              } else {
+                dispatch(loginUser(newUser));
+                cookies.set("fisrtLoading", true);
+                cookies.set("login", true);
+              }
+            }
+          });
+        } catch (error) {
+          throw error;
         }
       }
-    } catch (error) {
-      throw error;
+    } catch {
+      (err: unknown) => console.log(`entre al catch con el error: ${err}`);
     }
   };
 
   const handleOnResolveGoogle = ({ data, provider }: IResolveParams) => {
-    console.log("datos", data);
     setUserGoogle({
       username: data && data.name,
       email: data && data.email,
       firstName: data && data.given_name,
       lastName: data && data.family_name,
       photoUser: data && data.picture,
-      password: `${Math.random().toString(36).substring(2, 7)}`,
-    });
-  };
-
-  const handleOnResolveFacebook = ({ data }: IResolveParams) => {
-    setUserFacebook({
-      username: data && data.name,
-      email: data && data.email,
-      firstName: data && data.first_name,
-      lastName: data && data.last_name,
-      photoUser: data && data.picture.data.url,
       password: `${Math.random().toString(36).substring(2, 7)}`,
     });
   };
@@ -153,7 +140,6 @@ function Register(): JSX.Element {
   //Submit register with social network
   useEffect(() => {
     if (userGoogle.email !== "") {
-      console.log("lo q va", userGoogle);
       dispatch(createUser(userGoogle)).then((data: any) => {
         if (data.response?.data !== "User has already exist") {
           dispatch(loginSocialNetworks(userGoogle));
@@ -248,20 +234,6 @@ function Register(): JSX.Element {
               >
                 <img src={google} alt="Google" style={{ cursor: "pointer" }} />
               </LoginSocialGoogle>
-              <LoginSocialFacebook
-                appId={import.meta.env.VITE_FB_APP_ID}
-                onResolve={handleOnResolveFacebook}
-                onReject={handleOnReject}
-                fieldsProfile={
-                  "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
-                }
-              >
-                <img
-                  src={facebook}
-                  alt="Facebook"
-                  style={{ cursor: "pointer" }}
-                />
-              </LoginSocialFacebook>
             </div>
             <p>
               Already have an account? <a href="/login">Log In</a>

@@ -34,7 +34,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 45%;
+  width: 50%;
   height: 90%;
   background-color: white;
 }
@@ -101,8 +101,11 @@
 
 .contentCard {
   width: 100%;
+}
+
+.contentCard p {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .userInfo {
@@ -145,44 +148,24 @@
   color: var(--brown);
 }
 
-.inputPost {
-  width: 100%;
-  height: 56px;
-  border-radius: 10px;
-  border: 1.5px solid var(--violetLight);
-  background-color: var(--white);
-  box-sizing: border-box;
+.Commentsection > section {
+  width: 35%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 0.3px solid black;
+  border-radius: 15px;
+  padding: 0.3em 0.5em;
+  cursor: pointer;
 }
 
-.inputPost:hover {
-  border: 2px solid var(--violet);
+.Commentsection > section > h3 {
+  margin: 0;
 }
 
-.inputPost:focus {
-  border: 2px solid var(--violet);
-  outline: none;
-  padding-left: 1rem;
-}
-
-.inputPost:focus::placeholder {
-  color: transparent;
-}
-
-.inputPost[type="text"]:focus::placeholder {
-  background: none;
-}
-
-.inputPost::placeholder {
-  color: var(--brown);
-  padding: 8px;
-  padding-inline-start: 50px;
-  font-size: 16px;
-}
-.inputPost[type="text"]::placeholder {
-  background-image: url("../../img/edit.png");
-  background-repeat: no-repeat;
-  background-position: 0px center;
-  background-position-x: 20px;
+.Commentsection > section > img {
+  width: 25px;
+  height: 25px;
 }
 
 @media screen and (max-width: 768px) {

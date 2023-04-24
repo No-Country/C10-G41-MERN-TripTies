@@ -1,36 +1,23 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import style from "../../styles/Card/Card.module.css";
-import avatar from "../../img/avatar.png";
-import user from "../../img/user.png";
 import open from "../../img/open.png";
 import coffee from "../../img/coffee.png";
 import location from "../../img/smallPin.png";
 import tagPlace from "../../img/tag.png";
-import londonCoffee from "../../img/coffeLondon.png";
 import boldHeart from "../../img/heart-circle-bold.png";
 import message from "../../img/message-text.png";
 import messageBig from "../../img/bigMessageText.png";
 import share from "../../img/send-2.png";
 import heart from "../../img/heart-circle.png";
-import postUnsaved from "../../img/archive-tick-none.png";
-import postSaved from "../../img/archive-tick.png";
-import stars from "../../img/stars.png";
-import Dropdown from "./Dropdown";
 import SlideShow from "../SlideShow/SlideShow";
 import { Rating } from "react-simple-star-rating";
 import Comments from "../Comments/Comments";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
-import {
-  getProfileUser,
-  getUserById,
-  savePublications,
-} from "../../redux/actions/Users";
+import { getUserById } from "../../redux/actions/Users";
 import { Cookie } from "universal-cookie";
-import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import SinglePublication from "../SinglePublication/SinglePublication";
-import { postLike } from "../../redux/actions/Publications";
 
 type props = {
   places: any;
@@ -38,21 +25,15 @@ type props = {
   profile: object;
   cookies: Cookie;
 };
-function Card({ places, login, profile, cookies }: props) {
+function Card({ places, profile }: props) {
   const dispatch = useAppDispatch();
   const selector = useAppSelector;
   const nav = useNavigate();
   const [openPost, setOpenPost] = useState(false);
-  const [display, setDisplay] = useState("none");
   const [displayComments, setDisplayComments] = useState("none");
   const ref = useRef<HTMLDivElement>(null);
 
-  const tags = places.tag?.map((e: string) => e);
-
   const user = selector<any>((state) => state.user);
-
-  //Save publications
-  let saved = user.user?.saved.includes(places._id);
 
   //Format date
   let dateOfPublications = new Date(places.createdAt);
@@ -66,14 +47,6 @@ function Card({ places, login, profile, cookies }: props) {
   useEffect(() => {
     dispatch(getUserById());
   }, []);
-
-  const handleAppear = () => {
-    if (display === "none" && login === "true") {
-      setDisplay("block");
-    } else {
-      setDisplay("none");
-    }
-  };
 
   const handleSectionComments = () => {
     if (displayComments === "none") {
@@ -102,6 +75,9 @@ function Card({ places, login, profile, cookies }: props) {
         places={places}
         day={dayMonthYear}
         time={minutesSeconds}
+        profile={profile}
+        displayComments={displayComments}
+        setDisplayComments={setDisplayComments}
       />
       <section className={style.container}>
         <img
@@ -183,10 +159,7 @@ function Card({ places, login, profile, cookies }: props) {
           </div>
           <div className={style.actions}>
             <aside>
-              <img 
-              onClick={handleLike}
-              src={heart} 
-              alt="heart" />
+              <img onClick={handleLike} src={heart} alt="heart" />
               <img
                 onClick={handleSectionComments}
                 src={messageBig}
@@ -195,9 +168,13 @@ function Card({ places, login, profile, cookies }: props) {
               <img src={share} alt="share" />
             </aside>
           </div>
-        <div className={style.Commentsection}>
-      <Comments profile={profile} goingToComment={displayComments} places={places} />
-        </div>
+          <div className={style.Commentsection}>
+            <Comments
+              profile={profile}
+              goingToComment={displayComments}
+              places={places}
+            />
+          </div>
         </section>
       </section>
     </>

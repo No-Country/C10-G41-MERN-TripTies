@@ -8,15 +8,14 @@ import { useEffect, useRef, useState } from "react";
 import DropdownUser from "./DropdownUser";
 import { Link, useNavigate } from "react-router-dom";
 import Search from "../Search/Search";
-import { useAppDispatch } from "../../redux/store/hooks";
-import { cleanProfile } from "../../redux/actions/Users";
+import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
+import { cleanProfile, getUserById } from "../../redux/actions/Users";
 import avatarDefault from "../../img/user_avatar_default.jpg";
 import Cookies from "universal-cookie";
 
 function NavBar({ handleHome, places, user, visit }: any): JSX.Element {
   const [display, setDisplay] = useState("none");
   const ref = useRef<HTMLDivElement>(null);
-  const dispatch = useAppDispatch();
   const nav = useNavigate();
   const cookies = new Cookies();
   const id = cookies.get("idUser");
@@ -49,10 +48,10 @@ function NavBar({ handleHome, places, user, visit }: any): JSX.Element {
   return (
     <nav className={style.navContainer}>
       <div>
-      <Link to="/home" className={style.navTitle} onClick={handleHome}>
-        <img src={logo} alt="" />
-        <h1 className={style.navTitleh1}>TripTies</h1>
-      </Link>
+        <Link to="/home" className={style.navTitle} onClick={handleHome}>
+          <img src={logo} alt="" />
+          <h1 className={style.navTitleh1}>TripTies</h1>
+        </Link>
       </div>
       {visit === "true" ? (
         <div className={style.navButtons}>
@@ -78,13 +77,17 @@ function NavBar({ handleHome, places, user, visit }: any): JSX.Element {
             <DropdownUser display={display} />
           </section>
           <Link to={`/profile/${id}`}>
-          <img
-            src={user.user?.photoUser.length !== 0 ? user.user?.photoUser : avatarDefault}
-            alt=""
-            width="50"
-            height="50"
-            style={{ borderRadius: "50%" }}
-          />
+            <img
+              src={
+                user.user?.photoUser.length !== 0
+                  ? user.user?.photoUser
+                  : avatarDefault
+              }
+              alt=""
+              width="50"
+              height="50"
+              style={{ borderRadius: "50%" }}
+            />
           </Link>
         </div>
       )}

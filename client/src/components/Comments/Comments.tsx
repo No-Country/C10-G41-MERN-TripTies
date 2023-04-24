@@ -8,10 +8,8 @@ import { useAppDispatch } from "../../redux/store/hooks";
 function Comments({ goingToComment, profile, places }: string | any) {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([...comment]);
-  const dispatch = useAppDispatch()
-  const id = places._id
-
-console.log('DESDE COMMENTS',id)
+  const dispatch = useAppDispatch();
+  const id = places._id;
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
@@ -33,16 +31,26 @@ console.log('DESDE COMMENTS',id)
     <div className={style.container} style={{ display: goingToComment }}>
       {comments
         ? comments.map((comment, index) => (
-            <article key={index} className={style.commentCont}>
-              <p className={style.comment}>{comment}</p>
-              <img
-                src={profile.photoUser === "" ? user : profile.photoUser}
-                alt="avatar"
-              />
-              <button value={comment} onClick={(event) => handleDelete(event)}>
-                ✘
-              </button>
-            </article>
+            <div>
+              <section className={style.commentsTitle}>
+                <img
+                  src={profile.photoUser === "" ? user : profile.photoUser}
+                  alt="avatar"
+                />
+                <h5>
+                  {profile.first_name} {profile.last_name}
+                </h5>
+              </section>
+              <section className={style.commentsText}>
+                <p className={style.comment}>{comment}</p>
+                <button
+                  value={comment}
+                  onClick={(event) => handleDelete(event)}
+                >
+                  ✘
+                </button>
+              </section>
+            </div>
           ))
         : null}
       <form onSubmit={(e) => handleSubmit(e)} className={style.commentForm}>

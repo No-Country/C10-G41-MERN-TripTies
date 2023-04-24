@@ -7,11 +7,7 @@ import style from "../../styles/SectionAccount/Account.module.css";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 
-type props = {
-  handleSaved: any;
-};
-
-const SectionAccount = ({ handleSaved }: props) => {
+const SectionAccount = () => {
   const nav = useNavigate();
   const cookies = new Cookies();
   const id = cookies.get("idUser");

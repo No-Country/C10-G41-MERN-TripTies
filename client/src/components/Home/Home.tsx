@@ -8,7 +8,6 @@ import SectionDiscover from "../SectionDiscover/SectionDiscover";
 import SectionAccount from "../Section Account/SectionAccout";
 import Card from "../Card/Card";
 import SectionChat from "../SectionChat/SectionChat";
-import Saved from "../Saved/Saved";
 import PlaceIVisited from "../PlaceIVisited/PlaceIVisited";
 import SectionSuggestions from "../SectionSuggestions/SectionSuggestions";
 import FooterTerm from "../Footers/FooterTerm";
@@ -18,17 +17,12 @@ import ModalPost from "../ModalPost/ModalPost";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import { getAllPublications, getTags } from "../../redux/actions/Publications";
 import Cookies from "universal-cookie";
-import { Profile, Tags, Chat, Users } from "../../types";
-import {
-  getProfileUser,
-  getPublicationsSave,
-  getUserById,
-} from "../../redux/actions/Users";
+import { Profile, Users } from "../../types";
+import { getProfileUser, getUserById } from "../../redux/actions/Users";
 import { useNavigate } from "react-router-dom";
 import Loading from "../Loading/Loading";
 import PageLoading from "../Page Loading/PageLoading";
 import Swal from "sweetalert2";
-import SinglePublication from "../SinglePublication/SinglePublication";
 
 function Home(): JSX.Element {
   const selector = useAppSelector;
@@ -44,31 +38,20 @@ function Home(): JSX.Element {
   //States of Redux
   const allPublications = selector<any>((state) => state.publications);
   const profile: Profile = selector((state) => state.profile);
-  const user = selector((state) => state.user);
+  const user = selector<any>((state) => state.user);
   const tags = selector<any>((state) => state.tags);
-  const saveState = selector((state) => state.save);
 
   //States of component
   const [loadingHome, setLoadingHome] = useState(true);
   const [loadingPublication, setLoadingPublications] = useState(false);
   const [loadingModal, setLoadingModal] = useState(true);
-  const [chat, setChat] = useState<Chat>({ id: "", name: "", avatar: "" });
   const [render, setRender] = useState("all");
   let [publications, setPublications] = useState("");
-  const [publicationsSaved, setPublicationSaved] = useState(false);
   const [visible, setVisible] = useState(false);
 
   //Handles
-  const handleHash = (e: any) => {
-    e.preventDefault();
-    // setHash(e.target.value);
-  };
   const handleHome = (e: any) => {
     setRender("all");
-  };
-  const handleSaved = (e: any) => {
-    setRender("save");
-    dispatch(getPublicationsSave());
   };
 
   const handleOpen = () => {
@@ -99,28 +82,24 @@ function Home(): JSX.Element {
 
   //InitialState of component
   useEffect(() => {
-    if (login === "true" || visit === "true") {
-      dispatch(getAllPublications());
-      dispatch(getUserById());
-      dispatch(getProfileUser(undefined));
-      dispatch(getTags());
-      setTimeout(() => {
-        cookies.remove("fisrtLoading");
-        setLoadingHome(false);
-      }, 3000);
-    } else {
-      nav("/");
-    }
-  }, [login, visit]);
+    dispatch(getUserById());
+    dispatch(getProfileUser(undefined));
+    dispatch(getTags());
+  }, []);
+  useEffect(() => {
+    dispatch(getAllPublications());
+
+    setTimeout(() => {
+      cookies.remove("fisrtLoading");
+      setLoadingHome(false);
+    }, 3000);
+  }, []);
 
   const useTags =
     (render === "all" && allPublications.posts) ||
     (render === "tag" &&
       allPublications &&
-      allPublications.posts?.filter((e: any) =>
-        e.tag?.includes(publications)
-      )) ||
-    (render === "save" && null);
+      allPublications.posts?.filter((e: any) => e.tag?.includes(publications)));
 
   const [UserChatActual, setUserChatActual] = useState({});
 
@@ -139,7 +118,7 @@ function Home(): JSX.Element {
         <div className={style.leftContainer}>
           <div>
             <div className={style.feedLeft}>
-              <SectionAccount handleSaved={handleSaved} />
+              <SectionAccount />
               <SectionChat setUserChatActual={setUserChatActual} />
             </div>
           </div>
@@ -156,9 +135,14 @@ function Home(): JSX.Element {
             profile={profile}
             tags={tags.tags}
             loadingModal={loadingModal}
+            setLoadingModal={setLoadingModal}
           />
           <div className={style.postGenerator}>
-            <img src={imgProfile} alt="Perfil" className={style.imgProfile} />
+            <img
+              src={user.user?.photoUser}
+              alt="Perfil"
+              className={style.imgProfile}
+            />
             <div className={style.buttonsPost}>
               <input
                 type="text"

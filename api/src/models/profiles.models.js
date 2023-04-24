@@ -1,20 +1,20 @@
-const mongoose = require('mongoose')
-const { Schema, model } = require('mongoose')
+const mongoose = require("mongoose");
+const { Schema, model } = require("mongoose");
 
-const ProfileSchema = new Schema (
+const ProfileSchema = new Schema(
   {
     user: {
-      type: mongoose.Schema.Types.ObjectId, 
-      ref: 'User', 
-      required: true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
-    description: {type: String, trim: true},
-    birthday: {type: Date},
-    portrait: {type: String}
-  }, 
+    description: { type: String, trim: true },
+    birthday: { type: Date },
+    portrait: { type: String },
+  },
   {
-    timestamps: true
+    timestamps: true,
   }
-)
+);
 
-module.exports = model('Profile', ProfileSchema)
+module.exports = model("Profile", ProfileSchema);

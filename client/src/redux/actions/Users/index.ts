@@ -6,14 +6,11 @@ import { Message, Users, Conversation } from "../../../types";
 
 // Action para la creacion de un usuario
 export const createUser = (newUser: Users) => {
-  console.log(newUser);
   return async function () {
     try {
       const response = await axios.post("auth/sign-up", newUser);
-      cookies.set("idUser", response.data._id);
       return response;
     } catch (error) {
-      console.log(error);
       return error;
     }
   };
@@ -26,7 +23,6 @@ export const loginUser = (user: any) => {
       const response = await axios.post("/auth/login", user);
       cookies.set("idUser", response.data.id);
       cookies.set("token", response.data.token);
-      console.log(response);
       return response;
     } catch (error) {
       throw error;
@@ -51,7 +47,6 @@ export const loginSocialNetworks = (user: object) => {
 export const getUserById = () => {
   const id = cookies.get("idUser");
   const token = cookies.get("token");
-
   return async function (dispatch: AppDispatch) {
     const response = await axios
       .get(`/user/${id}`, {
@@ -60,11 +55,22 @@ export const getUserById = () => {
       .then((response) =>
         dispatch({ type: "GET_USER", payload: response.data })
       );
+    return response;
+  };
+};
+
+export const getPostsByUser = (id: string | undefined) => {
+  return async function (dispatch: AppDispatch) {
+    const response = await axios.get(`/user/${id}`).then((response) => {
+      dispatch({
+        type: "GET_POSTS_BY_USER",
+        payload: response.data,
+      });
+    });
   };
 };
 
 export const getProfileUser = (idProfile: string | undefined) => {
-  console.log("INDEX PROFILE", idProfile);
   const id = cookies.get("idUser");
   const token = cookies.get("token");
   return async function (dispatch: AppDispatch) {
@@ -73,10 +79,8 @@ export const getProfileUser = (idProfile: string | undefined) => {
         headers: { Authorization: `jwt ${token}` },
       })
       .then((response) => {
-        console.log(response);
         dispatch({ type: "GET_PROFILE", payload: response.data });
       });
-    console.log(response);
     return response;
   };
 };
@@ -85,10 +89,13 @@ export const editProfile = (data: object) => {
   const idUser = cookies.get("idUser");
   const token = cookies.get("token");
   return async function () {
-    const response = await axios.put(`/profiles/${idUser}`, data, {
-      headers: { Authorization: `jwt ${token}` },
-    });
-    console.log(response);
+    const response = await axios.put(
+      `/profiles/${idUser}`,
+      { user: data },
+      {
+        headers: { Authorization: `jwt ${token}` },
+      }
+    );
     return response;
   };
 };
@@ -110,11 +117,9 @@ export const getAllUsers = () => {
           Authorization: `jwt ${cookies.get("token")}`,
         },
       });
-      console.log(response.data);
       dispatch({ type: "GET_USERS", payload: response.data });
       return response.data;
     } catch (error) {
-      console.log(error);
       throw error;
     }
   };
@@ -129,11 +134,9 @@ export const getAllConversations = () => {
           Authorization: `jwt ${cookies.get("token")}`,
         },
       });
-      console.log(response);
       dispatch({ type: "GET_CONVERSATIONS", payload: response.data });
       return response.data;
     } catch (error) {
-      console.log(error);
       throw error;
     }
   };
@@ -150,7 +153,6 @@ export const getConversationsID = (id: any) => {
       });
       return response.data;
     } catch (error) {
-      console.log(error);
       throw error;
     }
   };
@@ -161,7 +163,6 @@ export const newMessage = (id: string, newMessage: Message) => {
   return async function () {
     try {
       const token = cookies.get("token");
-      console.log(token)
       const response = await axios.post(
         `conversations/${id}/message`,
         newMessage,
@@ -171,10 +172,8 @@ export const newMessage = (id: string, newMessage: Message) => {
           },
         }
       );
-      console.log(response)
       return response;
     } catch (error) {
-      console.log(error);
       throw error;
     }
   };
@@ -193,36 +192,6 @@ export const createConversation = (newConversation: Conversation) => {
         },
       });
       return response;
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  };
-};
-
-// Save publications
-export const savePublications = (newSave: object) => {
-  return async function () {
-    try {
-      const response = await axios.post("/user/save", newSave);
-      console.log(response);
-      return response;
-    } catch (error) {
-      throw error;
-    }
-  };
-};
-
-export const getPublicationsSave = () => {
-  const id = cookies.get("idUser");
-  return async function (dispatch: AppDispatch) {
-    try {
-      const response = await axios
-        .get(`/user/save/${id}`)
-        .then((response) =>
-          dispatch({ type: "GET_SAVE", payload: response.data })
-        );
-      console.log(response);
     } catch (error) {
       throw error;
     }
@@ -259,7 +228,6 @@ export const getFollowing = () => {
           headers: { Authorization: `jwt ${token}` },
         })
         .then((response) => {
-          console.log("action following", response);
           dispatch({
             type: "GET_FOLLOWING",
             payload: response.data,
@@ -282,8 +250,6 @@ export const getFollowers = () => {
           headers: { Authorization: `jwt ${token}` },
         })
         .then((response) => {
-          console.log("action followers", response);
-
           dispatch({
             type: "GET_FOLLOWERS",
             payload: response.data,

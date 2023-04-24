@@ -28,6 +28,7 @@ type props = {
   login: string;
   tags: any;
   loadingModal: boolean;
+  setLoadingModal: any;
 };
 
 const clasification = [
@@ -44,10 +45,12 @@ function ModalPost({
   login,
   tags,
   loadingModal,
+  setLoadingModal,
 }: props): JSX.Element {
   const dispatch = useAppDispatch();
   const selector = useAppSelector;
   const nav = useNavigate();
+  const [loadingUpload, setLoadingUpload] = useState(false);
 
   const countries = selector<Country[]>((state) => state.countries);
   let filterCountry = countries.map((e: any) => e.name.common);
@@ -153,10 +156,15 @@ function ModalPost({
     }
   };
 
-  console.log(post);
-
   const handleSubmit = (e: any) => {
-    dispatch(postPublication(post)).then(() => nav("/home"));
+    e.preventDefault();
+
+    dispatch(postPublication(post)).then((res) => {
+      if (res.status === 201) {
+        setVisible(false);
+        window.location.reload();
+      }
+    });
   };
 
   const handleUpdatePhotos = async (e: any) => {
@@ -164,18 +172,43 @@ function ModalPost({
     const files = e.target.files[0];
     const data = new FormData();
     data.append("file", files);
-    data.append("upload_preset", "tripties");
+    data.append("upload_preset", `${import.meta.env.VITE_PRESET}`);
+    const size = Math.round(files.size / 100);
 
+    setLoadingUpload(true);
     const response = await axios
-      .post("https://api.cloudinary.com/v1_1/dtpsfvnfo/image/upload", data)
-      .then((res: { data: { secure_url: string}; }) => {
-
-        setPost({
-          ...post,
-          photo: [...post.photo, { url: res.data.secure_url, type: "image" }],
-        })
-      }).then(()=> Swal.fire({ title: "Image upload", icon: "success" })
+      .post(
+        `https://api.cloudinary.com/v1_1/${
+          import.meta.env.VITE_NAME
+        }/image/upload`,
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data  ",
+          },
+        }
       )
+      .then(
+        (res: { data: { secure_url: string; original_filename: string } }) => {
+          setPost({
+            ...post,
+            photo: [
+              ...post.photo,
+              {
+                name: res.data.original_filename,
+                url: res.data.secure_url,
+                type: "image",
+              },
+            ],
+          });
+        }
+      )
+      .then(() => {
+        setLoadingUpload(false);
+      })
+      .catch((err) => {
+        Swal.fire({ title: "Failed image upload", icon: "error" });
+      });
   };
 
   const handleUpdateVideos = async (e: any) => {
@@ -183,12 +216,14 @@ function ModalPost({
     const files = e.target.files[0];
     const data = new FormData();
     data.append("file", files);
-    data.append("upload_preset", "tripties");
+    data.append("upload_preset", import.meta.env.preset);
 
     const response = await axios
-      .post("https://api.cloudinary.com/v1_1/dtpsfvnfo/video/upload", data)
-      .then((res: { data: { url: any; }; }) => {
-        console.log(res);
+      .post(
+        `https://api.cloudinary.com/v1_1/${import.meta.env.name}/video/upload`,
+        data
+      )
+      .then((res: { data: { url: any } }) => {
         setPost({
           ...post,
           video: [...post.video, { url: res.data.url, type: "video" }],
@@ -301,22 +336,39 @@ function ModalPost({
                 </div>
               </aside>
 
-              <aside className={style.buttons}>
-                <label htmlFor="photo" className={style.media}>
-                  <img src={addPhoto} alt="" width="98" height="98" />
-                  <input type="file" id="photo" onChange={handleUpdatePhotos} />
-                </label>
+              <aside className={style.containerButtons}>
+                <section className={style.buttons}>
+                  <label htmlFor="photo" className={style.media}>
+                    <img src={addPhoto} alt="" width="98" height="98" />
+                    <input
+                      type="file"
+                      id="photo"
+                      onChange={handleUpdatePhotos}
+                    />
+                  </label>
+                  <label htmlFor="video" className={style.media}>
+                    <img src={addVideo} alt="" width="98" height="98" />
+                    <input
+                      type="file"
+                      id="video"
+                      onChange={handleUpdateVideos}
+                    />
+                  </label>
+                </section>
 
-                <label htmlFor="video" className={style.media}>
-                  <img
-                    src={addVideo}
-                    alt=""
-                    width="98"
-                    height="98"
-                    className={style.media}
-                  />
-                  <input type="file" id="video" onChange={handleUpdateVideos} />
-                </label>
+                <section className={style.containerUpload}>
+                  {loadingUpload ? (
+                    <div className={style.loading}>
+                      <h3>Cargando...</h3>
+                    </div>
+                  ) : (
+                    post.photo.map((e: any) => (
+                      <div className={style.progress}>
+                        <p>{e.name}</p>
+                      </div>
+                    ))
+                  )}
+                </section>
               </aside>
               <aside className={style.infoPost}>
                 <div className={style.rate}>
@@ -334,7 +386,7 @@ function ModalPost({
                     size={30}
                   />
                 </div>
-                <div className={style.selectContainer}>
+                <div className={style.reactSelectContainer}>
                   <Select
                     options={optionClasification}
                     onChange={handleSelectClasification}
@@ -348,7 +400,7 @@ function ModalPost({
                       control: (base: any, state: any) => ({
                         ...base,
                         color: "#6c5206",
-                        minWidth: 150,
+                        minWidth: 180,
                         initialLetter: "#",
                         background: "none",
                         border: "none",
@@ -397,7 +449,7 @@ function ModalPost({
                   ></Select>
                   <img src={dropDownArrow} alt="" />
                 </div>
-                <div className={style.selectContainer}>
+                <div className={style.reactSelectContainer}>
                   <input
                     type="text"
                     onChange={handleChange}

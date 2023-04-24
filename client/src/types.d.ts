@@ -15,12 +15,15 @@ export interface FormState {
 }
 
 export interface UserLogin {
-  username?: string;
-  email?: string;
-  password?: string;
-  firstName?: string;
-  lastName?: string;
-  photoUser?: string;
+  user?:{
+    username?: string;
+    email?: string;
+    password?: string;
+    firstName?: string;
+    lastName?: string;
+    photoUser?: string;
+  }
+
 }
 
 export interface Chat {

@@ -2,6 +2,8 @@
   background-color: #f2f2f2;
   padding: 10px;
   width: 100%;
+  max-height: 200px;
+  overflow-y: scroll;
 }
 
 .commentForm {
@@ -41,19 +43,30 @@
   height: 40px;
 }
 
-.commentCont {
+.commentsTitle {
+  width: 35%;
   display: flex;
-  justify-content: space-around;
   align-items: center;
+  justify-content: space-around;
 }
 
-.commentCont > img {
+.commentsTitle > img {
   width: 35px;
   height: 35px;
   border-radius: 50%;
 }
 
-.commentCont > button {
+.commentsTitle h5 {
+  margin: 0;
+}
+
+.commentsText {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.commentsText > button {
   border: none;
   color: var(--violet);
   font-size: 15px;

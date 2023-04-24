@@ -211,14 +211,20 @@
   height: 10px;
 }
 
-.buttons {
+.containerButtons {
   width: 90%;
   display: flex;
-  justify-content: flex-start;
 }
 
-.buttons label {
-  width: 20%;
+.buttons {
+  width: 30%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.media {
+  width: 100px;
+  height: 100px;
 }
 
 .buttons button {
@@ -228,6 +234,28 @@
 
 .media:hover {
   filter: saturate(300%) contrast(90%) brightness(100%);
+}
+
+.containerUpload {
+  margin-left: 5rem;
+  width: 40%;
+  height: 100px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.progress {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 /* .media input {
@@ -276,53 +304,17 @@
   pointer-events: none;
 }
 
-.selectContainer {
-  display: flex;
-  justify-content: center;
-  position: relative;
-  min-width: 100px;
-  height: 20px;
-  outline: none;
-}
-
-.clasification {
-  width: 120px;
-  font-size: 16px;
-  color: var(--brown);
-  border: 1px solid var(--browm);
-  appearance: none;
-  background: none;
-}
-
-.location {
-  width: 120px;
-  font-size: 16px;
-  color: var(--brown);
-  border: 1px solid var(--browm);
-  appearance: none;
-  background: none;
-}
 .name {
   width: 120px;
-  border: 1px solid var(--browm);
-  appearance: none;
+  height: 40px;
+  padding: 0 0.5em;
   background: none;
-  padding: 1rem;
+  border: transparent;
 }
 
 .name::placeholder {
   font-size: 16px;
   color: var(--brown);
-}
-
-.selectContainer img {
-  width: 20px;
-  position: absolute;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
 }
 
 .buttonPost {
