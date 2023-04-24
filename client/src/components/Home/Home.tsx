@@ -17,7 +17,7 @@ import ModalPost from "../ModalPost/ModalPost";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import { getAllPublications, getTags } from "../../redux/actions/Publications";
 import Cookies from "universal-cookie";
-import { Profile } from "../../types";
+import { Profile, Users } from "../../types";
 import { getProfileUser, getUserById } from "../../redux/actions/Users";
 import { useNavigate } from "react-router-dom";
 import Loading from "../Loading/Loading";
@@ -38,7 +38,7 @@ function Home(): JSX.Element {
   //States of Redux
   const allPublications = selector<any>((state) => state.publications);
   const profile: Profile = selector((state) => state.profile);
-  const user = selector((state) => state.user);
+  const user = selector<any>((state) => state.user);
   const tags = selector<any>((state) => state.tags);
 
   //States of component
@@ -82,19 +82,26 @@ function Home(): JSX.Element {
 
   //InitialState of component
   useEffect(() => {
-    dispatch(getAllPublications());
     dispatch(getUserById());
     dispatch(getProfileUser(undefined));
     dispatch(getTags());
+  }, []);
+  useEffect(() => {
+    dispatch(getAllPublications());
+
     setTimeout(() => {
       cookies.remove("fisrtLoading");
       setLoadingHome(false);
     }, 3000);
   }, []);
 
-  const [UserChatActual, setUserChatActual] = useState({});
+  const useTags =
+    (render === "all" && allPublications.posts) ||
+    (render === "tag" &&
+      allPublications &&
+      allPublications.posts?.filter((e: any) => e.tag?.includes(publications)));
 
-  console.log(allPublications.posts);
+  const [UserChatActual, setUserChatActual] = useState({});
 
   return firstLoading === "true" ? (
     <PageLoading />
@@ -131,7 +138,11 @@ function Home(): JSX.Element {
             setLoadingModal={setLoadingModal}
           />
           <div className={style.postGenerator}>
-            <img src={imgProfile} alt="Perfil" className={style.imgProfile} />
+            <img
+              src={user.user?.photoUser}
+              alt="Perfil"
+              className={style.imgProfile}
+            />
             <div className={style.buttonsPost}>
               <input
                 type="text"
@@ -155,8 +166,8 @@ function Home(): JSX.Element {
             {loadingPublication ? (
               <Loading />
             ) : (
-              allPublications &&
-              allPublications.posts?.map((e: any, i: number) => (
+              useTags &&
+              useTags?.map((e: any, i: number) => (
                 <Card
                   places={e}
                   login={login}

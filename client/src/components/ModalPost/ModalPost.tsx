@@ -174,46 +174,41 @@ function ModalPost({
     data.append("file", files);
     data.append("upload_preset", `${import.meta.env.VITE_PRESET}`);
     const size = Math.round(files.size / 100);
-    if (size >= 1400) {
-      setLoadingUpload(true);
-      const response = await axios
-        .post(
-          `https://api.cloudinary.com/v1_1/${
-            import.meta.env.VITE_NAME
-          }/image/upload`,
-          data,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data  ",
-            },
-          }
-        )
-        .then(
-          (res: {
-            data: { secure_url: string; original_filename: string };
-          }) => {
-            setPost({
-              ...post,
-              photo: [
-                ...post.photo,
-                {
-                  name: res.data.original_filename,
-                  url: res.data.secure_url,
-                  type: "image",
-                },
-              ],
-            });
-          }
-        )
-        .then(() => {
-          setLoadingUpload(false);
-        })
-        .catch((err) => {
-          Swal.fire({ title: "Failed image upload", icon: "error" });
-        });
-    } else {
-      Swal.fire({ title: "Image is smaller", icon: "error" });
-    }
+
+    setLoadingUpload(true);
+    const response = await axios
+      .post(
+        `https://api.cloudinary.com/v1_1/${
+          import.meta.env.VITE_NAME
+        }/image/upload`,
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data  ",
+          },
+        }
+      )
+      .then(
+        (res: { data: { secure_url: string; original_filename: string } }) => {
+          setPost({
+            ...post,
+            photo: [
+              ...post.photo,
+              {
+                name: res.data.original_filename,
+                url: res.data.secure_url,
+                type: "image",
+              },
+            ],
+          });
+        }
+      )
+      .then(() => {
+        setLoadingUpload(false);
+      })
+      .catch((err) => {
+        Swal.fire({ title: "Failed image upload", icon: "error" });
+      });
   };
 
   const handleUpdateVideos = async (e: any) => {

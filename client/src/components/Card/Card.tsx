@@ -75,6 +75,9 @@ function Card({ places, profile }: props) {
         places={places}
         day={dayMonthYear}
         time={minutesSeconds}
+        profile={profile}
+        displayComments={displayComments}
+        setDisplayComments={setDisplayComments}
       />
       <section className={style.container}>
         <img

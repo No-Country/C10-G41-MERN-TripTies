@@ -8,7 +8,6 @@ import {
   loginSocialNetworks,
   getProfileUser,
 } from "../../redux/actions/Users";
-import { Profile, Users } from "../../types";
 import {
   IResolveParams,
   LoginSocialGoogle,
@@ -29,9 +28,7 @@ function Log(): JSX.Element {
 
   const nav = useNavigate();
   const dispatch = useAppDispatch();
-  const selector = useAppSelector;
 
-  const profile: Profile = selector((state) => state.profile);
 
   useEffect(() => {
     dispatch(getProfileUser(undefined));
@@ -74,7 +71,6 @@ function Log(): JSX.Element {
     lastName: "",
     photoUser: "",
   });
-  const [userFacebook, setUserFacebook] = useState({ username: "" });
 
   const onResolveGoogle = ({ data, provider }: IResolveParams) => {
     setUser({
@@ -84,11 +80,6 @@ function Log(): JSX.Element {
     });
   };
 
-  // No funciona el login con facebook
-
-  const onResolveFacebook = ({ data }: IResolveParams) => {
-    setUserFacebook(data && data.name);
-  };
 
   const onReject = (err: unknown) => {
     throw err;
@@ -102,8 +93,6 @@ function Log(): JSX.Element {
         cookies.set("fisrtLoading", true);
         nav("/home");
       });
-    } else if (userFacebook.username !== "") {
-      dispatch(loginSocialNetworks(userFacebook));
     }
   }, [user]);
 
@@ -150,20 +139,7 @@ function Log(): JSX.Element {
             >
               <img src={google} alt="Google" style={{ cursor: "pointer" }} />
             </LoginSocialGoogle>
-            <LoginSocialFacebook
-              appId={import.meta.env.VITE_FB_APP_ID}
-              onResolve={onResolveFacebook}
-              onReject={onReject}
-              fieldsProfile={
-                "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
-              }
-            >
-              <img
-                src={facebook}
-                alt="Facebook"
-                style={{ cursor: "pointer" }}
-              />
-            </LoginSocialFacebook>
+
           </div>
           <p>
             Don't have an account?<a href="/register"> Sign Up</a>

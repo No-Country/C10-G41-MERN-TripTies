@@ -54,14 +54,6 @@ function Register(): JSX.Element {
     lastName: "",
     photoUser: "",
   });
-  const [userFacebook, setUserFacebook] = useState<Users>({
-    password: "",
-    username: "",
-    email: "",
-    firstName: "",
-    lastName: "",
-    photoUser: "",
-  });
 
   //Handles
   function handlePassword(
@@ -137,17 +129,6 @@ function Register(): JSX.Element {
       firstName: data && data.given_name,
       lastName: data && data.family_name,
       photoUser: data && data.picture,
-      password: `${Math.random().toString(36).substring(2, 7)}`,
-    });
-  };
-
-  const handleOnResolveFacebook = ({ data }: IResolveParams) => {
-    setUserFacebook({
-      username: data && data.name,
-      email: data && data.email,
-      firstName: data && data.first_name,
-      lastName: data && data.last_name,
-      photoUser: data && data.picture.data.url,
       password: `${Math.random().toString(36).substring(2, 7)}`,
     });
   };
@@ -253,20 +234,6 @@ function Register(): JSX.Element {
               >
                 <img src={google} alt="Google" style={{ cursor: "pointer" }} />
               </LoginSocialGoogle>
-              <LoginSocialFacebook
-                appId={import.meta.env.VITE_FB_APP_ID}
-                onResolve={handleOnResolveFacebook}
-                onReject={handleOnReject}
-                fieldsProfile={
-                  "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
-                }
-              >
-                <img
-                  src={facebook}
-                  alt="Facebook"
-                  style={{ cursor: "pointer" }}
-                />
-              </LoginSocialFacebook>
             </div>
             <p>
               Already have an account? <a href="/login">Log In</a>

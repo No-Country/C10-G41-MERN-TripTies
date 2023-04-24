@@ -63,6 +63,7 @@
 
 .publicationInfo > aside > span {
   color: var(--brown);
+  font-size: 14px;
 }
 
 .likesAndComments {
