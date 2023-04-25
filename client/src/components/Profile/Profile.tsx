@@ -12,12 +12,14 @@ import pin from "../../img/locationH.png";
 import { Profile, putUser } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import Cookies from "universal-cookie";
+
 import {
   followUser,
   getFollowers,
   getFollowing,
   getPostsByUser,
 } from "../../redux/actions/Users";
+
 import { useNavigate, useParams } from "react-router-dom";
 import avatarDefault from "../../img/user_avatar.png";
 import { getProfileUser, getUserById } from "../../redux/actions/Users";
