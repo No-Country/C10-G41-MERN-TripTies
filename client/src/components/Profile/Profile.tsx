@@ -1,18 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "../../styles/Profile/Profile.module.css";
-import avatar from "../../img/avatar.png";
 import NavBar from "../NavBar/NavBar";
 import SectionAccount from "../Section Account/SectionAccout";
 import SectionChat from "../SectionChat/SectionChat";
 import FooterSocial from "../Footers/FooterSocial";
 import portada from "../../img/portada_perfil.png";
-import perfilAvatar from "../../img/perfil_avatar.png";
 import FooterTerm from "../Footers/FooterTerm";
 import menu from "../../img/menu-horizontal.png";
 import star from "../../img/star.png";
 import pin from "../../img/locationH.png";
-import book from "../../img/taskAcc.png";
-import saved from "../../img/archive-tick.png";
 import { Profile, putUser } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import Cookies from "universal-cookie";
@@ -23,14 +19,7 @@ import {
   getPostsByUser,
 } from "../../redux/actions/Users";
 import { useNavigate, useParams } from "react-router-dom";
-import PageLoading from "../Page Loading/PageLoading";
-import Swal from "sweetalert2";
-import axios from "axios";
-import { getAllPublications } from "../../redux/actions/Publications";
-import { Rating } from "react-simple-star-rating";
 import avatarDefault from "../../img/user_avatar.png";
-import mapa from "../../img/mapa.png";
-import img from "../../img/coffeLondon.png";
 import { getProfileUser, getUserById } from "../../redux/actions/Users";
 import ChatBubble from "../ChatBubble/ChatBubble";
 
@@ -38,8 +27,10 @@ export default function Profile() {
   const nav = useNavigate();
   const selector = useAppSelector;
   const dispatch = useAppDispatch();
+
   const [selected, setSelected] = useState(0);
   const [putSelect, setPutSelect] = useState("");
+
   const [putUser, setPutUser] = useState<putUser>({
     user: {
       first_name: "",
@@ -55,6 +46,7 @@ export default function Profile() {
   });
 
   let { id } = useParams();
+
   useEffect(() => {
     dispatch(getPostsByUser(id));
     dispatch(getUserById());
@@ -63,7 +55,6 @@ export default function Profile() {
     dispatch(getFollowers());
   }, []);
 
-  const publications = selector<any>((state) => state.publications);
   const profile: Profile = selector((state) => state.profile);
   const user = selector((state) => state.user);
   const following = selector((state) => state.following);
@@ -108,12 +99,8 @@ export default function Profile() {
         },
       });
     }
-    // setPutUser({
-    //     ...putUser,
-    //     [e.target.name] : e.target.value
-    // })
-    //console.log(putUser)
   }
+  
   const handleFollow = (e: any) => {
     e.preventDefault();
     setIsOpen(!isOpen);
@@ -146,7 +133,7 @@ export default function Profile() {
                 alt="portada"
               />
               {putSelect === "Change_cover_picture" ||
-              putSelect === "Edit_profile" ? (
+                putSelect === "Edit_profile" ? (
                 <div className={styles.changeCover}>
                   <input
                     type="file"
@@ -168,14 +155,14 @@ export default function Profile() {
                   alt="perfilAvatar"
                 />
                 {putSelect === "Change_profile_picture" ||
-                putSelect === "Edit_profile" ? (
+                  putSelect === "Edit_profile" ? (
                   <div className={styles.changeAvatar}>
                     <input type="file" id="myFile" name="filename"></input>
                   </div>
                 ) : null}
               </div>
-              <div className={styles.username}>
-                <div>
+              <div className={styles.usernameAndDrow}>
+                <div  className={styles.username}>
                   <div className={styles.change}>
                     {putSelect === "Change_name" ? (
                       <>
@@ -226,9 +213,8 @@ export default function Profile() {
                   {/* Opciones del menú */}
                   {idUser === id ? (
                     <ul
-                      className={`${styles.menu} ${isOpen ? styles.show : ""} ${
-                        isOpen ? styles.center : ""
-                      }`}
+                      className={`${styles.menu} ${isOpen ? styles.show : ""} ${isOpen ? styles.center : ""
+                        }`}
                     >
                       <li className={styles.space}></li>
                       <a
@@ -257,13 +243,6 @@ export default function Profile() {
                       </a>
                       <a
                         onClick={() => {
-                          setIsOpen(!isOpen), setPutSelect("Share_profile");
-                        }}
-                      >
-                        <li>Share profile</li>
-                      </a>
-                      <a
-                        onClick={() => {
                           setIsOpen(!isOpen), setPutSelect("");
                         }}
                       >
@@ -273,9 +252,8 @@ export default function Profile() {
                     </ul>
                   ) : (
                     <ul
-                      className={`${styles.menu} ${isOpen ? styles.show : ""} ${
-                        isOpen ? styles.center : ""
-                      }`}
+                      className={`${styles.menu} ${isOpen ? styles.show : ""} ${isOpen ? styles.center : ""
+                        }`}
                     >
                       <li className={styles.space}>
                         <button value={id} onClick={handleFollow}>
@@ -293,17 +271,15 @@ export default function Profile() {
             <div className={styles.sections}>
               <div className={styles.separators}>{"separators"}</div>
               <div
-                className={`${
-                  selected === 0 ? styles.selected : styles.review
-                }`}
+                className={`${selected === 0 ? styles.selected : styles.review
+                  }`}
                 onClick={() => handleSelect(0)}
               >
                 <img src={star} alt="star" width="24px" height="24px" /> Reviews
               </div>
               <div
-                className={`${
-                  selected === 1 ? styles.selected : styles.places
-                }`}
+                className={`${selected === 1 ? styles.selected : styles.places
+                  }`}
                 onClick={() => handleSelect(1)}
               >
                 <img src={pin} alt="star" width="24px" height="24px" />
