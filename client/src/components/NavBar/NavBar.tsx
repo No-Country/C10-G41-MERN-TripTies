@@ -44,6 +44,7 @@ function NavBar({ handleHome, places, user, visit }: any): JSX.Element {
       setDisplay("none");
     }
   };
+  console.log(visit);
 
   return (
     <nav className={style.navContainer}>

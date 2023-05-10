@@ -69,6 +69,7 @@
   width: 56px;
   height: 56px;
   margin-bottom: 2rem;
+  border-radius: 50%;
 }
 
 .iconEdit {

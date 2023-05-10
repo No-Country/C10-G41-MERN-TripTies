@@ -91,7 +91,7 @@ function Register(): JSX.Element {
               if (newUser.firstName === "" && newUser.lastName === "") {
                 dispatch(loginUser(newUser)).then((res) => {
                   if (res.data.message === "Correct credentials") {
-                    cookies.remove("visit");
+                    cookies.set("visit", false);
                     cookies.set("login", true);
                     cookies.set("fisrtLoading", true);
                     Swal.fire({
@@ -144,6 +144,9 @@ function Register(): JSX.Element {
         if (data.response?.data !== "User has already exist") {
           dispatch(loginSocialNetworks(userGoogle));
           cookies.set("login", true);
+          cookies.set("visit", false);
+          cookies.set("fisrtLoading", true);
+
           setTimeout(() => {
             nav("/home");
           }, 1000);
