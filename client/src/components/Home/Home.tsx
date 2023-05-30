@@ -15,7 +15,11 @@ import FooterSocial from "../Footers/FooterSocial";
 import ChatBubble from "../ChatBubble/ChatBubble";
 import ModalPost from "../ModalPost/ModalPost";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
-import { getAllPublications, getTags } from "../../redux/actions/Publications";
+import {
+  getAllPublications,
+  getTags,
+  getComments,
+} from "../../redux/actions/Publications";
 import Cookies from "universal-cookie";
 import { Profile, Users } from "../../types";
 import { getProfileUser, getUserById } from "../../redux/actions/Users";
@@ -115,17 +119,19 @@ function Home(): JSX.Element {
         setRender={setRender}
       />
       <div className={style.feedContainer}>
-        <div className={style.leftContainer}>
-          <div>
-            <div className={style.feedLeft}>
-              <SectionAccount />
-              <SectionChat setUserChatActual={setUserChatActual} />
+        {visit === "true" ? null : (
+          <div className={style.leftContainer}>
+            <div>
+              <div className={style.feedLeft}>
+                <SectionAccount />
+                <SectionChat setUserChatActual={setUserChatActual} />
+              </div>
+            </div>
+            <div className={style.footerLeft}>
+              <FooterSocial />
             </div>
           </div>
-          <div className={style.footerLeft}>
-            <FooterSocial />
-          </div>
-        </div>
+        )}
 
         <div className={style.feedCenter}>
           <ModalPost
@@ -137,31 +143,33 @@ function Home(): JSX.Element {
             loadingModal={loadingModal}
             setLoadingModal={setLoadingModal}
           />
-          <div className={style.postGenerator}>
-            <img
-              src={user.user?.photoUser}
-              alt="Perfil"
-              className={style.imgProfile}
-            />
-            <div className={style.buttonsPost}>
-              <input
-                type="text"
-                className={style.inputPost}
-                placeholder="Create a new post"
-                onClick={handleOpen}
+          {visit === "true" ? null : (
+            <div className={style.postGenerator}>
+              <img
+                src={user.user?.photoUser}
+                alt="Perfil"
+                className={style.imgProfile}
               />
-              <section className={style.icons}>
-                <button className={style.iconsTitle}>
-                  <img src={gallery} alt="Open gallery" />
-                  <h4>Add Photo</h4>
-                </button>
-                <button className={style.iconsTitle}>
-                  <img src={video} alt="Add video" />
-                  <h4>Add Video</h4>
-                </button>
-              </section>
+              <div className={style.buttonsPost}>
+                <input
+                  type="text"
+                  className={style.inputPost}
+                  placeholder="Create a new post"
+                  onClick={handleOpen}
+                />
+                <section className={style.icons}>
+                  <button className={style.iconsTitle}>
+                    <img src={gallery} alt="Open gallery" />
+                    <h4>Add Photo</h4>
+                  </button>
+                  <button className={style.iconsTitle}>
+                    <img src={video} alt="Add video" />
+                    <h4>Add Video</h4>
+                  </button>
+                </section>
+              </div>
             </div>
-          </div>
+          )}
           <div className={style.feedPublications}>
             {loadingPublication ? (
               <Loading />

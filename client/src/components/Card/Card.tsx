@@ -18,6 +18,7 @@ import { Cookie } from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import SinglePublication from "../SinglePublication/SinglePublication";
+import { getComments } from "../../redux/actions/Publications";
 
 type props = {
   places: any;
@@ -32,6 +33,8 @@ function Card({ places, profile }: props) {
   const [openPost, setOpenPost] = useState(false);
   const [displayComments, setDisplayComments] = useState("none");
   const ref = useRef<HTMLDivElement>(null);
+
+  const comment = selector((state) => state.comments);
 
   const user = selector<any>((state) => state.user);
 
@@ -48,8 +51,9 @@ function Card({ places, profile }: props) {
     dispatch(getUserById());
   }, []);
 
-  const handleSectionComments = () => {
+  const handleSectionComments = (id: string) => {
     if (displayComments === "none") {
+      dispatch(getComments(id));
       setDisplayComments("block");
     } else {
       setDisplayComments("none");
@@ -161,7 +165,7 @@ function Card({ places, profile }: props) {
             <aside>
               <img onClick={handleLike} src={heart} alt="heart" />
               <img
-                onClick={handleSectionComments}
+                onClick={() => handleSectionComments(places._id)}
                 src={messageBig}
                 alt="message"
               />
@@ -173,6 +177,7 @@ function Card({ places, profile }: props) {
               profile={profile}
               goingToComment={displayComments}
               places={places}
+              id={places._id}
             />
           </div>
         </section>

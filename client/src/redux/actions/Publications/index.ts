@@ -64,14 +64,39 @@ export const getTags = () => {
   };
 };
 
-export const postComment = ({ comment, id }: any) => {
+export const getComments = (id: string | "") => {
+  return async function (dispatch: AppDispatch) {
+    try {
+      const response = await axios
+        .get(`/comments/${id}`, {
+          headers: {
+            Authorization: `jwt ${cookies.get("token")}`,
+          },
+        })
+        .then((res) => {
+          dispatch({
+            type: "GET_COMMENTS",
+            payload: res.data,
+          });
+        });
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+};
+
+export const postComment = (payload: any) => {
+  const idUser = cookies.get("idUser");
   return async function () {
     try {
       const response = await axios.post(
-        `/posts/${id}/comments`,
+        `/comments`,
         {
           parent_id: "?",
-          content: comment,
+          content: payload.comment,
+          id: payload.id,
+          user_id: idUser,
         },
         {
           headers: {

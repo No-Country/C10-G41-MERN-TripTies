@@ -20,6 +20,10 @@ const NavBarL = () => {
               {" "}
               <Link to="/register">Sign up</Link>{" "}
             </button>
+            <button className={style.singUpBtn}>
+              {" "}
+              <Link to="/login">Sign in</Link>{" "}
+            </button>
           </div>
         </div>
       </div>

@@ -1,205 +1,206 @@
 /* Estilo para los títulos */
 .title {
-    padding-left: 1.5rem;
-    color: var(--purple);
-    font-weight: 400;
-    height: 2.5rem;
+  padding-left: 1.5rem;
+  color: var(--purple);
+  font-weight: 400;
+  height: 2.5rem;
 }
 
 /* Estilo para el contenedor principal */
 .conteiner {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 /* Estilo para los chats */
 .chats {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 286px;
-    border-radius: 20px;
-    background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  height: 300px;
+  border-radius: 20px;
+  background-color: #fff;
+  margin-bottom: 2rem;
 }
 
 /* Estilo para la barra de búsqueda */
 #search {
-    Width: 247px;
-    Height: 41px;
-    margin-block-start: 15px;
-    margin-block-end: 10px;
-    border-radius: 6px;
-    border: 2px solid var(--violetLight);
+  width: 90%;
+  height: 41px;
+  margin-block-start: 15px;
+  margin-block-end: 10px;
+  border-radius: 6px;
+  border: 2px solid var(--violetLight);
 }
 
 #search:hover {
-    border: 2px solid var(--violet);
+  border: 2px solid var(--violet);
 }
 
 #search:focus {
-    border: 2px solid var(--violet);
-    outline: none;
+  border: 2px solid var(--violet);
+  outline: none;
 }
 
 #search:focus::placeholder {
-    color: transparent;
-    background: none;
+  color: transparent;
+  background: none;
 }
 
 /* Estilo para el texto del placeholder en la barra de búsqueda */
 #search::placeholder {
-    color: var(--brown);
-    padding: 8px;
-    padding-inline-start: 35px;
-    background-image: url('../../img/searchSmall.png');
-    background-repeat: no-repeat;
-    background-position: 10px center;
-    font-size: 14px;
+  color: var(--brown);
+  padding: 8px;
+  padding-inline-start: 35px;
+  background-image: url("../../img/searchSmall.png");
+  background-repeat: no-repeat;
+  background-position: 10px center;
+  font-size: 14px;
 }
 
 /* Estilo para la sección del avatar */
 .avatar {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 0px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px 0px;
 }
 
 /* Estilo para el texto del avatar */
 .text {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0px;
-    width: 167px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+  width: 167px;
 }
 
 /* Estilo para el nombre del avatar */
 .avatar h2 {
-    font-weight: 500;
-    font-size: 21px;
-    line-height: 24px;
-    font-style: bold;
-    color: #161616;
-    margin: 0;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  font-style: bold;
+  color: #161616;
+  margin: 0;
 }
 
 .avatar img {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
 }
 
 /* Estilo para la sección de desplazamiento */
 .scroll {
-    height: 320px;
-    overflow-y: scroll;
-    width: 260px;
+  height: 320px;
+  overflow-y: scroll;
+  width: 260px;
 }
 
 .scroll::-webkit-scrollbar {
-    background: #E0E0E0;
-    border-radius: 10px;
-    width: 10px;
+  background: #e0e0e0;
+  border-radius: 10px;
+  width: 10px;
 }
 
 .scroll::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background: var(--yellowPale);
+  border-radius: 10px;
+  background: var(--yellowPale);
 }
 
 /* Estilo para el separador de secciones */
 .config hr {
-    width: 285px;
-    border: 1px solid var(--yellowPale);
+  width: 90%;
+  border: 1px solid var(--yellowPale);
 }
 
 /* Estilo para las secciones de mensajes */
 .messages {
-    display: flex;
-    justify-content: space-around;
+  display: flex;
+  justify-content: space-around;
 }
 
 /* Estilo para los botones */
 .buttons {
-    background: none;
-    border: none;
-    padding: 10px;
-    color: var(--brown);
+  background: none;
+  border: none;
+  padding: 10px;
+  color: var(--brown);
 }
 
 .buttons:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* Estilo para la sección de agregar */
 .add {
-    display: flex;
-    align-items: center;
-    height: 2.5rem;
-    color: var(--brown);
+  display: flex;
+  align-items: center;
+  height: 2.5rem;
+  color: var(--brown);
 }
 
 .messages img {
-    margin-block-start: 6px;
+  margin-block-start: 6px;
 }
 
 /* Estilo para el menú desplegable */
 .dropdown {
-    position: relative;
-    display: inline-block;
-    margin-inline-start: 50px;
+  position: relative;
+  display: inline-block;
+  margin-inline-start: 50px;
 }
 
 .dropdown img {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .dropdown .menu {
-    position: absolute;
-    top: calc(100% + 5px);
-    width: 180px;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    display: none;
+  position: absolute;
+  top: calc(100% + 5px);
+  width: 180px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: none;
 }
 
 .dropdown .menu.center {
-    left: calc(50% - 75px);
+  left: calc(50% - 75px);
 }
 
 .dropdown .menu.show {
-    display: block;
-    left: calc(50% - 75px);
+  display: block;
+  left: calc(50% - 75px);
 }
 
 /* Estilos para los elementos de la lista */
 .dropdown .menu li {
-    padding: 3px 20px 3px 20px;
-    color: var(--purple);
-    text-decoration: none;
-    cursor: pointer;
+  padding: 3px 20px 3px 20px;
+  color: var(--purple);
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .dropdown .menu a {
-    color: var(--purple);
+  color: var(--purple);
 }
 
-
 .dropdown .menu li:hover {
-    background-color: var(--yellowPale);
-    transition: all 0.1s ease-in-out;
+  background-color: var(--yellowPale);
+  transition: all 0.1s ease-in-out;
 }
 
 #Log {
-    color: var(--brown);
+  color: var(--brown);
 }
 
 /* Estilos para el elemento con clase space al pasar el cursor sobre él */
 .dropdown .menu .space:hover {
-    background-color: #fff;
+  background-color: #fff;
 }

@@ -9,6 +9,8 @@ const initialState = {
   save: [],
   followers: [],
   following: [],
+  userChats: [],
+  comments: [],
 };
 
 interface Action {
@@ -58,10 +60,10 @@ const rootReducer = (state = initialState, action: Action) => {
         ...state,
         conversations: action.payload,
       };
-    case "GET_SAVE":
+    case "GET_USERS_FOR_CHAT":
       return {
         ...state,
-        save: action.payload,
+        userChats: action.payload,
       };
     case "GET_FOLLOWERS":
       return {
@@ -72,6 +74,11 @@ const rootReducer = (state = initialState, action: Action) => {
       return {
         ...state,
         following: action.payload,
+      };
+    case "GET_COMMENTS":
+      return {
+        ...state,
+        comments: action.payload,
       };
 
     default:
