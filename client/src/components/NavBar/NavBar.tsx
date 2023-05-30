@@ -44,7 +44,6 @@ function NavBar({ handleHome, places, user, visit }: any): JSX.Element {
       setDisplay("none");
     }
   };
-  console.log(visit);
 
   return (
     <nav className={style.navContainer}>
@@ -60,7 +59,13 @@ function NavBar({ handleHome, places, user, visit }: any): JSX.Element {
             onClick={() => cookies.remove("visit")}
             className={style.singUpBtn}
           >
-            <Link to="/register">Sing up</Link>{" "}
+            <Link to="/register">Sign up</Link>{" "}
+          </button>
+          <button
+            onClick={() => cookies.remove("visit")}
+            className={style.singUpBtn}
+          >
+            <Link to="/login">Sign in</Link>{" "}
           </button>
         </div>
       ) : (

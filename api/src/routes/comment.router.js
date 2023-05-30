@@ -1,18 +1,13 @@
-const router = require('express').Router()
+const router = require("express").Router();
 
-const commentController = require('../controllers/comment.controller')
+const commentController = require("../controllers/comment.controller");
 
-router.route('/')
-  .post(commentController.postComment)
+router.route("/").post(commentController.postComment);
 
-router.route('/')
-  .get(commentController.getComments)
-  
-router.route('/')
-  .put(commentController.updateComment)
+router.route("/:post_id").get(commentController.getComments);
 
-router.route('/')
-  .delete(commentController.deleteComment)
-  
+router.route("/").put(commentController.updateComment);
 
-module.exports = router
+router.route("/").delete(commentController.deleteComment);
+
+module.exports = router;

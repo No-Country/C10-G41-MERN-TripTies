@@ -7,7 +7,11 @@ import connected from "../../img/connected.png";
 import { Link, useNavigate } from "react-router-dom";
 import { ChatProps } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
-import { cleanProfile, getAllUsers, getFollowing } from "../../redux/actions/Users";
+import {
+  cleanProfile,
+  getAllUsers,
+  getUsersForChat,
+} from "../../redux/actions/Users";
 import Cookies from "universal-cookie";
 
 interface User {
@@ -25,7 +29,7 @@ interface User {
   isOnline: boolean;
 }
 
-export default function SectionChat({setUserChatActual}: any): JSX.Element {
+export default function SectionChat({ setUserChatActual }: any): JSX.Element {
   const avatarDefault = avatar7;
 
   // Obtener token del almacenamiento local
@@ -36,12 +40,12 @@ export default function SectionChat({setUserChatActual}: any): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.following);
+  const user = useAppSelector((state) => state.userChats);
   const nav = useNavigate();
 
   // Hook para manejar el click fuera del menú de configuración y cerrarlo
   useEffect(() => {
-    dispatch(getFollowing());
+    dispatch(getUsersForChat());
     const handleOutsideClick = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
         setIsOpen(false);
@@ -71,7 +75,7 @@ export default function SectionChat({setUserChatActual}: any): JSX.Element {
       "UserChat",
       JSON.stringify({ name: name, avatar: avatar, id })
     );
-    setUserChatActual({ name: name, avatar: avatar, id })
+    setUserChatActual({ name: name, avatar: avatar, id });
   }
 
   return (
@@ -141,10 +145,16 @@ export default function SectionChat({setUserChatActual}: any): JSX.Element {
                   }`}
                 >
                   <li className={styles.space}></li>
-                  <Link to={`/profile/${id}`} onClick={() => setIsOpen(!isOpen)}>
+                  <Link
+                    to={`/profile/${id}`}
+                    onClick={() => setIsOpen(!isOpen)}
+                  >
                     <li>View profile</li>
                   </Link>
-                  <Link to={`/profile/${id}`} onClick={() => setIsOpen(!isOpen)}>
+                  <Link
+                    to={`/profile/${id}`}
+                    onClick={() => setIsOpen(!isOpen)}
+                  >
                     <li>Account settings</li>
                   </Link>
                   {/* Opción para cerrar sesión */}

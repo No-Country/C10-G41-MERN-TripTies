@@ -198,6 +198,29 @@ export const createConversation = (newConversation: Conversation) => {
   };
 };
 
+export const getUsersForChat = () => {
+  const token = cookies.get("token");
+  const id = cookies.get("idUser");
+  console.log(id);
+  return async function (dispatch: AppDispatch) {
+    try {
+      const response = await axios
+        .get(`/follow/following/${id}`, {
+          headers: { Authorization: `jwt ${token}` },
+        })
+        .then((response) => {
+          dispatch({
+            type: "GET_USERS_FOR_CHAT",
+            payload: response.data,
+          });
+        });
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 export const followUser = (following: string) => {
   const id = cookies.get("idUser");
   const token = cookies.get("token");
@@ -218,9 +241,9 @@ export const followUser = (following: string) => {
   };
 };
 
-export const getFollowing = () => {
-  const id = cookies.get("idUser");
+export const getFollowing = (id: string | "") => {
   const token = cookies.get("token");
+  console.log(id);
   return async function (dispatch: AppDispatch) {
     try {
       const response = await axios
@@ -235,14 +258,14 @@ export const getFollowing = () => {
         });
       return response;
     } catch (error) {
-      throw error;
+      console.log(error);
     }
   };
 };
 
-export const getFollowers = () => {
-  const id = cookies.get("idUser");
+export const getFollowers = (id: string | "") => {
   const token = cookies.get("token");
+
   return async function (dispatch: AppDispatch) {
     try {
       const response = await axios

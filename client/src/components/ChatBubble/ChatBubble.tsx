@@ -99,11 +99,11 @@ export default function ChatBubble({ UserChatActual }: any) {
     const conversation = creador.concat(participant);
     // EXISTE UNA CONERSACION CON ESE USUARIO DONDE FUI PARTICIPANTE
     const existParticipant = conversation.filter(
-      (e) => e.title === idUser && e.user === user.id
+      (e) => e.title === idUser && e.user === user?.id
     );
     // EXISTE UNA CONERSACION CON ESE USUARIO DONDE FUI CREADOR
     const existCreador = conversation.filter(
-      (e) => e.title === user.id && e.user === idUser
+      (e) => e.title === user?.id && e.user === idUser
     );
 
     if (existParticipant.concat(existCreador).length !== 0) {
@@ -113,8 +113,8 @@ export default function ChatBubble({ UserChatActual }: any) {
       setConversationID(existParticipant.concat(existCreador)[0]._id);
     } else {
       const newConversation = {
-        title: `${user.id}`,
-        participantId: `${user.id}`,
+        title: `${user?.id}`,
+        participantId: `${user?.id}`,
       };
       const response = await dispatch(createConversation(newConversation));
       setConversationID(response.data.participant1.conversation);
